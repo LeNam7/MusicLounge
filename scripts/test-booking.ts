@@ -9,7 +9,7 @@ import {
   resetDemoData
 } from '../src/lib/db';
 
-console.log('--- BẮT ĐẦU KIỂM THỬ HỆ THỐNG ĐẶT PHÒNG ORIENTAL SERENITY ---');
+console.log('--- BẮT ĐẦU KIỂM THỬ HỆ THỐNG ĐẶT PHÒNG LÙNG VÀI TEA ---');
 
 // 1. Reset demo data
 resetDemoData();
@@ -46,7 +46,7 @@ const newBooking = createBooking({
 });
 
 console.log(`✓ Tạo đơn đặt phòng thành công: ${newBooking.bookingReference} (Tổng tiền: ${newBooking.totalPrice.toLocaleString()}đ)`);
-if (!newBooking.bookingReference.startsWith('OS-20261115-')) {
+if (!newBooking.bookingReference.startsWith('LVT-20261115-')) {
   throw new Error('Định dạng mã booking không chính xác');
 }
 

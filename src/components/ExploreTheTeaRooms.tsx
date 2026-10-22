@@ -33,7 +33,7 @@ export default function ExploreTheTeaRooms({ rooms }: ExploreRoomsProps) {
               Bốn không gian, bốn phong vị tĩnh tại
             </h2>
             <p className="text-sm sm:text-base text-stone-light max-w-xl font-light">
-              Mỗi phòng trà tại Oriental Serenity được kiến tạo với một linh hồn và khí chất riêng biệt, phù hợp từ buổi đối ẩm 2 người đến tiệc trà trang trọng 16 khách.
+              Mỗi phòng trà tại Lùng Vài Tea được kiến tạo với một linh hồn và khí chất riêng biệt, phù hợp từ buổi đối ẩm 2 người đến tiệc trà trang trọng 16 khách.
             </p>
           </div>
 

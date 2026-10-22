@@ -894,7 +894,7 @@ export default function BookingWizard({
               <div className="bg-charcoal p-3 rounded-xs border border-stone/20 space-y-1 font-mono text-[11px] text-ivory">
                 <div>Ngân hàng: <strong>Vietcombank (Hà Nội)</strong></div>
                 <div>Số tài khoản: <strong>0011 004 888 999</strong></div>
-                <div>Chủ tài khoản: <strong>ORIENTAL SERENITY CO LTD</strong></div>
+                <div>Chủ tài khoản: <strong>LUNG VAI TEA CO LTD</strong></div>
                 <div>Nội dung CK: <strong className="text-brass">{createdBooking.bookingReference}</strong></div>
               </div>
               <p className="text-[11px] text-stone-light italic">

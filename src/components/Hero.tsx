@@ -21,7 +21,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/hero-tea-ceremony.png"
-          alt="Không gian trà đạo đương đại tĩnh lặng tại Oriental Serenity"
+          alt="Không gian trà đạo đương đại tĩnh lặng tại Lùng Vài Tea"
           fill
           priority
           sizes="100vw"
@@ -51,7 +51,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16 flex flex-col items-center">
         {/* Eyebrow badge */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-brass/40 bg-walnut/60 backdrop-blur-md mb-6 shadow-lg shadow-charcoal-dark/50">
-          <span className="seal-stamp text-[10px] px-1.5 py-0.5 font-sans font-bold">OS</span>
+          <span className="seal-stamp text-[10px] px-1.5 py-0.5 font-sans font-bold text-vermilion">LV</span>
           <span className="text-xs uppercase tracking-[0.25em] text-ivory-muted font-medium">
             MỘT KHOẢNG LẶNG GIỮA NHỊP SỐNG
           </span>

@@ -18,17 +18,20 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://oriental-serenity.vn'),
-  title: `${BRAND_CONFIG.brandName} | ${BRAND_CONFIG.brandSubtitle} Đương Đại`,
-  description: `${BRAND_CONFIG.brandTagline}. Khám phá không gian phòng trà riêng tư, bộ sưu tập trà Shan Tuyết cổ thụ, Oolong thượng hạng và đặt phòng trực tuyến.`,
+  metadataBase: new URL('https://lungvaitea.vn'),
+  title: `${BRAND_CONFIG.brandName} | ${BRAND_CONFIG.brandSubtitle}`,
+  description: `${BRAND_CONFIG.brandTagline}. Khám phá không gian phòng trà riêng tư, bộ sưu tập trà Shan Tuyết cổ thụ Lùng Vài, Oolong thượng hạng và đặt phòng trực tuyến.`,
   keywords: [
+    'lùng vài tea',
+    'lung vai tea',
+    'trà lùng vài',
+    'thanh sơn trà',
+    'trà shan tuyết cổ thụ',
     'phòng trà hà nội',
     'quán trà đạo sang trọng',
     'phòng trà riêng tư',
-    'oriental serenity',
     'thưởng trà đàm đạo',
     'đặt phòng trà',
-    'trà shan tuyết cổ thụ',
     'ấm tử sa'
   ],
   openGraph: {

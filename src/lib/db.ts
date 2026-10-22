@@ -172,7 +172,7 @@ function initSchema(db: DatabaseSync) {
 
     insertSampleBooking.run(
       'seed-booking-1',
-      'OS-20261022-7F9A',
+      'LVT-20261022-7F9A',
       'room-1',
       'Trúc Ảnh',
       'Đỗ Thành Long',
@@ -196,7 +196,7 @@ function initSchema(db: DatabaseSync) {
 
     insertSampleBooking.run(
       'seed-booking-2',
-      'OS-20261022-4B2E',
+      'LVT-20261022-4B2E',
       'room-2',
       'Nguyệt Các',
       'Hoàng Minh Châu',
@@ -508,10 +508,10 @@ export function createBooking(data: {
   const totalPrice = roomPrice + teaPackagePrice;
   const depositAmount = Math.round(totalPrice * (BRAND_CONFIG.depositPercentage / 100));
 
-  // Generate unique booking reference: OS-YYYYMMDD-XXXX
+  // Generate unique booking reference: LVT-YYYYMMDD-XXXX
   const dateStr = data.date.replace(/-/g, '');
   const randomHex = Math.random().toString(16).substring(2, 6).toUpperCase();
-  const bookingReference = `OS-${dateStr}-${randomHex}`;
+  const bookingReference = `LVT-${dateStr}-${randomHex}`;
   const id = `bk-${Date.now()}-${randomHex}`;
 
   // Execute in SQLite TRANSACTION with BEGIN IMMEDIATE to guarantee mutual exclusion

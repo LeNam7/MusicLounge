@@ -107,7 +107,7 @@ function LookupContent() {
           Tra cứu đơn đặt phòng trà
         </h1>
         <p className="text-xs sm:text-sm text-stone-light max-w-md mx-auto font-light">
-          Nhập mã số đơn (dạng <code className="text-brass">OS-YYYYMMDD-XXXX</code>) đã nhận khi hoàn tất đặt phòng để theo dõi trạng thái.
+          Nhập mã số đơn (dạng <code className="text-brass">LVT-YYYYMMDD-XXXX</code>) đã nhận khi hoàn tất đặt phòng để theo dõi trạng thái.
         </p>
       </div>
 
@@ -123,7 +123,7 @@ function LookupContent() {
               <input
                 type="text"
                 required
-                placeholder="Ví dụ: OS-20261022-7F9A"
+                placeholder="Ví dụ: LVT-20261022-7F9A"
                 value={reference}
                 onChange={(e) => setReference(e.target.value)}
                 className="w-full bg-charcoal border border-stone/30 focus:border-brass text-ivory px-4 py-2.5 rounded-xs text-sm uppercase tracking-wider outline-none"

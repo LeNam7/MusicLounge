@@ -46,8 +46,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Brand Logo & Inscription */}
           <Link href="/" className="flex items-center gap-3 group">
-            <span className="seal-stamp text-xs md:text-sm px-1.5 py-0.5 font-sans font-bold" title="Oriental Serenity">
-              OS
+            <span className="seal-stamp text-xs md:text-sm px-1.5 py-0.5 font-sans font-bold text-vermilion" title="Lùng Vài Tea">
+              LV
             </span>
             <div className="flex flex-col">
               <span className="font-serif text-lg sm:text-xl tracking-[0.2em] uppercase text-ivory group-hover:text-brass transition-colors font-medium">

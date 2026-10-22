@@ -11,7 +11,7 @@ export default function FinalBookingInvitation() {
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/courtyard-twilight.jpg"
-          alt="Sân vườn nguyệt môn tĩnh lặng lúc hoàng hôn tại Oriental Serenity"
+          alt="Sân vườn nguyệt môn tĩnh lặng lúc hoàng hôn tại Lùng Vài Tea"
           fill
           sizes="100vw"
           className="object-cover object-center opacity-30 scale-105"

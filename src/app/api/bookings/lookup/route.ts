@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
     if (!ref) {
       return NextResponse.json(
-        { success: false, error: 'Vui lòng cung cấp mã đặt phòng (ví dụ: OS-20261022-7F9A).' },
+        { success: false, error: 'Vui lòng cung cấp mã đặt phòng (ví dụ: LVT-20261022-7F9A).' },
         { status: 400 }
       );
     }

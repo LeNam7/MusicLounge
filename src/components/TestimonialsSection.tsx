@@ -17,7 +17,7 @@ export default function TestimonialsSection() {
             Khoảng lặng lưu dấu trong lòng khách quý
           </h2>
           <p className="text-sm sm:text-base text-stone-light font-light">
-            Những chia sẻ chân thành từ những vị khách đã dành thời gian thưởng trà và đàm đạo tại Oriental Serenity.
+            Những chia sẻ chân thành từ những vị khách đã dành thời gian thưởng trà và đàm đạo tại Lùng Vài Tea.
           </p>
         </div>
 

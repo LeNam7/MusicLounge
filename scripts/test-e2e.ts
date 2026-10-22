@@ -6,7 +6,7 @@ async function runE2ETests() {
   const homeRes = await fetch(`${BASE_URL}/`);
   if (!homeRes.ok) throw new Error(`Homepage failed with status ${homeRes.status}`);
   const homeHtml = await homeRes.text();
-  if (!homeHtml.includes('ORIENTAL SERENITY') || !homeHtml.includes('Trúc Ảnh')) {
+  if (!homeHtml.includes('LÙNG VÀI TEA') || !homeHtml.includes('Trúc Ảnh')) {
     throw new Error('Homepage content missing brand name or rooms');
   }
   console.log('✓ [1/10] Trang chủ (/) tải thành công (HTTP 200, đầy đủ nhận diện thương hiệu và 4 phòng trà)');

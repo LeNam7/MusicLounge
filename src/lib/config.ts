@@ -1,13 +1,13 @@
 import { BrandConfig, Room, TeaPackage } from './types';
 
 export const BRAND_CONFIG: BrandConfig = {
-  brandName: 'ORIENTAL SERENITY',
-  brandSubtitle: 'Không Gian Trà Đạo Riêng Tư',
+  brandName: 'LÙNG VÀI TEA',
+  brandSubtitle: 'Không Gian Trà Đạo & Shan Tuyết Cổ Thụ',
   brandTagline: 'Nơi thời gian chậm lại, và lòng người an yên',
-  brandSubtagline: 'Một không gian trà riêng tư, nơi nghệ thuật thưởng trà phương Đông gặp gỡ phong cách sống đương đại.',
+  brandSubtagline: 'Không gian trà riêng tư thanh nhã, nơi nghệ thuật thưởng trà Shan Tuyết cổ thụ Lùng Vài gặp gỡ phong cách sống đương đại.',
   address: 'Số 18 Phố Tràng Tiền, Quận Hoàn Kiếm, Hà Nội',
   hotline: '0988 288 368',
-  email: 'reservations@orientalserenity.vn',
+  email: 'reservations@lungvaitea.vn',
   openTime: '08:30',
   closeTime: '22:30',
   slotIntervalMinutes: 30,
@@ -89,7 +89,7 @@ export const INITIAL_ROOMS: Room[] = [
     chineseName: '',
     tagline: 'Đại sảnh thưởng trà uy nghi giữa mây ngàn và tranh thủy mặc',
     description: 'Không gian rộng rãi, trang trọng dành cho các buổi họp mặt quý khách, gặp gỡ gia đình, đối tác kinh doanh hoặc tiệc trà văn hoá.',
-    fullDescription: 'Vân Sơn là căn phòng lớn nhất tại Oriental Serenity, được thiết kế với cảm hứng mây núi điệp trùng và sự rộng mở của tự nhiên. Bức bình phong tranh sơn thuỷ thủy mặc khổ lớn trải dài cùng hai bàn trà song hành cho phép phục vụ tới 16 khách cùng lúc. Ánh sáng vàng dịu từ trần thả lượn sóng tạo nên bầu không khí vừa tôn nghiêm, quyền quý lại chan hoà tình cảm.',
+    fullDescription: 'Vân Sơn là căn phòng lớn nhất tại Lùng Vài Tea, được thiết kế với cảm hứng mây núi điệp trùng và sự rộng mở của tự nhiên. Bức bình phong tranh sơn thuỷ thủy mặc khổ lớn trải dài cùng hai bàn trà song hành cho phép phục vụ tới 16 khách cùng lúc. Ánh sáng vàng dịu từ trần thả lượn sóng tạo nên bầu không khí vừa tôn nghiêm, quyền quý lại chan hoà tình cảm.',
     capacityMin: 6,
     capacityMax: 16,
     pricePerHour: 850000,
@@ -201,7 +201,7 @@ export const INITIAL_TEA_PACKAGES: TeaPackage[] = [
     description: 'Bao gồm bánh đậu xanh hạt sen ướp hoa bưởi, bánh phù dung táo đỏ, kẹo mè đen nướng giòn và mứt gừng non sấy lạnh. Sự kết hợp hoàn mỹ cân bằng vị chát của trà.',
     price: 180000,
     servings: 'Khay 4 món bánh điểm tâm thủ công',
-    origin: 'Bếp Bánh Oriental Serenity',
+    origin: 'Bếp Bánh Lùng Vài Tea',
     imageUrl: '/images/lounge-minh-duong.jpg',
     tags: ['Điểm tâm', 'Bánh thủ công', 'Thuần khiết', 'Ít ngọt']
   }
