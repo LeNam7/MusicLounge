@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
+@theme {
+  --color-charcoal: #171713;
+  --color-charcoal-light: #23221c;
+  --color-charcoal-dark: #0f0f0c;
+  
+  --color-walnut: #30251F;
+  --color-walnut-light: #44352c;
+  --color-walnut-dark: #211915;
+
+  --color-ivory: #E9E0D0;
+  --color-ivory-light: #F7F3EB;
+  --color-ivory-muted: #D5CBBB;
+
+  --color-vermilion: #8D342D;
+  --color-vermilion-light: #A53E35;
+  --color-vermilion-dark: #6E2620;
+
+  --color-brass: #B69A6A;
+  --color-brass-light: #CDAF80;
+  --color-brass-dark: #977C4E;
+
+  --color-stone: #77736B;
+  --color-stone-light: #A39F97;
+  --color-stone-dark: #55524B;
+
+  --font-serif: var(--font-cormorant), "Noto Serif SC", "Songti SC", Georgia, serif;
+  --font-sans: var(--font-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #171713;
+  --foreground: #E9E0D0;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  selection-background-color: #8D342D;
+  selection-color: #F7F3EB;
+}
+
+::selection {
+  background-color: #8D342D;
+  color: #F7F3EB;
+}
+
+/* Custom delicate scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #171713;
+}
+::-webkit-scrollbar-thumb {
+  background: #30251F;
+  border-radius: 3px;
+  border: 1px solid #B69A6A33;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B69A6A;
+}
+
+/* Subtle lattice overlay pattern */
+.bg-lattice-subtle {
+  background-image: radial-gradient(rgba(182, 154, 106, 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Chinese Seal Stamp Style */
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #8D342D;
+  color: #8D342D;
+  background: rgba(141, 52, 45, 0.08);
+  border-radius: 2px;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  box-shadow: 0 0 0 1px rgba(141, 52, 45, 0.2);
+}
+
+/* Brass Accent Border */
+.border-brass-accent {
+  border-color: rgba(182, 154, 106, 0.3);
+}
+
+/* Glass panel with walnut tint */
+.glass-panel {
+  background: rgba(48, 37, 31, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(182, 154, 106, 0.2);
 }
