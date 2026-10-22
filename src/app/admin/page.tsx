@@ -227,13 +227,13 @@ export default function AdminPage() {
       <div className="min-h-screen bg-charcoal flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-walnut/90 border border-brass/40 p-8 rounded-sm shadow-2xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="relative w-14 h-16 mx-auto mb-2">
+            <div className="relative w-18 h-22 sm:w-20 sm:h-25 mx-auto mb-3">
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea"
                 fill
-                sizes="60px"
-                className="object-contain filter drop-shadow-[0_4px_12px_rgba(141,52,45,0.5)]"
+                sizes="80px"
+                className="object-contain filter drop-shadow-[0_4px_16px_rgba(141,52,45,0.6)]"
               />
             </div>
             <span className="seal-stamp text-xs px-2 py-0.5 font-sans font-bold">KHU VỰC QUẢN TRỊ</span>
@@ -302,14 +302,14 @@ export default function AdminPage() {
       {/* Admin Header Bar */}
       <header className="bg-walnut/90 border-b border-brass/30 py-4 px-6 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative w-7 h-9 flex-shrink-0">
+          <div className="flex items-center gap-3.5">
+            <div className="relative w-10 h-13 flex-shrink-0">
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea"
                 fill
-                sizes="32px"
-                className="object-contain"
+                sizes="40px"
+                className="object-contain filter drop-shadow-[0_2px_8px_rgba(141,52,45,0.4)]"
               />
             </div>
             <div>

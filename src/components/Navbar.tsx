@@ -46,21 +46,22 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Brand Logo & Inscription */}
-          <Link href="/" className="flex items-center gap-3.5 group">
-            <div className="relative w-8 h-10 flex-shrink-0 group-hover:scale-105 transition-transform">
+          <Link href="/" className="flex items-center gap-3 sm:gap-4 group">
+            <div className="relative w-10 h-13 sm:w-12 sm:h-15 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea Logo"
                 fill
-                sizes="40px"
-                className="object-contain filter drop-shadow-[0_2px_8px_rgba(141,52,45,0.5)]"
+                priority
+                sizes="(max-width: 640px) 40px, 48px"
+                className="object-contain filter drop-shadow-[0_2px_12px_rgba(141,52,45,0.65)]"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="font-serif text-lg sm:text-xl tracking-[0.2em] uppercase text-ivory group-hover:text-brass transition-colors font-medium">
+            <div className="flex flex-col justify-center">
+              <span className="font-serif text-lg sm:text-2xl tracking-[0.18em] uppercase text-ivory group-hover:text-brass transition-colors font-medium leading-tight">
                 {BRAND_CONFIG.brandName}
               </span>
-              <span className="text-[10px] tracking-[0.25em] text-brass uppercase font-sans opacity-90">
+              <span className="text-[10px] sm:text-[11px] tracking-[0.25em] text-brass uppercase font-sans opacity-90 font-medium mt-0.5">
                 {BRAND_CONFIG.brandSubtitle}
               </span>
             </div>

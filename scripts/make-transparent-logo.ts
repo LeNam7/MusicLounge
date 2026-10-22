@@ -3,59 +3,95 @@ import { PNG } from 'pngjs';
 
 const inputPath = 'public/images/logo-lung-vai.png';
 const buffer = fs.readFileSync(inputPath);
-const png = PNG.sync.read(buffer);
+const srcPng = PNG.sync.read(buffer);
 
-// 1. Create transparent vermilion logo (keep red ink, make white background transparent)
-const vermilionPng = new PNG({ width: png.width, height: png.height });
-for (let y = 0; y < png.height; y++) {
-  for (let x = 0; x < png.width; x++) {
-    const idx = (png.width * y + x) << 2;
-    const r = png.data[idx];
-    const g = png.data[idx + 1];
-    const b = png.data[idx + 2];
-    
-    // Calculate how close to white (background) this pixel is
-    // The ink is dark red (R~120-160, G~20-50, B~25-50)
-    // The background is pure white (R~255, G~255, B~255)
+// 1. Find tight bounding box of ink
+let minX = srcPng.width;
+let minY = srcPng.height;
+let maxX = 0;
+let maxY = 0;
+
+for (let y = 0; y < srcPng.height; y++) {
+  for (let x = 0; x < srcPng.width; x++) {
+    const idx = (srcPng.width * y + x) << 2;
+    const r = srcPng.data[idx];
+    const g = srcPng.data[idx + 1];
+    const b = srcPng.data[idx + 2];
     const brightness = (r + g + b) / 3;
-    
-    // Invert brightness to get opacity: dark ink -> high opacity, bright white -> transparent
-    // Smooth thresholding
+
+    if (brightness < 240) {
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
+  }
+}
+
+// Add 16px aesthetic padding around the ink
+const padding = 16;
+const cropX = Math.max(0, minX - padding);
+const cropY = Math.max(0, minY - padding);
+const cropW = Math.min(srcPng.width - cropX, (maxX - minX) + padding * 2);
+const cropH = Math.min(srcPng.height - cropY, (maxY - minY) + padding * 2);
+
+console.log(`Cropping ink from (${cropX}, ${cropY}) with size ${cropW} x ${cropH}`);
+
+// 2. Generate tight transparent vermilion logo
+const vermilionPng = new PNG({ width: cropW, height: cropH });
+
+for (let y = 0; y < cropH; y++) {
+  for (let x = 0; x < cropW; x++) {
+    const srcX = cropX + x;
+    const srcY = cropY + y;
+    const srcIdx = (srcPng.width * srcY + srcX) << 2;
+    const destIdx = (cropW * y + x) << 2;
+
+    const r = srcPng.data[srcIdx];
+    const g = srcPng.data[srcIdx + 1];
+    const b = srcPng.data[srcIdx + 2];
+    const brightness = (r + g + b) / 3;
+
+    // Smooth transparency curve: background white (>245) becomes 0 alpha
     let alpha = 0;
     if (brightness < 245) {
-      alpha = Math.min(255, Math.max(0, Math.round((255 - brightness) * 1.5)));
+      alpha = Math.min(255, Math.max(0, Math.round((255 - brightness) * 1.6)));
     }
 
-    vermilionPng.data[idx] = r;
-    vermilionPng.data[idx + 1] = g;
-    vermilionPng.data[idx + 2] = b;
-    vermilionPng.data[idx + 3] = alpha;
+    // Enhance vermilion richness slightly for high-end dark mode contrast
+    vermilionPng.data[destIdx] = Math.min(255, Math.round(r * 1.05));
+    vermilionPng.data[destIdx + 1] = Math.max(0, Math.round(g * 0.9));
+    vermilionPng.data[destIdx + 2] = Math.max(0, Math.round(b * 0.9));
+    vermilionPng.data[destIdx + 3] = alpha;
   }
 }
 
 fs.writeFileSync('public/images/logo-lung-vai-transparent.png', PNG.sync.write(vermilionPng));
-console.log('✓ Đã tạo public/images/logo-lung-vai-transparent.png thành công');
+console.log('✓ Đã tạo public/images/logo-lung-vai-transparent.png (cắt sát viền, không thừa lề trắng)');
 
-// 2. Also create an antique brass / gold version for dark luxury accent
-const goldPng = new PNG({ width: png.width, height: png.height });
-for (let y = 0; y < png.height; y++) {
-  for (let x = 0; x < png.width; x++) {
-    const idx = (png.width * y + x) << 2;
-    const r = png.data[idx];
-    const g = png.data[idx + 1];
-    const b = png.data[idx + 2];
+// 3. Generate tight gold / brass version
+const goldPng = new PNG({ width: cropW, height: cropH });
+for (let y = 0; y < cropH; y++) {
+  for (let x = 0; x < cropW; x++) {
+    const srcX = cropX + x;
+    const srcY = cropY + y;
+    const srcIdx = (srcPng.width * srcY + srcX) << 2;
+    const destIdx = (cropW * y + x) << 2;
+
+    const r = srcPng.data[srcIdx];
+    const g = srcPng.data[srcIdx + 1];
+    const b = srcPng.data[srcIdx + 2];
     const brightness = (r + g + b) / 3;
 
     let alpha = 0;
     if (brightness < 245) {
-      alpha = Math.min(255, Math.max(0, Math.round((255 - brightness) * 1.5)));
+      alpha = Math.min(255, Math.max(0, Math.round((255 - brightness) * 1.6)));
     }
 
-    // Antique Brass color #B69A6A (182, 154, 106)
-    goldPng.data[idx] = 182;
-    goldPng.data[idx + 1] = 154;
-    goldPng.data[idx + 2] = 106;
-    goldPng.data[idx + 3] = alpha;
+    goldPng.data[destIdx] = 198;     // Rich Brass/Gold
+    goldPng.data[destIdx + 1] = 168; //
+    goldPng.data[destIdx + 2] = 115; //
+    goldPng.data[destIdx + 3] = alpha;
   }
 }
 

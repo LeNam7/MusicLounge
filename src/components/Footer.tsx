@@ -13,21 +13,21 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="lg:col-span-4 space-y-5">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <div className="relative w-9 h-11 flex-shrink-0">
+            <Link href="/" className="inline-flex items-center gap-3.5 group">
+              <div className="relative w-12 h-15 flex-shrink-0 group-hover:scale-105 transition-transform">
                 <Image
                   src="/images/logo-lung-vai-transparent.png"
                   alt="Lùng Vài Tea Logo"
                   fill
-                  sizes="40px"
-                  className="object-contain filter drop-shadow-[0_2px_8px_rgba(141,52,45,0.4)]"
+                  sizes="48px"
+                  className="object-contain filter drop-shadow-[0_2px_10px_rgba(141,52,45,0.5)]"
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-lg tracking-[0.2em] uppercase text-ivory font-medium">
+                <span className="font-serif text-xl tracking-[0.18em] uppercase text-ivory group-hover:text-brass transition-colors font-medium">
                   {BRAND_CONFIG.brandName}
                 </span>
-                <span className="text-[10px] tracking-[0.25em] text-brass uppercase font-sans">
+                <span className="text-xs tracking-[0.25em] text-brass uppercase font-sans font-medium mt-0.5">
                   {BRAND_CONFIG.brandSubtitle}
                 </span>
               </div>

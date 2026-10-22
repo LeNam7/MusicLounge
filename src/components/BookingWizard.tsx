@@ -803,13 +803,13 @@ export default function BookingWizard({
         {currentStep === 5 && createdBooking && (
           <div className="space-y-8 animate-fadeIn text-center">
             
-            <div className="relative w-12 h-14 mx-auto mb-1">
+            <div className="relative w-16 h-20 mx-auto mb-2">
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea"
                 fill
-                sizes="50px"
-                className="object-contain"
+                sizes="64px"
+                className="object-contain filter drop-shadow-[0_4px_16px_rgba(141,52,45,0.6)]"
               />
             </div>
 

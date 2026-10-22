@@ -49,17 +49,21 @@ export default function Hero() {
 
       {/* Main Content Area */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16 flex flex-col items-center">
+        {/* Official Brand Emblem Seal - Prominent & Beautiful */}
+        <div className="relative w-20 h-26 sm:w-24 sm:h-31 mb-5 group">
+          <Image
+            src="/images/logo-lung-vai-transparent.png"
+            alt="Lùng Vài Tea Seal"
+            fill
+            priority
+            sizes="(max-width: 640px) 80px, 96px"
+            className="object-contain filter drop-shadow-[0_4px_24px_rgba(141,52,45,0.75)] group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+
         {/* Eyebrow badge */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-brass/40 bg-walnut/60 backdrop-blur-md mb-6 shadow-lg shadow-charcoal-dark/50">
-          <div className="relative w-4 h-5 flex-shrink-0">
-            <Image
-              src="/images/logo-lung-vai-transparent.png"
-              alt="Lùng Vài Tea"
-              fill
-              sizes="20px"
-              className="object-contain"
-            />
-          </div>
+        <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-brass/40 bg-walnut/70 backdrop-blur-md mb-6 shadow-xl shadow-charcoal-dark/60">
+          <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />
           <span className="text-xs uppercase tracking-[0.25em] text-ivory-muted font-medium">
             MỘT KHOẢNG LẶNG GIỮA NHỊP SỐNG
           </span>
