@@ -51,7 +51,15 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16 flex flex-col items-center">
         {/* Eyebrow badge */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-brass/40 bg-walnut/60 backdrop-blur-md mb-6 shadow-lg shadow-charcoal-dark/50">
-          <span className="seal-stamp text-[10px] px-1.5 py-0.5 font-sans font-bold text-vermilion">LV</span>
+          <div className="relative w-4 h-5 flex-shrink-0">
+            <Image
+              src="/images/logo-lung-vai-transparent.png"
+              alt="Lùng Vài Tea"
+              fill
+              sizes="20px"
+              className="object-contain"
+            />
+          </div>
           <span className="text-xs uppercase tracking-[0.25em] text-ivory-muted font-medium">
             MỘT KHOẢNG LẶNG GIỮA NHỊP SỐNG
           </span>

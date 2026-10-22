@@ -19,10 +19,12 @@
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^26.6.5",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
+    "pngjs": "^7.0.0",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5"

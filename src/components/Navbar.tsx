@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Volume2, VolumeX, Menu, X, CalendarCheck, Phone, Shield } from 'lucide-react';
 import { BRAND_CONFIG } from '@/lib/config';
@@ -45,10 +46,16 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Brand Logo & Inscription */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <span className="seal-stamp text-xs md:text-sm px-1.5 py-0.5 font-sans font-bold text-vermilion" title="Lùng Vài Tea">
-              LV
-            </span>
+          <Link href="/" className="flex items-center gap-3.5 group">
+            <div className="relative w-8 h-10 flex-shrink-0 group-hover:scale-105 transition-transform">
+              <Image
+                src="/images/logo-lung-vai-transparent.png"
+                alt="Lùng Vài Tea Logo"
+                fill
+                sizes="40px"
+                className="object-contain filter drop-shadow-[0_2px_8px_rgba(141,52,45,0.5)]"
+              />
+            </div>
             <div className="flex flex-col">
               <span className="font-serif text-lg sm:text-xl tracking-[0.2em] uppercase text-ivory group-hover:text-brass transition-colors font-medium">
                 {BRAND_CONFIG.brandName}

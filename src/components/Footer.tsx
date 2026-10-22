@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { BRAND_CONFIG } from '@/lib/config';
 import { MapPin, Phone, Mail, Clock, Shield, ArrowUpRight } from 'lucide-react';
 
@@ -12,8 +13,16 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="lg:col-span-4 space-y-5">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="seal-stamp text-xs px-1.5 py-0.5 font-sans font-bold">OS</span>
+            <Link href="/" className="inline-flex items-center gap-3">
+              <div className="relative w-9 h-11 flex-shrink-0">
+                <Image
+                  src="/images/logo-lung-vai-transparent.png"
+                  alt="Lùng Vài Tea Logo"
+                  fill
+                  sizes="40px"
+                  className="object-contain filter drop-shadow-[0_2px_8px_rgba(141,52,45,0.4)]"
+                />
+              </div>
               <div className="flex flex-col">
                 <span className="font-serif text-lg tracking-[0.2em] uppercase text-ivory font-medium">
                   {BRAND_CONFIG.brandName}

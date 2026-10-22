@@ -2,6 +2,12 @@ async function runE2ETests() {
   const BASE_URL = 'http://localhost:3000';
   console.log(`=== BẮT ĐẦU KIỂM THỬ END-TO-END TRÊN CỔNG ${BASE_URL} ===\n`);
 
+  // 0. Reset demo data before running suite
+  await fetch(`${BASE_URL}/api/admin/reset`, {
+    method: 'POST',
+    headers: { 'x-admin-passcode': 'serenity2026' },
+  });
+
   // 1. Check Homepage
   const homeRes = await fetch(`${BASE_URL}/`);
   if (!homeRes.ok) throw new Error(`Homepage failed with status ${homeRes.status}`);

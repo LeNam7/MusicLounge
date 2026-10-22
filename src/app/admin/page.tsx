@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   Shield, 
   Lock, 
@@ -226,8 +227,14 @@ export default function AdminPage() {
       <div className="min-h-screen bg-charcoal flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-walnut/90 border border-brass/40 p-8 rounded-sm shadow-2xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-full bg-brass/20 border border-brass flex items-center justify-center mx-auto text-brass">
-              <Shield className="w-6 h-6" />
+            <div className="relative w-14 h-16 mx-auto mb-2">
+              <Image
+                src="/images/logo-lung-vai-transparent.png"
+                alt="Lùng Vài Tea"
+                fill
+                sizes="60px"
+                className="object-contain filter drop-shadow-[0_4px_12px_rgba(141,52,45,0.5)]"
+              />
             </div>
             <span className="seal-stamp text-xs px-2 py-0.5 font-sans font-bold">KHU VỰC QUẢN TRỊ</span>
             <h1 className="font-serif text-2xl text-ivory font-normal">
@@ -296,7 +303,15 @@ export default function AdminPage() {
       <header className="bg-walnut/90 border-b border-brass/30 py-4 px-6 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="seal-stamp text-xs px-1.5 py-0.5 font-sans font-bold">ADMIN</span>
+            <div className="relative w-7 h-9 flex-shrink-0">
+              <Image
+                src="/images/logo-lung-vai-transparent.png"
+                alt="Lùng Vài Tea"
+                fill
+                sizes="32px"
+                className="object-contain"
+              />
+            </div>
             <div>
               <span className="font-serif text-lg text-ivory font-medium">
                 {BRAND_CONFIG.brandName} Admin
