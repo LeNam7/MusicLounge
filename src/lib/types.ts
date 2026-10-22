@@ -2,7 +2,7 @@ export interface Room {
   id: string;
   slug: string;
   name: string;
-  chineseName: string;
+  chineseName?: string;
   tagline: string;
   description: string;
   fullDescription: string;
@@ -61,7 +61,7 @@ export interface TeaPackage {
 
 export interface BrandConfig {
   brandName: string;
-  brandChineseName: string;
+  brandSubtitle: string;
   brandTagline: string;
   brandSubtagline: string;
   address: string;

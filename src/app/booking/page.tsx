@@ -31,7 +31,7 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
         {/* Page Header */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8 pb-4">
           <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium mb-3">
-            <span className="seal-stamp text-[10px] px-1">定</span>
+            <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">LỊCH HẸN</span>
             <span>HỆ THỐNG ĐẶT PHÒNG TRỰC TUYẾN</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ivory font-normal">

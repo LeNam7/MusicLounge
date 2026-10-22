@@ -111,7 +111,7 @@ function initSchema(db: DatabaseSync) {
         r.id,
         r.slug,
         r.name,
-        r.chineseName,
+        r.chineseName || '',
         r.tagline,
         r.description,
         r.fullDescription,
@@ -348,7 +348,7 @@ export function updateRoom(id: string, updates: Partial<Room>): Room {
     WHERE id = ?
   `).run(
     updated.name,
-    updated.chineseName,
+    updated.chineseName || '',
     updated.tagline,
     updated.description,
     updated.fullDescription,

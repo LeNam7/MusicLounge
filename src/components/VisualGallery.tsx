@@ -46,7 +46,7 @@ export default function VisualGallery() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium">
-            <span className="seal-stamp text-[10px] px-1">影</span>
+            <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">ẢNH</span>
             <span>BỘ SƯU TẬP HÌNH ẢNH</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ivory font-normal">

@@ -19,7 +19,7 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://oriental-serenity.vn'),
-  title: `${BRAND_CONFIG.brandName} — ${BRAND_CONFIG.brandChineseName} | Không Gian Trà Đạo Riêng Tư Đương Đại`,
+  title: `${BRAND_CONFIG.brandName} | ${BRAND_CONFIG.brandSubtitle} Đương Đại`,
   description: `${BRAND_CONFIG.brandTagline}. Khám phá không gian phòng trà riêng tư, bộ sưu tập trà Shan Tuyết cổ thụ, Oolong thượng hạng và đặt phòng trực tuyến.`,
   keywords: [
     'phòng trà hà nội',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     'ấm tử sa'
   ],
   openGraph: {
-    title: `${BRAND_CONFIG.brandName} — ${BRAND_CONFIG.brandChineseName}`,
+    title: `${BRAND_CONFIG.brandName} — ${BRAND_CONFIG.brandSubtitle}`,
     description: BRAND_CONFIG.brandSubtagline,
     images: ['/images/hero-tea-ceremony.png'],
     type: 'website',

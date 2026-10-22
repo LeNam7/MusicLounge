@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: RoomPageProps): Promise<Metad
   if (!room) return { title: 'Không tìm thấy phòng' };
 
   return {
-    title: `Phòng ${room.name} (${room.chineseName}) | ${BRAND_CONFIG.brandName}`,
+    title: `Phòng ${room.name} | ${BRAND_CONFIG.brandName}`,
     description: room.description,
     openGraph: {
-      title: `Phòng ${room.name} (${room.chineseName}) — ${room.tagline}`,
+      title: `Phòng ${room.name} — ${room.tagline}`,
       description: room.fullDescription,
       images: [room.images[0] || '/images/hero-tea-ceremony.png'],
     },
@@ -73,7 +73,7 @@ export default async function RoomDetailPage({ params }: RoomPageProps) {
             
             <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 z-10 space-y-2">
               <div className="flex items-center gap-2">
-                <span className="seal-stamp text-xs px-2 py-0.5">{room.chineseName}</span>
+                <span className="seal-stamp text-xs px-2 py-0.5 font-sans font-bold">PHÒNG</span>
                 <span className="text-xs uppercase tracking-[0.25em] text-brass font-medium">
                   {room.floor} • {room.areaSqm} m²
                 </span>
@@ -198,7 +198,7 @@ export default async function RoomDetailPage({ params }: RoomPageProps) {
                         />
                       </div>
                       <span className="font-serif text-base text-ivory group-hover:text-brass transition-colors block">
-                        Phòng {or.name} ({or.chineseName})
+                        Phòng {or.name}
                       </span>
                       <span className="text-[11px] text-stone-light">
                         {or.capacityMin} - {or.capacityMax} khách • {or.pricePackage2h.toLocaleString('vi-VN')} đ

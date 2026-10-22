@@ -33,7 +33,7 @@ export default function TheArtOfTea() {
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
           <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium">
-            <span className="seal-stamp text-[10px] px-1">道</span>
+            <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">TRÀ</span>
             <span>NGHỆ THUẬT THƯỞNG TRÀ ĐƯƠNG ĐẠI</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ivory font-normal leading-tight">

@@ -27,7 +27,7 @@ export default function BrandStatement() {
             {/* Overlapping small detail badge */}
             <div className="absolute -bottom-6 -right-6 hidden sm:block bg-walnut border border-brass/40 p-4 rounded-sm shadow-xl max-w-xs">
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="seal-stamp text-[10px] px-1">茶</span>
+                <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">TRÀ</span>
                 <span className="text-[11px] uppercase tracking-widest text-brass font-medium">
                   Cổ Pháp Thưởng Trà
                 </span>

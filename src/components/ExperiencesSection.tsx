@@ -45,7 +45,7 @@ export default function ExperiencesSection() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
           <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium">
-            <span className="seal-stamp text-[10px] px-1">享</span>
+            <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">DỊCH VỤ</span>
             <span>MỤC ĐÍCH TRẢI NGHIỆM</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ivory font-normal">

@@ -100,7 +100,7 @@ function LookupContent() {
       {/* Header */}
       <div className="text-center mb-10 space-y-3">
         <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium">
-          <span className="seal-stamp text-[10px] px-1">查</span>
+          <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">TRA CỨU</span>
           <span>TRA CỨU TRẠNG THÁI LỊCH HẸN</span>
         </div>
         <h1 className="font-serif text-3xl sm:text-4xl text-ivory font-normal">

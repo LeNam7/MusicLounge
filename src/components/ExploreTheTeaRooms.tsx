@@ -26,7 +26,7 @@ export default function ExploreTheTeaRooms({ rooms }: ExploreRoomsProps) {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium">
-              <span className="seal-stamp text-[10px] px-1">境</span>
+              <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">PHÒNG</span>
               <span>BỘ SƯU TẬP PHÒNG TRÀ RIÊNG TƯ</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ivory font-normal">
@@ -59,10 +59,7 @@ export default function ExploreTheTeaRooms({ rooms }: ExploreRoomsProps) {
               }`}
             >
               <span className="font-serif text-base sm:text-lg font-medium text-brass">
-                {room.chineseName}
-              </span>
-              <span className="text-xs sm:text-sm font-serif tracking-wider">
-                {room.name}
+                Phòng {room.name}
               </span>
               <span className="text-[10px] uppercase tracking-widest px-1.5 py-0.5 rounded bg-charcoal/60 text-stone-light">
                 {room.capacityMin}-{room.capacityMax} khách
@@ -123,7 +120,7 @@ export default function ExploreTheTeaRooms({ rooms }: ExploreRoomsProps) {
                   {/* Category and Chinese Seal */}
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className="seal-stamp text-xs px-1.5 py-0.5">{activeRoom.chineseName}</span>
+                      <span className="seal-stamp text-xs px-1.5 py-0.5 font-sans font-bold">VIP</span>
                       <span className="text-xs uppercase tracking-[0.2em] text-brass font-medium">
                         Phòng Trà Cao Cấp
                       </span>

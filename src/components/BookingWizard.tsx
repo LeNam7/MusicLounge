@@ -305,7 +305,7 @@ export default function BookingWizard({
                       </div>
 
                       <div className="flex items-center justify-between mb-1">
-                        <span className="seal-stamp text-[10px] px-1">{room.chineseName}</span>
+                        <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">VIP</span>
                         <span className="text-xs text-stone-light">
                           {room.capacityMin} - {room.capacityMax} khách
                         </span>
@@ -361,7 +361,7 @@ export default function BookingWizard({
                   Chọn ngày & khung giờ thưởng trà
                 </h2>
                 <p className="text-xs sm:text-sm text-stone-light mt-1">
-                  Phòng đang chọn: <strong className="text-ivory font-medium font-serif">{selectedRoom.name} ({selectedRoom.chineseName})</strong>
+                  Phòng đang chọn: <strong className="text-ivory font-medium font-serif">{selectedRoom.name}</strong>
                 </p>
               </div>
               <button
@@ -737,7 +737,7 @@ export default function BookingWizard({
             <div className="p-4 bg-charcoal/60 border border-stone/20 rounded-sm text-xs space-y-1.5 text-stone-light">
               <div className="flex justify-between">
                 <span>Phòng:</span>
-                <span className="text-ivory font-medium">{selectedRoom.name} ({selectedRoom.chineseName})</span>
+                <span className="text-ivory font-medium">{selectedRoom.name}</span>
               </div>
               <div className="flex justify-between">
                 <span>Thời gian:</span>
@@ -808,7 +808,7 @@ export default function BookingWizard({
             </div>
 
             <div className="space-y-2">
-              <span className="seal-stamp text-xs px-2 py-0.5">雅境 • TIẾP NHẬN THÀNH CÔNG</span>
+              <span className="seal-stamp text-xs px-2 py-0.5 font-sans font-medium">TIẾP NHẬN THÀNH CÔNG</span>
               <h2 className="font-serif text-3xl sm:text-4xl text-ivory font-normal">
                 Kính gửi quý khách {createdBooking.customerName}
               </h2>

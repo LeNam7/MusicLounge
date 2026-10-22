@@ -34,15 +34,15 @@ export default function Hero() {
         <div className="absolute inset-0 bg-lattice-subtle opacity-40 mix-blend-overlay pointer-events-none" />
       </div>
 
-      {/* Decorative vertical calligraphy column on the right (editorial Chinese inscription) */}
+      {/* Decorative vertical poetry column on the right */}
       <div className="hidden lg:flex absolute right-12 top-1/2 -translate-y-1/2 z-10 flex-col items-center gap-4 pointer-events-none select-none opacity-85">
         <div className="w-[1px] h-16 bg-gradient-to-b from-transparent to-brass/40" />
-        <span className="font-serif text-lg tracking-[0.4em] text-brass writing-vertical-rl select-none">
-          一盏清茶
+        <span className="font-serif text-xs tracking-[0.35em] text-brass uppercase [writing-mode:vertical-rl] select-none">
+          TRÀ ĐẠO TĨNH TẠI
         </span>
         <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />
-        <span className="font-serif text-lg tracking-[0.4em] text-brass writing-vertical-rl select-none">
-          一方静境
+        <span className="font-serif text-xs tracking-[0.35em] text-brass uppercase [writing-mode:vertical-rl] select-none">
+          PHÒNG TRÀ RIÊNG TƯ
         </span>
         <div className="w-[1px] h-16 bg-gradient-to-t from-transparent to-brass/40" />
       </div>
@@ -51,7 +51,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16 flex flex-col items-center">
         {/* Eyebrow badge */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-brass/40 bg-walnut/60 backdrop-blur-md mb-6 shadow-lg shadow-charcoal-dark/50">
-          <span className="seal-stamp text-[11px] px-1 py-0.5">雅</span>
+          <span className="seal-stamp text-[10px] px-1.5 py-0.5 font-sans font-bold">OS</span>
           <span className="text-xs uppercase tracking-[0.25em] text-ivory-muted font-medium">
             MỘT KHOẢNG LẶNG GIỮA NHỊP SỐNG
           </span>
@@ -63,13 +63,9 @@ export default function Hero() {
           <span className="italic font-light text-ivory-light">và lòng người an yên.</span>
         </h1>
 
-        {/* Chinese Inscription & Vietnamese Interpretation */}
-        <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-brass-light font-serif text-sm sm:text-base tracking-[0.15em] opacity-95">
-          <span className="text-base sm:text-lg font-medium tracking-[0.25em]">
-            一盏清茶，一方静境
-          </span>
-          <span className="hidden sm:inline text-stone">•</span>
-          <span className="italic text-ivory-muted tracking-wide text-xs sm:text-sm">
+        {/* Poetic Inscription */}
+        <div className="mt-5 flex items-center justify-center gap-2 text-brass-light font-serif text-base sm:text-lg tracking-[0.08em] opacity-95">
+          <span className="italic">
             &ldquo;Một chén trà thanh, một khoảng trời tĩnh lặng&rdquo;
           </span>
         </div>

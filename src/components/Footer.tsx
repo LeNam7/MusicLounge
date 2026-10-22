@@ -13,13 +13,13 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-4 space-y-5">
             <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="seal-stamp text-xs px-1.5 py-0.5">雅</span>
+              <span className="seal-stamp text-xs px-1.5 py-0.5 font-sans font-bold">OS</span>
               <div className="flex flex-col">
                 <span className="font-serif text-lg tracking-[0.2em] uppercase text-ivory font-medium">
                   {BRAND_CONFIG.brandName}
                 </span>
-                <span className="text-[10px] tracking-[0.3em] text-brass uppercase font-serif">
-                  {BRAND_CONFIG.brandChineseName}
+                <span className="text-[10px] tracking-[0.25em] text-brass uppercase font-sans">
+                  {BRAND_CONFIG.brandSubtitle}
                 </span>
               </div>
             </Link>
@@ -29,7 +29,7 @@ export default function Footer() {
             </p>
 
             <div className="pt-2 text-xs text-brass-light flex items-center gap-2 font-serif italic">
-              <span>一盏清茶，一方静境</span>
+              <span>Một chén trà thanh, một khoảng trời tĩnh lặng</span>
               <span className="text-stone-dark">•</span>
               <span>An yên giữa phố thị</span>
             </div>
@@ -136,7 +136,7 @@ export default function Footer() {
       <div className="border-t border-stone-dark/30 py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-stone">
           <span>
-            © 2026 {BRAND_CONFIG.brandName} ({BRAND_CONFIG.brandChineseName}). Mọi quyền được bảo lưu.
+            © 2026 {BRAND_CONFIG.brandName}. Mọi quyền được bảo lưu.
           </span>
           <div className="flex items-center gap-6">
             <span>Bảo mật thông tin</span>

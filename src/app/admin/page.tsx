@@ -229,7 +229,7 @@ export default function AdminPage() {
             <div className="w-12 h-12 rounded-full bg-brass/20 border border-brass flex items-center justify-center mx-auto text-brass">
               <Shield className="w-6 h-6" />
             </div>
-            <span className="seal-stamp text-xs px-2 py-0.5">管 • KHU VỰC QUẢN TRỊ</span>
+            <span className="seal-stamp text-xs px-2 py-0.5 font-sans font-bold">KHU VỰC QUẢN TRỊ</span>
             <h1 className="font-serif text-2xl text-ivory font-normal">
               Bảng Điều Khiển Trà Sư Quản Lý
             </h1>
@@ -296,7 +296,7 @@ export default function AdminPage() {
       <header className="bg-walnut/90 border-b border-brass/30 py-4 px-6 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="seal-stamp text-xs px-1.5 py-0.5">管</span>
+            <span className="seal-stamp text-xs px-1.5 py-0.5 font-sans font-bold">ADMIN</span>
             <div>
               <span className="font-serif text-lg text-ivory font-medium">
                 {BRAND_CONFIG.brandName} Admin
@@ -584,7 +584,7 @@ export default function AdminPage() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="seal-stamp text-[10px] px-1 mr-2">{r.chineseName}</span>
+                      <span className="seal-stamp text-[10px] px-1.5 mr-2 font-sans font-bold">PHÒNG</span>
                       <span className="font-serif text-xl text-ivory font-normal">Phòng {r.name}</span>
                     </div>
                     <span className="text-xs text-stone-light">{r.floor} • {r.areaSqm}m²</span>
