@@ -17,24 +17,19 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[95vh] lg:min-h-screen flex items-center justify-center overflow-hidden bg-charcoal">
-      {/* Background Hero Image - 4K Ultra Sharp authentic tea lounge photo */}
+      {/* Background Hero Image - Processed Ultra Sharp (Zero Fog) */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/hero-tea-room-4k.jpg"
           alt="Không gian phòng trà đạo sang trọng Lùng Vài Tea"
           fill
           priority
-          sizes="100vw"
+          unoptimized
           className="object-cover object-center"
         />
 
-        {/* Subtle, soft natural illumination behind center text - allows the 4K room details, wood grain and bonsai to stay crystal clear */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[850px] h-[580px] max-w-full bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,_rgba(255,255,255,0.42)_0%,_rgba(255,255,255,0.15)_55%,_transparent_80%)]" />
-        </div>
-
-        {/* Minimal bottom transition so the tiled floor, table base and chairs remain sharp */}
-        <div className="absolute inset-x-0 bottom-0 h-20 sm:h-28 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent pointer-events-none" />
+        {/* Seamless minimal 40px bottom border blend */}
+        <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-charcoal to-transparent pointer-events-none" />
       </div>
 
       {/* Decorative vertical poetry column on the right */}
