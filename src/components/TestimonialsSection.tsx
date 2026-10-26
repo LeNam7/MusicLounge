@@ -26,7 +26,7 @@ export default function TestimonialsSection() {
           {TESTIMONIALS.map((t) => (
             <div
               key={t.id}
-              className="bg-walnut/40 border border-stone/20 hover:border-brass/40 p-8 rounded-sm transition-all duration-300 flex flex-col justify-between group"
+              className="bg-white border border-stone-dark/50 hover:border-brass p-8 rounded-sm transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md"
             >
               <div>
                 <Quote className="w-8 h-8 text-brass/40 mb-4 group-hover:text-brass transition-colors" />
@@ -45,7 +45,7 @@ export default function TestimonialsSection() {
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-charcoal text-brass border border-brass/20">
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-charcoal-light text-brass-dark border border-brass/30 font-medium">
                     {t.room}
                   </span>
                   <span className="text-[10px] text-stone-light block mt-1">

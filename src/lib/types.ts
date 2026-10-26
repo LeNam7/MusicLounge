@@ -57,6 +57,13 @@ export interface TeaPackage {
   origin: string;
   imageUrl: string;
   tags: string[];
+  category?: 'luc-tra' | 'bach-tra' | 'hong-tra' | 'banh-tra' | 'combo';
+  tasteNotes?: string;
+  aroma?: string;
+  liquorColor?: string;
+  temperature?: string;
+  steepingCount?: string;
+  isHero?: boolean;
 }
 
 export interface BrandConfig {

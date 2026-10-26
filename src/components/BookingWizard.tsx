@@ -27,12 +27,14 @@ interface BookingWizardProps {
   initialRooms: Room[];
   initialTeaPackages: TeaPackage[];
   preselectedRoomSlug?: string;
+  preselectedTeaId?: string;
 }
 
 export default function BookingWizard({
   initialRooms,
   initialTeaPackages,
   preselectedRoomSlug,
+  preselectedTeaId,
 }: BookingWizardProps) {
   // Wizard Step (1 to 5)
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -54,7 +56,12 @@ export default function BookingWizard({
   const [selectedStartTime, setSelectedStartTime] = useState<string>('');
   
   // Tea package selection
-  const [selectedTeaId, setSelectedTeaId] = useState<string>('tea-lung-vai');
+  const [selectedTeaId, setSelectedTeaId] = useState<string>(() => {
+    if (preselectedTeaId && initialTeaPackages.some(t => t.id === preselectedTeaId)) {
+      return preselectedTeaId;
+    }
+    return 'tea-lung-vai';
+  });
 
   // Customer information
   const [customerName, setCustomerName] = useState<string>('');
@@ -238,9 +245,9 @@ export default function BookingWizard({
                 }}
                 className={`w-9 h-9 rounded-full flex items-center justify-center font-serif text-sm transition-all duration-300 ${
                   currentStep === item.step
-                    ? 'bg-brass text-charcoal font-semibold shadow-lg shadow-brass/30 ring-4 ring-charcoal'
+                    ? 'bg-brass text-white font-semibold shadow-lg shadow-brass/30 ring-4 ring-charcoal'
                     : currentStep > item.step
-                    ? 'bg-vermilion text-ivory ring-2 ring-charcoal'
+                    ? 'bg-vermilion text-white ring-2 ring-charcoal'
                     : 'bg-walnut text-stone-light border border-stone-dark'
                 }`}
               >
@@ -298,7 +305,7 @@ export default function BookingWizard({
                           {room.floor}
                         </div>
                         {isSelected && (
-                          <div className="absolute top-2 right-2 bg-vermilion text-ivory p-1 rounded-full shadow">
+                          <div className="absolute top-2 right-2 bg-vermilion text-white p-1 rounded-full shadow">
                             <Check className="w-3.5 h-3.5" />
                           </div>
                         )}
@@ -342,7 +349,7 @@ export default function BookingWizard({
               <button
                 type="button"
                 onClick={() => setCurrentStep(2)}
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-lg transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-lg transition-all"
               >
                 <span>Tiếp tục: Chọn ngày & giờ</span>
                 <ArrowRight className="w-4 h-4" />
@@ -469,7 +476,7 @@ export default function BookingWizard({
                           !slot.available
                             ? 'bg-charcoal/30 border-stone-dark/30 text-stone-dark cursor-not-allowed line-through opacity-40'
                             : isSelected
-                            ? 'bg-brass border-brass text-charcoal font-semibold shadow-md'
+                            ? 'bg-brass border-brass text-white font-semibold shadow-md'
                             : 'bg-charcoal/70 border-stone/30 text-ivory hover:border-brass/70 hover:bg-walnut'
                         }`}
                       >
@@ -529,7 +536,7 @@ export default function BookingWizard({
                 onClick={() => setCurrentStep(3)}
                 className={`inline-flex items-center gap-2 px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-lg transition-all ${
                   selectedStartTime
-                    ? 'bg-vermilion hover:bg-vermilion-light text-ivory cursor-pointer'
+                    ? 'bg-vermilion hover:bg-vermilion-light text-white cursor-pointer'
                     : 'bg-stone-dark/50 text-stone-light/50 cursor-not-allowed'
                 }`}
               >
@@ -563,34 +570,47 @@ export default function BookingWizard({
                     className={`p-4 rounded-sm border cursor-pointer transition-all flex flex-col justify-between ${
                       isSelected
                         ? 'bg-walnut border-brass ring-1 ring-brass shadow-md'
-                        : 'bg-charcoal/60 border-stone/20 hover:border-brass/30'
+                        : 'bg-white border-stone-dark/40 hover:border-brass/40 shadow-xs'
                     }`}
                   >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-serif font-medium text-ivory">
-                          {tea.name}
-                        </span>
-                        <span className="text-xs font-serif text-brass font-semibold">
-                          {tea.price.toLocaleString('vi-VN')} đ
-                        </span>
+                    <div className="flex gap-3.5">
+                      {tea.imageUrl && (
+                        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-xs overflow-hidden border border-stone-dark/30 bg-sand">
+                          <Image
+                            src={tea.imageUrl}
+                            alt={tea.name}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <span className="text-xs sm:text-sm font-serif font-medium text-ivory line-clamp-1">
+                            {tea.name}
+                          </span>
+                          <span className="text-xs font-serif text-brass font-semibold flex-shrink-0">
+                            {tea.price.toLocaleString('vi-VN')} đ
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-brass-light font-serif italic mb-1 line-clamp-1">
+                          {tea.vietnameseName}
+                        </p>
+                        <p className="text-[11px] sm:text-xs text-stone-light line-clamp-2 font-light">
+                          {tea.description}
+                        </p>
                       </div>
-                      <p className="text-[11px] text-brass-light font-serif italic mb-1.5">
-                        {tea.vietnameseName}
-                      </p>
-                      <p className="text-xs text-stone-light line-clamp-2 font-light">
-                        {tea.description}
-                      </p>
                     </div>
 
-                    <div className="mt-3 pt-2 border-t border-stone/15 flex items-center justify-between text-[11px] text-stone-light">
-                      <span>{tea.servings}</span>
+                    <div className="mt-3 pt-2 border-t border-stone-dark/20 flex items-center justify-between text-[11px] text-stone-light">
+                      <span className="line-clamp-1">{tea.servings}</span>
                       {isSelected ? (
-                        <span className="text-brass flex items-center gap-1 font-medium">
+                        <span className="text-brass flex items-center gap-1 font-medium flex-shrink-0">
                           <Check className="w-3.5 h-3.5" /> Đã chọn
                         </span>
                       ) : (
-                        <span className="text-stone">Bấm để chọn</span>
+                        <span className="text-stone-light/70 flex-shrink-0">Bấm để chọn</span>
                       )}
                     </div>
                   </div>
@@ -639,7 +659,7 @@ export default function BookingWizard({
               <button
                 type="button"
                 onClick={() => setCurrentStep(4)}
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-lg transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-lg transition-all"
               >
                 <span>Tiếp tục: Nhập thông tin</span>
                 <ArrowRight className="w-4 h-4" />
@@ -781,7 +801,7 @@ export default function BookingWizard({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-xl shadow-vermilion/30 transition-all disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-xl shadow-vermilion/30 transition-all disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
@@ -921,7 +941,7 @@ export default function BookingWizard({
 
               <Link
                 href={`/lookup?ref=${createdBooking.bookingReference}&phone=${createdBooking.customerPhone}`}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-wider font-medium rounded-sm transition-colors shadow-lg"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-wider font-medium rounded-sm transition-colors shadow-lg"
               >
                 <span>Xem trạng thái đơn tại mục Tra cứu</span>
                 <ArrowRight className="w-4 h-4" />

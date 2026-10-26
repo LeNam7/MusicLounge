@@ -271,7 +271,7 @@ export default function AdminPage() {
 
             <button
               type="submit"
-              className="w-full py-3 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-lg transition-all"
+              className="w-full py-3 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-lg transition-all"
             >
               Đăng nhập Quản trị
             </button>
@@ -293,7 +293,7 @@ export default function AdminPage() {
       
       {/* Toast notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-brass text-charcoal px-4 py-2.5 rounded-sm shadow-2xl text-xs font-medium flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-brass text-white px-4 py-2.5 rounded-sm shadow-2xl text-xs font-semibold flex items-center gap-2 animate-bounce">
           <Check className="w-4 h-4" />
           <span>{toastMessage}</span>
         </div>
@@ -571,7 +571,7 @@ export default function AdminPage() {
                               setSelectedBooking(b);
                               setActionNotes(b.adminNotes || '');
                             }}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-charcoal hover:bg-brass hover:text-charcoal border border-stone/30 text-stone-light rounded-xs transition-colors"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-sand hover:bg-brass hover:text-white border border-stone-dark/40 text-stone-light rounded-xs transition-colors"
                           >
                             <Sliders className="w-3 h-3" />
                             <span>Xử lý</span>
@@ -638,7 +638,7 @@ export default function AdminPage() {
                       <div className="flex gap-2 pt-2">
                         <button
                           onClick={() => handleSaveRoom(r)}
-                          className="px-4 py-2 bg-vermilion text-ivory text-xs font-medium rounded-xs flex items-center gap-1"
+                          className="px-4 py-2 bg-vermilion text-white text-xs font-medium rounded-xs flex items-center gap-1 shadow-sm"
                         >
                           <Save className="w-3.5 h-3.5" />
                           <span>Lưu thay đổi</span>

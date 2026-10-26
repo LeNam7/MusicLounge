@@ -63,7 +63,7 @@ export default function ExperiencesSection() {
             return (
               <div
                 key={idx}
-                className="bg-walnut/50 border border-stone/20 hover:border-brass/40 p-8 sm:p-10 rounded-sm transition-all duration-300 flex flex-col justify-between group hover:shadow-xl hover:shadow-charcoal-dark/50"
+                className="bg-white border border-stone-dark/50 hover:border-brass p-8 sm:p-10 rounded-sm transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-lg hover:shadow-stone/15"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">

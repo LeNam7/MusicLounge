@@ -163,7 +163,7 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
                       !slot.available
                         ? 'bg-charcoal/30 border-stone-dark/30 text-stone-dark line-through cursor-not-allowed opacity-40'
                         : isSelected
-                        ? 'bg-brass text-charcoal border-brass font-semibold shadow-sm'
+                        ? 'bg-brass text-white border-brass font-semibold shadow-sm'
                         : 'bg-charcoal/80 border-stone/30 text-ivory hover:border-brass/70'
                     }`}
                   >
@@ -193,7 +193,7 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
       <button
         type="button"
         onClick={handleProceedToBooking}
-        className="w-full flex items-center justify-center gap-2 py-3.5 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-xl shadow-vermilion/25 transition-all"
+        className="w-full flex items-center justify-center gap-2 py-3.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-xl shadow-vermilion/25 transition-all"
       >
         <span>Tiếp tục đặt phòng này</span>
         <ArrowRight className="w-4 h-4" />

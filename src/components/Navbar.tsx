@@ -40,8 +40,8 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-charcoal/90 backdrop-blur-md border-b border-brass/20 py-3.5 shadow-2xl shadow-charcoal-dark/80'
-            : 'bg-gradient-to-b from-charcoal-dark/80 via-charcoal-dark/40 to-transparent py-5'
+            ? 'bg-[#FAF7F2]/95 backdrop-blur-md border-b border-brass/25 py-3.5 shadow-md shadow-stone/10'
+            : 'bg-[#FAF7F2]/85 backdrop-blur-md border-b border-brass/20 py-4 shadow-xs'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -118,7 +118,7 @@ export default function Navbar() {
             {/* Primary Booking CTA */}
             <Link
               href="/booking"
-              className="relative inline-flex items-center justify-center px-4 py-2 text-xs uppercase tracking-[0.18em] font-medium text-ivory bg-vermilion hover:bg-vermilion-light transition-all duration-300 rounded-sm shadow-lg shadow-vermilion/20 hover:shadow-vermilion/40 active:translate-y-0.5"
+              className="relative inline-flex items-center justify-center px-4 py-2 text-xs uppercase tracking-[0.18em] font-medium text-white bg-vermilion hover:bg-vermilion-light transition-all duration-300 rounded-sm shadow-lg shadow-vermilion/20 hover:shadow-vermilion/40 active:translate-y-0.5"
             >
               <span className="flex items-center gap-1.5">
                 <CalendarCheck className="w-3.5 h-3.5" />
@@ -191,7 +191,7 @@ export default function Navbar() {
             <Link
               href="/booking"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.2em] font-medium rounded-sm"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-md"
             >
               <CalendarCheck className="w-4 h-4" />
               Đặt phòng trà trực tuyến

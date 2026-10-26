@@ -37,9 +37,9 @@ export default function Footer() {
               {BRAND_CONFIG.brandSubtagline}
             </p>
 
-            <div className="pt-2 text-xs text-brass-light flex items-center gap-2 font-serif italic">
+            <div className="pt-2 text-xs text-brass-dark flex items-center gap-2 font-serif italic font-medium">
               <span>Một chén trà thanh, một khoảng trời tĩnh lặng</span>
-              <span className="text-stone-dark">•</span>
+              <span className="text-stone-light">•</span>
               <span>An yên giữa phố thị</span>
             </div>
           </div>

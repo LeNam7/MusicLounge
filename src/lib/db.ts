@@ -130,30 +130,39 @@ function initSchema(db: DatabaseSync) {
     }
   }
 
-  // Seed tea packages if empty
-  const teaCountStmt = db.prepare('SELECT COUNT(*) as count FROM tea_packages');
-  const teaCount = (teaCountStmt.get() as { count: number }).count;
-  if (teaCount === 0) {
-    const insertTea = db.prepare(`
-      INSERT INTO tea_packages (
-        id, name, vietnamese_name, description, price, servings, origin, image_url, tags
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
+  // Seed or sync tea packages with authentic Lùng Vài Tea products
+  const insertTea = db.prepare(`
+    INSERT INTO tea_packages (
+      id, name, vietnamese_name, description, price, servings, origin, image_url, tags
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      name = excluded.name,
+      vietnamese_name = excluded.vietnamese_name,
+      description = excluded.description,
+      price = excluded.price,
+      servings = excluded.servings,
+      origin = excluded.origin,
+      image_url = excluded.image_url,
+      tags = excluded.tags
+  `);
 
-    for (const t of INITIAL_TEA_PACKAGES) {
-      insertTea.run(
-        t.id,
-        t.name,
-        t.vietnameseName,
-        t.description,
-        t.price,
-        t.servings,
-        t.origin,
-        t.imageUrl,
-        JSON.stringify(t.tags)
-      );
-    }
+  for (const t of INITIAL_TEA_PACKAGES) {
+    insertTea.run(
+      t.id,
+      t.name,
+      t.vietnameseName,
+      t.description,
+      t.price,
+      t.servings,
+      t.origin,
+      t.imageUrl,
+      JSON.stringify(t.tags)
+    );
   }
+
+  // Clean up any old obsolete tea packages not in INITIAL_TEA_PACKAGES
+  const validIds = INITIAL_TEA_PACKAGES.map(t => `'${t.id}'`).join(',');
+  db.prepare(`DELETE FROM tea_packages WHERE id NOT IN (${validIds})`).run();
 
   // Seed sample initial booking for realistic demo if empty
   const bookingCountStmt = db.prepare('SELECT COUNT(*) as count FROM bookings');

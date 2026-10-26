@@ -149,7 +149,7 @@ function LookupContent() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.18em] font-medium rounded-sm shadow-md transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.18em] font-medium rounded-sm shadow-md transition-all disabled:opacity-50"
             >
               <Search className="w-4 h-4" />
               <span>{loading ? 'Đang tra cứu...' : 'Kiểm tra trạng thái'}</span>

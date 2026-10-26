@@ -206,7 +206,7 @@ export default function ExploreTheTeaRooms({ rooms }: ExploreRoomsProps) {
 
                     <Link
                       href={`/booking?room=${activeRoom.slug}`}
-                      className="inline-flex items-center justify-center gap-1.5 py-3 px-4 bg-vermilion hover:bg-vermilion-light text-ivory text-xs uppercase tracking-[0.15em] font-medium rounded-sm shadow-lg shadow-vermilion/20 transition-all active:translate-y-0.5"
+                      className="inline-flex items-center justify-center gap-1.5 py-3 px-4 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.15em] font-medium rounded-sm shadow-lg shadow-vermilion/20 transition-all active:translate-y-0.5"
                     >
                       <Calendar className="w-3.5 h-3.5" />
                       Đặt phòng này

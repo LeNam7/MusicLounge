@@ -1,37 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-charcoal: #171713;
-  --color-charcoal-light: #23221c;
-  --color-charcoal-dark: #0f0f0c;
+  /* Warm Ivory Silk & Zen Rice Paper Backgrounds */
+  --color-charcoal: #FAF7F2;
+  --color-charcoal-light: #F2ECE1;
+  --color-charcoal-dark: #EAE2D3;
   
-  --color-walnut: #30251F;
-  --color-walnut-light: #44352c;
-  --color-walnut-dark: #211915;
+  /* Pure Silk & Warm Alabaster Card Surfaces */
+  --color-walnut: #FFFFFF;
+  --color-walnut-light: #F8F5EE;
+  --color-walnut-dark: #E4DAC8;
 
-  --color-ivory: #E9E0D0;
-  --color-ivory-light: #F7F3EB;
-  --color-ivory-muted: #D5CBBB;
+  /* Rich Calligraphy Tea Ink Typography */
+  --color-ivory: #28221D;
+  --color-ivory-light: #120E0B;
+  --color-ivory-muted: #574E43;
 
-  --color-vermilion: #8D342D;
-  --color-vermilion-light: #A53E35;
-  --color-vermilion-dark: #6E2620;
+  /* Imperial Vermilion Cinnabar Red Accents */
+  --color-vermilion: #9E2D23;
+  --color-vermilion-light: #BA372C;
+  --color-vermilion-dark: #7B1F17;
 
-  --color-brass: #B69A6A;
-  --color-brass-light: #CDAF80;
-  --color-brass-dark: #977C4E;
+  /* Refined Antique Brass & Gold */
+  --color-brass: #96753C;
+  --color-brass-light: #B89556;
+  --color-brass-dark: #745828;
 
-  --color-stone: #77736B;
-  --color-stone-light: #A39F97;
-  --color-stone-dark: #55524B;
+  /* Natural Tea Stone & Muted Borders */
+  --color-stone: #786D5F;
+  --color-stone-light: #5A5144;
+  --color-stone-dark: #D8CEBD;
 
   --font-serif: var(--font-cormorant), "Noto Serif SC", "Songti SC", Georgia, serif;
   --font-sans: var(--font-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 :root {
-  --background: #171713;
-  --foreground: #E9E0D0;
+  --background: #FAF7F2;
+  --foreground: #28221D;
 }
 
 body {
@@ -39,13 +45,13 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  selection-background-color: #8D342D;
-  selection-color: #F7F3EB;
+  selection-background-color: #9E2D23;
+  selection-color: #FFFFFF;
 }
 
 ::selection {
-  background-color: #8D342D;
-  color: #F7F3EB;
+  background-color: #9E2D23;
+  color: #FFFFFF;
 }
 
 /* Custom delicate scrollbar */
@@ -54,20 +60,20 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #171713;
+  background: #F2ECE1;
 }
 ::-webkit-scrollbar-thumb {
-  background: #30251F;
+  background: #D8CEBD;
   border-radius: 3px;
-  border: 1px solid #B69A6A33;
+  border: 1px solid rgba(150, 117, 60, 0.2);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B69A6A;
+  background: #96753C;
 }
 
 /* Subtle lattice overlay pattern */
 .bg-lattice-subtle {
-  background-image: radial-gradient(rgba(182, 154, 106, 0.08) 1px, transparent 0);
+  background-image: radial-gradient(rgba(150, 117, 60, 0.12) 1px, transparent 0);
   background-size: 24px 24px;
 }
 
@@ -76,25 +82,26 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #8D342D;
-  color: #8D342D;
-  background: rgba(141, 52, 45, 0.08);
+  border: 1.5px solid #9E2D23;
+  color: #9E2D23;
+  background: rgba(158, 45, 35, 0.07);
   border-radius: 2px;
   font-family: var(--font-serif);
   font-weight: 700;
   letter-spacing: 0.1em;
   padding: 2px 6px;
-  box-shadow: 0 0 0 1px rgba(141, 52, 45, 0.2);
+  box-shadow: 0 0 0 1px rgba(158, 45, 35, 0.15);
 }
 
 /* Brass Accent Border */
 .border-brass-accent {
-  border-color: rgba(182, 154, 106, 0.3);
+  border-color: rgba(150, 117, 60, 0.35);
 }
 
-/* Glass panel with walnut tint */
+/* Glass panel with warm ivory tint */
 .glass-panel {
-  background: rgba(48, 37, 31, 0.65);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(182, 154, 106, 0.2);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(150, 117, 60, 0.25);
+  box-shadow: 0 8px 30px rgba(40, 34, 29, 0.05);
 }

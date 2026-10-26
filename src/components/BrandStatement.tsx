@@ -13,7 +13,7 @@ export default function BrandStatement() {
           
           {/* Left Column: Asymmetrical Editorial Photography */}
           <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] rounded-sm overflow-hidden border border-brass/30 shadow-2xl shadow-charcoal-dark">
+            <div className="relative aspect-[4/5] rounded-sm overflow-hidden border border-brass/30 shadow-xl shadow-stone/15">
               <Image
                 src="/images/tea-ceremony-closeup.jpg"
                 alt="Nghi thức pha trà Gongfu thủ công với ấm tử sa"
@@ -21,18 +21,18 @@ export default function BrandStatement() {
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="object-cover object-center hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent" />
             </div>
 
             {/* Overlapping small detail badge */}
-            <div className="absolute -bottom-6 -right-6 hidden sm:block bg-walnut border border-brass/40 p-4 rounded-sm shadow-xl max-w-xs">
+            <div className="absolute -bottom-6 -right-6 hidden sm:block bg-white/95 border border-brass/40 p-4 rounded-sm shadow-xl max-w-xs backdrop-blur-sm">
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="seal-stamp text-[10px] px-1.5 font-sans font-bold">TRÀ</span>
                 <span className="text-[11px] uppercase tracking-widest text-brass font-medium">
                   Cổ Pháp Thưởng Trà
                 </span>
               </div>
-              <p className="text-xs text-ivory-muted leading-relaxed font-light">
+              <p className="text-xs text-ivory-muted leading-relaxed font-normal">
                 Nước đầu sôi mắt cua, trà hãm trong ấm tử sa nguyên khoáng giữ trọn hương vị đất trời.
               </p>
             </div>

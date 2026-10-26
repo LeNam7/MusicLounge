@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 
 
 interface BookingPageProps {
-  searchParams: Promise<{ room?: string }>;
+  searchParams: Promise<{ room?: string; tea?: string }>;
 }
 
 export default async function BookingPage({ searchParams }: BookingPageProps) {
-  const { room: preselectedRoomSlug } = await searchParams;
+  const { room: preselectedRoomSlug, tea: preselectedTeaId } = await searchParams;
   const rooms = getAllRooms();
   const teaPackages = getAllTeaPackages();
 
@@ -47,6 +47,7 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
           initialRooms={rooms}
           initialTeaPackages={teaPackages}
           preselectedRoomSlug={preselectedRoomSlug}
+          preselectedTeaId={preselectedTeaId}
         />
 
       </main>

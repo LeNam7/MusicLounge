@@ -65,7 +65,7 @@ export default function VisualGallery() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-4 sm:px-5 py-2 text-xs uppercase tracking-[0.15em] font-medium rounded-xs transition-all ${
                 selectedCategory === cat.id
-                  ? 'bg-brass text-charcoal shadow-md shadow-brass/20'
+                  ? 'bg-brass text-white shadow-md shadow-brass/20'
                   : 'bg-walnut/50 text-stone-light hover:text-ivory hover:bg-walnut border border-stone/20'
               }`}
             >
