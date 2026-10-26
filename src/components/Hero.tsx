@@ -17,24 +17,24 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[95vh] lg:min-h-screen flex items-center justify-center overflow-hidden bg-charcoal">
-      {/* Background Hero Image - The user's authentic tea lounge photo */}
+      {/* Background Hero Image - 4K Ultra Sharp authentic tea lounge photo */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/tea-room-main.jpg"
+          src="/images/hero-tea-room-4k.jpg"
           alt="Không gian phòng trà đạo sang trọng Lùng Vài Tea"
           fill
           priority
-          unoptimized
+          sizes="100vw"
           className="object-cover object-center"
         />
 
-        {/* Seamless Luminous Aura: A soft, borderless radial halo of warm natural light directly behind the center */}
+        {/* Subtle, soft natural illumination behind center text - allows the 4K room details, wood grain and bonsai to stay crystal clear */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[1000px] h-[720px] max-w-full bg-[radial-gradient(ellipse_80%_70%_at_50%_45%,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.8)_42%,_rgba(255,255,255,0.3)_68%,_transparent_86%)]" />
+          <div className="w-[850px] h-[580px] max-w-full bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,_rgba(255,255,255,0.42)_0%,_rgba(255,255,255,0.15)_55%,_transparent_80%)]" />
         </div>
 
-        {/* Soft light diffusion over the tiled floor so text is effortlessly readable */}
-        <div className="absolute inset-x-0 bottom-0 h-64 sm:h-72 bg-gradient-to-t from-charcoal via-charcoal/85 to-transparent pointer-events-none" />
+        {/* Minimal bottom transition so the tiled floor, table base and chairs remain sharp */}
+        <div className="absolute inset-x-0 bottom-0 h-20 sm:h-28 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent pointer-events-none" />
       </div>
 
       {/* Decorative vertical poetry column on the right */}
@@ -76,18 +76,18 @@ export default function Hero() {
         </div>
 
         {/* Major Editorial Headline - High contrast, razor-sharp typography */}
-        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] font-normal tracking-wide text-[#1A1410] leading-[1.16] text-balance">
+        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] font-normal tracking-wide text-[#140E0A] leading-[1.16] text-balance drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">
           Nơi thời gian chậm lại, <br />
-          <span className="italic font-light text-vermilion">và lòng người an yên.</span>
+          <span className="italic font-light text-vermilion drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">và lòng người an yên.</span>
         </h1>
 
         {/* Poetic Inscription - Crisp and legible in deep sepia ink */}
-        <div className="mt-4 flex items-center justify-center gap-2 text-[#3D332A] font-serif text-base sm:text-lg tracking-[0.06em] font-medium italic">
+        <div className="mt-4 flex items-center justify-center gap-2 text-[#2A2017] font-serif text-base sm:text-lg tracking-[0.06em] font-medium italic drop-shadow-[0_1px_2px_rgba(255,255,255,0.95)]">
           <span>&ldquo;Một chén trà thanh, một khoảng trời tĩnh lặng&rdquo;</span>
         </div>
 
-        {/* Supporting description - Pure elegant paragraph with no clunky box */}
-        <p className="mt-3.5 text-xs sm:text-sm md:text-base text-[#4A3F35] max-w-xl mx-auto font-normal leading-relaxed">
+        {/* Supporting description - Pure elegant paragraph */}
+        <p className="mt-3.5 text-xs sm:text-sm md:text-base text-[#382C22] max-w-xl mx-auto font-medium leading-relaxed drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
           {BRAND_CONFIG.brandSubtagline}
         </p>
 
