@@ -26,7 +26,7 @@ export default function TestimonialsSection() {
           {TESTIMONIALS.map((t) => (
             <div
               key={t.id}
-              className="bg-white border border-stone-dark/50 hover:border-brass p-8 rounded-sm transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md"
+              className="bg-white border border-stone-dark/50 hover:border-brass p-6 sm:p-8 rounded-sm transition-all duration-300 flex flex-col justify-between group shadow-sm hover:shadow-md"
             >
               <div>
                 <Quote className="w-8 h-8 text-brass/40 mb-4 group-hover:text-brass transition-colors" />

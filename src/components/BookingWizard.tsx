@@ -253,7 +253,7 @@ export default function BookingWizard({
               >
                 {currentStep > item.step ? <Check className="w-4 h-4" /> : item.step}
               </button>
-              <span className={`text-[11px] mt-2 tracking-wider font-serif uppercase ${
+              <span className={`text-[10px] sm:text-[11px] mt-1.5 sm:mt-2 tracking-wider font-serif uppercase text-center max-w-[56px] sm:max-w-none leading-tight ${
                 currentStep === item.step ? 'text-brass font-medium' : 'text-stone-light'
               }`}>
                 {item.label}
