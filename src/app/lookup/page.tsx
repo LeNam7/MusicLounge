@@ -1,10 +1,23 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Search, Calendar, Clock, Users, Phone, Printer, AlertCircle, CheckCircle2, Clock3, XCircle } from 'lucide-react';
+import {
+  Search,
+  Calendar,
+  Clock,
+  Users,
+  Phone,
+  Printer,
+  AlertCircle,
+  CheckCircle2,
+  Clock3,
+  XCircle,
+  RefreshCw,
+} from 'lucide-react';
 import { Booking } from '@/lib/types';
 import { BRAND_CONFIG } from '@/lib/config';
 
@@ -19,69 +32,107 @@ function LookupContent() {
   const [error, setError] = useState<string | null>(null);
   const [booking, setBooking] = useState<Booking | null>(null);
 
-  const handleLookup = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!reference.trim()) {
-      setError('Vui lòng nhập mã đặt phòng (ví dụ: OS-20261022-7F9A).');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    setBooking(null);
-
-    try {
-      const url = `/api/bookings/lookup?reference=${encodeURIComponent(reference.trim())}${
-        phone.trim() ? `&phone=${encodeURIComponent(phone.trim())}` : ''
-      }`;
-      const res = await fetch(url);
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Không tìm thấy thông tin đơn đặt phòng.');
+  const fetchLookup = useCallback(
+    async (refValue: string, phoneValue: string, silent = false) => {
+      if (!refValue.trim()) {
+        if (!silent) setError('Vui lòng nhập mã đặt phòng (ví dụ: LVT-20261028-7F9A).');
+        return;
       }
 
-      setBooking(data.data);
-    } catch (err: any) {
-      setError(err.message || 'Lỗi kết nối khi tra cứu.');
-    } finally {
-      setLoading(false);
-    }
+      if (!silent) {
+        setLoading(true);
+        setError(null);
+      }
+
+      try {
+        const url = `/api/bookings/lookup?reference=${encodeURIComponent(refValue.trim())}${
+          phoneValue.trim() ? `&phone=${encodeURIComponent(phoneValue.trim())}` : ''
+        }`;
+        const res = await fetch(url, { cache: 'no-store' });
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Không tìm thấy thông tin đơn đặt phòng.');
+        }
+
+        setBooking(data.data);
+      } catch (err: unknown) {
+        if (!silent) {
+          setBooking(null);
+          setError(err instanceof Error ? err.message : 'Lỗi kết nối khi tra cứu.');
+        }
+      } finally {
+        if (!silent) {
+          setLoading(false);
+        }
+      }
+    },
+    []
+  );
+
+  const handleLookup = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    await fetchLookup(reference, phone, false);
   };
 
   useEffect(() => {
     if (initialRef) {
-      handleLookup();
+      fetchLookup(initialRef, initialPhone, false);
     }
-  }, [initialRef]);
+  }, [initialRef, initialPhone, fetchLookup]);
+
+  // Auto-poll every 8 seconds when a booking is displayed so customer sees real-time approval/rejection
+  useEffect(() => {
+    if (!booking?.bookingReference) return;
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        fetchLookup(booking.bookingReference, phone, true);
+      }
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [booking?.bookingReference, phone, fetchLookup]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'confirmed':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-950/70 text-emerald-300 border border-emerald-600/50">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            Đã xác nhận & Giữ chỗ thành công
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-500/50">
+            <CheckCircle2 className="w-4 h-4" />
+            Đã xác nhận (CONFIRMED)
           </span>
         );
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-950/70 text-amber-300 border border-amber-600/50">
-            <Clock3 className="w-3.5 h-3.5" />
-            Đang chờ duyệt cọc (Pending)
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-950/80 text-amber-300 border border-amber-500/50">
+            <Clock3 className="w-4 h-4 animate-pulse" />
+            Đang chờ phòng trà duyệt (PENDING)
+          </span>
+        );
+      case 'rejected':
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-red-950/80 text-red-300 border border-red-500/50">
+            <XCircle className="w-4 h-4" />
+            Từ chối yêu cầu (REJECTED)
+          </span>
+        );
+      case 'expired':
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-stone-800 text-stone-300 border border-stone-500/50">
+            <Clock className="w-4 h-4" />
+            Đã hết hạn chờ duyệt (EXPIRED)
           </span>
         );
       case 'cancelled':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-red-950/70 text-red-300 border border-red-600/50">
-            <XCircle className="w-3.5 h-3.5" />
-            Đã huỷ lịch
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-red-950/80 text-red-300 border border-red-500/50">
+            <XCircle className="w-4 h-4" />
+            Đã huỷ lịch (CANCELLED)
           </span>
         );
       case 'completed':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-sky-950/70 text-sky-300 border border-sky-600/50">
-            <CheckCircle2 className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-sky-950/80 text-sky-300 border border-sky-500/50">
+            <CheckCircle2 className="w-4 h-4" />
             Đã hoàn thành buổi thưởng trà
           </span>
         );
@@ -96,7 +147,6 @@ function LookupContent() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      
       {/* Header */}
       <div className="text-center mb-10 space-y-3">
         <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium">
@@ -107,7 +157,7 @@ function LookupContent() {
           Tra cứu đơn đặt phòng trà
         </h1>
         <p className="text-xs sm:text-sm text-stone-light max-w-md mx-auto font-light">
-          Nhập mã số đơn (dạng <code className="text-brass">LVT-YYYYMMDD-XXXX</code>) đã nhận khi hoàn tất đặt phòng để theo dõi trạng thái.
+          Nhập mã số đơn (dạng <code className="text-brass">LVT-YYYYMMDD-XXXX</code>) đã nhận khi gửi yêu cầu đặt lịch để theo dõi trạng thái trực tiếp.
         </p>
       </div>
 
@@ -115,7 +165,6 @@ function LookupContent() {
       <div className="bg-walnut/70 border border-brass/30 p-6 sm:p-8 rounded-sm shadow-xl backdrop-blur-md mb-8">
         <form onSubmit={handleLookup} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-            
             <div className="sm:col-span-7">
               <label className="block text-xs uppercase tracking-wider text-stone-light mb-1.5 font-medium">
                 Mã số đặt phòng *
@@ -123,7 +172,7 @@ function LookupContent() {
               <input
                 type="text"
                 required
-                placeholder="Ví dụ: LVT-20261022-7F9A"
+                placeholder="Ví dụ: LVT-20261028-7F9A"
                 value={reference}
                 onChange={(e) => setReference(e.target.value)}
                 className="w-full bg-charcoal border border-stone/30 focus:border-brass text-ivory px-4 py-2.5 rounded-xs text-sm uppercase tracking-wider outline-none"
@@ -142,7 +191,6 @@ function LookupContent() {
                 className="w-full bg-charcoal border border-stone/30 focus:border-brass text-ivory px-4 py-2.5 rounded-xs text-sm outline-none"
               />
             </div>
-
           </div>
 
           <div className="pt-2 flex justify-end">
@@ -168,7 +216,6 @@ function LookupContent() {
       {/* Result Display Card */}
       {booking && (
         <div className="bg-walnut/90 border border-brass/40 rounded-sm p-6 sm:p-8 shadow-2xl backdrop-blur-md space-y-6 animate-fadeIn">
-          
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone/20 gap-3">
             <div>
               <span className="text-[11px] uppercase tracking-wider text-stone-light block">
@@ -178,8 +225,87 @@ function LookupContent() {
                 {booking.bookingReference}
               </span>
             </div>
-            <div>{getStatusBadge(booking.status)}</div>
+            <div className="flex items-center gap-2">
+              {getStatusBadge(booking.status)}
+              <button
+                type="button"
+                onClick={() => fetchLookup(booking.bookingReference, phone, false)}
+                title="Làm mới trạng thái"
+                className="p-2 rounded-xs bg-charcoal/70 border border-stone/30 text-stone-light hover:text-brass transition-colors"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
+
+          {/* Status Banner Details */}
+          {booking.status === 'pending' && (
+            <div className="p-4 bg-amber-950/40 border border-amber-500/40 rounded-xs text-xs text-amber-200 space-y-1">
+              <p className="font-medium">
+                Yêu cầu đặt lịch của bạn đã được tiếp nhận. Vui lòng chờ phòng trà xác nhận. Lịch chỉ được xác nhận sau khi quản trị viên duyệt thành công.
+              </p>
+              {booking.expiresAt && (
+                <p className="text-[11px] text-amber-300/80">
+                  Thời hạn giữ chỗ tạm thời: đến {new Date(booking.expiresAt).toLocaleString('vi-VN')} (Tự động cập nhật trạng thái mỗi 8 giây)
+                </p>
+              )}
+            </div>
+          )}
+
+          {booking.status === 'confirmed' && (
+            <div className="p-4 bg-emerald-950/40 border border-emerald-500/40 rounded-xs text-xs text-emerald-200 space-y-1">
+              <p className="font-medium">
+                Lịch hẹn của quý khách đã được Quản trị viên xác nhận thành công! Phòng trà rất hân hạnh được đón tiếp quý khách đúng giờ.
+              </p>
+              {booking.reviewedAt && (
+                <p className="text-[11px] text-emerald-300/80">
+                  Thời điểm xác nhận: {new Date(booking.reviewedAt).toLocaleString('vi-VN')}
+                </p>
+              )}
+            </div>
+          )}
+
+          {booking.status === 'rejected' && (
+            <div className="p-4 bg-red-950/40 border border-red-500/40 rounded-xs text-xs text-red-200 space-y-1.5">
+              <p className="font-medium">
+                Rất tiếc, phòng trà chưa thể đáp ứng yêu cầu đặt lịch ở khung giờ này.
+              </p>
+              {booking.rejectionReason && (
+                <p>
+                  <strong>Lý do từ phòng trà:</strong> {booking.rejectionReason}
+                </p>
+              )}
+              <div className="pt-1">
+                <Link href="/booking" className="text-brass underline hover:text-ivory">
+                  → Chọn lại khung giờ khác tại trang Đặt lịch
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {booking.status === 'expired' && (
+            <div className="p-4 bg-stone-900/80 border border-stone-600/40 rounded-xs text-xs text-stone-300 space-y-1.5">
+              <p className="font-medium">
+                Yêu cầu đặt lịch này đã quá thời hạn giữ chỗ chờ duyệt và hệ thống đã tự động giải phóng khung giờ.
+              </p>
+              <div className="pt-1">
+                <Link href="/booking" className="text-brass underline hover:text-ivory">
+                  → Đặt lại lịch mới tại đây
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {booking.status === 'cancelled' && (
+            <div className="p-4 bg-red-950/40 border border-red-500/40 rounded-xs text-xs text-red-200 space-y-1.5">
+              <p className="font-medium">Lịch đặt phòng này đã được hủy.</p>
+              {booking.cancellationReason && (
+                <p>
+                  <strong>Lý do hủy:</strong> {booking.cancellationReason}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Key Info Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-charcoal/70 rounded-xs border border-stone/20 text-xs">
@@ -226,7 +352,7 @@ function LookupContent() {
             )}
             {booking.specialRequests && (
               <div className="flex justify-between text-stone-light">
-                <span>Yêu cầu đặc biệt:</span>
+                <span>Ghi chú của khách:</span>
                 <span className="text-ivory italic">{booking.specialRequests}</span>
               </div>
             )}
@@ -244,7 +370,7 @@ function LookupContent() {
             </div>
           </div>
 
-          {/* Admin Note if confirmed */}
+          {/* Admin Note if present */}
           {booking.adminNotes && (
             <div className="p-3 bg-charcoal/80 border border-brass/20 rounded-xs text-xs text-stone-light">
               <strong className="text-brass block mb-1">Ghi chú từ trà sư quản lý:</strong>
@@ -255,7 +381,7 @@ function LookupContent() {
           {/* Actions */}
           <div className="flex items-center justify-between pt-2">
             <a
-              href={`tel:${BRAND_CONFIG.hotline.replace(/\s+/g, '')}`}
+              href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`}
               className="text-xs text-brass hover:text-ivory flex items-center gap-1.5"
             >
               <Phone className="w-3.5 h-3.5" />
@@ -268,13 +394,11 @@ function LookupContent() {
               className="inline-flex items-center gap-1.5 px-4 py-2 border border-stone/30 hover:border-brass text-xs text-ivory rounded-xs transition-colors"
             >
               <Printer className="w-3.5 h-3.5 text-brass" />
-              <span>In đơn</span>
+              <span>In phiếu hẹn</span>
             </button>
           </div>
-
         </div>
       )}
-
     </div>
   );
 }

@@ -1,28 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchBookings } from '@/lib/db';
-
-const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || 'serenity2026';
+import { getNotificationsForBooking, searchBookings } from '@/lib/db';
+import { unauthorizedAdminResponse, verifyAdminRequest } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('x-admin-passcode') || request.nextUrl.searchParams.get('passcode');
-    if (authHeader !== ADMIN_PASSCODE) {
-      return NextResponse.json(
-        { success: false, error: 'Truy cập quản trị bị từ chối. Mã PIN không đúng.' },
-        { status: 401 }
-      );
+    const auth = verifyAdminRequest(request);
+    if (!auth.authorized) {
+      return unauthorizedAdminResponse(auth.error);
     }
 
     const searchParams = request.nextUrl.searchParams;
     const date = searchParams.get('date') || undefined;
     const status = searchParams.get('status') || undefined;
+    const roomId = searchParams.get('roomId') || undefined;
     const search = searchParams.get('search') || undefined;
+    const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : undefined;
+    const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!, 10) : undefined;
 
-    const bookings = searchBookings({ date, status, search });
-    return NextResponse.json({ success: true, data: bookings });
-  } catch (error: any) {
+    const bookings = searchBookings({ date, status, roomId, search, limit, offset });
+
+    // Attach latest notification status summary per booking for quick visibility
+    const enriched = bookings.map((b) => {
+      const notifs = getNotificationsForBooking(b.id);
+      return {
+        ...b,
+        latestNotification: notifs[0] || null,
+        notificationCount: notifs.length,
+      };
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: enriched,
+    });
+  } catch (error: unknown) {
     return NextResponse.json(
-      { success: false, error: error.message || 'Lỗi lấy danh sách đặt phòng' },
+      {
+        success: false,
+        code: 'DATABASE_ERROR',
+        error: (error as { message?: string })?.message || 'Lỗi lấy danh sách đặt phòng',
+      },
       { status: 500 }
     );
   }

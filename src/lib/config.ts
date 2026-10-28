@@ -5,14 +5,16 @@ export const BRAND_CONFIG: BrandConfig = {
   brandSubtitle: 'Không Gian Trà Đạo & Shan Tuyết Cổ Thụ',
   brandTagline: 'Nơi thời gian chậm lại, và lòng người an yên',
   brandSubtagline: 'Không gian trà riêng tư thanh nhã, nơi nghệ thuật thưởng trà Shan Tuyết cổ thụ Lùng Vài gặp gỡ phong cách sống đương đại.',
-  address: 'Số 18 Phố Tràng Tiền, Quận Hoàn Kiếm, Hà Nội',
-  hotline: '0988 288 368',
-  email: 'reservations@lungvaitea.vn',
+  address: 'Tầng 6, Tòa nhà AZ Lâm Viên, Số 107 Nguyễn Phong Sắc, Dịch Vọng, Cầu Giấy, Hà Nội',
+  hotline: '(+84) 989 92 92 69',
+  email: 'anhdt@anf-technology.com',
   openTime: '08:30',
   closeTime: '22:30',
-  slotIntervalMinutes: 30,
+  slotIntervalMinutes: 15,
   bufferMinutes: 15,
   depositPercentage: 30, // 30% cọc giữ chỗ
+  holdDurationHours: 24, // Giữ chỗ mặc định 24 giờ chờ duyệt
+  defaultDurationHours: 2,
 };
 
 export const INITIAL_ROOMS: Room[] = [
@@ -360,3 +362,11 @@ export const TESTIMONIALS = [
     badge: 'Họp mặt trang trọng'
   }
 ];
+
+export function getTodayDateString(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}

@@ -37,6 +37,9 @@ yarn-error.log*
 # sqlite temporary wal files
 *.db-shm
 *.db-wal
+/data/
+data/
+*.db
 
 # vercel
 .vercel

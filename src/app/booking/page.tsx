@@ -8,17 +8,32 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: `Đặt Phòng Trà Riêng Tư Trực Tuyến | ${BRAND_CONFIG.brandName}`,
-  description: 'Đặt phòng trà đạo riêng tư tại Oriental Serenity. Kiểm tra lịch trống trực tiếp, lựa chọn danh trà Shan Tuyết cổ thụ và xác nhận tức thì.',
+  description:
+    'Đặt phòng trà đạo riêng tư tại Lùng Vài Tea. Kiểm tra lịch trống trực tiếp theo khung giờ 15 phút, lựa chọn danh trà Shan Tuyết cổ thụ và theo dõi trạng thái duyệt lịch.',
 };
 
-
-
 interface BookingPageProps {
-  searchParams: Promise<{ room?: string; tea?: string }>;
+  searchParams: Promise<{
+    room?: string;
+    tea?: string;
+    date?: string;
+    time?: string;
+    duration?: string;
+    guests?: string;
+    step?: string;
+  }>;
 }
 
 export default async function BookingPage({ searchParams }: BookingPageProps) {
-  const { room: preselectedRoomSlug, tea: preselectedTeaId } = await searchParams;
+  const {
+    room: preselectedRoomSlug,
+    tea: preselectedTeaId,
+    date: preselectedDate,
+    time: preselectedTime,
+    duration: preselectedDuration,
+    guests: preselectedGuests,
+    step: preselectedStep,
+  } = await searchParams;
   const rooms = getAllRooms();
   const teaPackages = getAllTeaPackages();
 
@@ -27,7 +42,6 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
       <Navbar />
 
       <main className="flex-1 pt-24 pb-20">
-        
         {/* Page Header */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8 pb-4">
           <div className="inline-flex items-center gap-2 text-brass tracking-[0.3em] uppercase text-xs font-medium mb-3">
@@ -38,7 +52,7 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
             Chọn không gian cho buổi đàm đạo
           </h1>
           <p className="text-xs sm:text-sm text-stone-light max-w-xl mx-auto mt-2 font-light">
-            Vui lòng chọn phòng, ngày và khung giờ mong muốn. Lịch trống được cập nhật theo thời gian thực và tự động bảo lưu qua hệ thống khoá giờ.
+            Vui lòng chọn phòng, ngày và khung giờ mong muốn. Trạng thái khung giờ được đồng bộ trực tiếp từ hệ thống quản lý lịch của phòng trà.
           </p>
         </div>
 
@@ -48,8 +62,12 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
           initialTeaPackages={teaPackages}
           preselectedRoomSlug={preselectedRoomSlug}
           preselectedTeaId={preselectedTeaId}
+          preselectedDate={preselectedDate}
+          preselectedTime={preselectedTime}
+          preselectedDuration={preselectedDuration ? parseFloat(preselectedDuration) : undefined}
+          preselectedGuests={preselectedGuests ? parseInt(preselectedGuests, 10) : undefined}
+          initialStep={preselectedStep ? parseInt(preselectedStep, 10) : undefined}
         />
-
       </main>
 
       <Footer />

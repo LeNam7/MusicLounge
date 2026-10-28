@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Calendar as CalendarIcon, Clock, Users, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
-import { Room } from '@/lib/types';
+import { Calendar as CalendarIcon, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
+import { Room, TimeSlot } from '@/lib/types';
 import { BRAND_CONFIG } from '@/lib/config';
 
 interface RoomBookingPanelProps {
@@ -12,41 +12,64 @@ interface RoomBookingPanelProps {
 
 export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
   const router = useRouter();
-  const todayStr = new Date().toISOString().split('T')[0];
-  
+  const getLocalToday = () => {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  const todayStr = getLocalToday();
+
   const [selectedDate, setSelectedDate] = useState<string>(todayStr);
   const [durationHours, setDurationHours] = useState<number>(2);
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [guestCount, setGuestCount] = useState<number>(room.capacityMin);
-  
+
   const [loadingSlots, setLoadingSlots] = useState<boolean>(false);
-  const [availableSlots, setAvailableSlots] = useState<{ time: string; available: boolean; reason?: string }[]>([]);
+  const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
 
   useEffect(() => {
     let isMounted = true;
     setLoadingSlots(true);
 
-    fetch(`/api/availability?roomId=${room.id}&date=${selectedDate}&durationHours=${durationHours}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!isMounted) return;
-        if (data.success && data.data?.slots) {
-          setAvailableSlots(data.data.slots);
-          if (selectedTime) {
-            const stillValid = data.data.slots.find((s: any) => s.time === selectedTime && s.available);
-            if (!stillValid) setSelectedTime('');
-          }
-        }
+    const fetchRoomSlots = (silent: boolean = false) => {
+      if (!silent) setLoadingSlots(true);
+      fetch(`/api/availability?roomId=${room.id}&date=${selectedDate}&durationHours=${durationHours}`, {
+        cache: 'no-store',
       })
-      .catch(() => {})
-      .finally(() => {
-        if (isMounted) setLoadingSlots(false);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          if (!isMounted) return;
+          if (data.success && Array.isArray(data.data?.slots)) {
+            setAvailableSlots(data.data.slots);
+            if (selectedTime) {
+              const stillValid = data.data.slots.find(
+                (s: TimeSlot) => s.time === selectedTime && s.status === 'AVAILABLE'
+              );
+              if (!stillValid) setSelectedTime('');
+            }
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (isMounted && !silent) setLoadingSlots(false);
+        });
+    };
+
+    fetchRoomSlots(false);
+    const timer = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        fetchRoomSlots(true);
+      }
+    }, 10_000);
 
     return () => {
       isMounted = false;
+      clearInterval(timer);
     };
-  }, [room.id, selectedDate, durationHours]);
+  }, [room.id, selectedDate, durationHours, selectedTime]);
 
   const handleProceedToBooking = () => {
     const params = new URLSearchParams({
@@ -61,20 +84,18 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
     router.push(`/booking?${params.toString()}`);
   };
 
-  const priceEstimate = durationHours === 2 ? room.pricePackage2h : Math.round(room.pricePerHour * durationHours);
+  const priceEstimate =
+    durationHours === 2 ? room.pricePackage2h : Math.round(room.pricePerHour * durationHours);
   const depositEstimate = Math.round(priceEstimate * (BRAND_CONFIG.depositPercentage / 100));
 
   return (
     <div className="bg-walnut/90 border border-brass/40 rounded-sm p-6 shadow-2xl backdrop-blur-md sticky top-24 space-y-6">
-      
       <div className="border-b border-stone/20 pb-4">
         <span className="text-[11px] uppercase tracking-[0.2em] text-brass font-medium block">
           ĐẶT PHÒNG NHANH
         </span>
         <div className="flex items-baseline justify-between mt-1">
-          <span className="font-serif text-2xl text-ivory font-medium">
-            {room.name}
-          </span>
+          <span className="font-serif text-2xl text-ivory font-medium">{room.name}</span>
           <div className="text-right">
             <span className="font-serif text-xl text-brass font-medium">
               {room.pricePackage2h.toLocaleString('vi-VN')} đ
@@ -85,8 +106,6 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
       </div>
 
       <div className="space-y-4">
-        
-        {/* Date */}
         <div>
           <label className="block text-xs uppercase tracking-wider text-stone-light mb-1.5 font-medium">
             Ngày thưởng trà
@@ -103,7 +122,6 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
           </div>
         </div>
 
-        {/* Duration */}
         <div>
           <label className="block text-xs uppercase tracking-wider text-stone-light mb-1.5 font-medium">
             Thời lượng
@@ -120,7 +138,6 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
           </select>
         </div>
 
-        {/* Guest Count */}
         <div>
           <label className="block text-xs uppercase tracking-wider text-stone-light mb-1.5 font-medium">
             Số lượng khách ({room.capacityMin} - {room.capacityMax} người)
@@ -130,51 +147,81 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
             min={room.capacityMin}
             max={room.capacityMax}
             value={guestCount}
-            onChange={(e) => setGuestCount(parseInt(e.target.value) || room.capacityMin)}
+            onChange={(e) => setGuestCount(parseInt(e.target.value, 10) || room.capacityMin)}
             className="w-full bg-charcoal border border-stone/30 focus:border-brass text-ivory px-3 py-2 rounded-xs text-xs outline-none"
           />
         </div>
 
-        {/* Quick Time Slot Selector */}
-        <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs uppercase tracking-wider text-stone-light font-medium">
-              Khung giờ trống
+        {/* Quick Time Slot Selector (4 States) */}
+        <div className="p-3 rounded-xs bg-[#1E3329] text-white space-y-2.5">
+          <div className="flex items-center justify-between">
+            <label className="text-[11px] uppercase tracking-wider text-[#E5C384] font-semibold">
+              Chọn khung giờ (15p)
             </label>
-            <span className="text-[10px] text-stone">Giờ mở cửa {BRAND_CONFIG.openTime} - {BRAND_CONFIG.closeTime}</span>
+            <span className="text-[10px] text-white/70">
+              {BRAND_CONFIG.openTime} - {BRAND_CONFIG.closeTime}
+            </span>
+          </div>
+
+          {/* Mini 4-state legend */}
+          <div className="grid grid-cols-2 gap-1 text-[10px] text-white/85 pb-1 border-b border-white/10">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-2xs bg-white inline-block" />
+              <span>Trắng: Còn trống</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-2xs bg-amber-400 inline-block" />
+              <span>Cam: Chờ duyệt</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-2xs bg-emerald-500 inline-block" />
+              <span>Xanh: Đã đặt</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-2xs bg-stone-400 inline-block" />
+              <span>Xám: Khóa</span>
+            </div>
           </div>
 
           {loadingSlots ? (
-            <div className="flex items-center justify-center py-4 text-xs text-stone-light gap-2">
-              <Loader2 className="w-3.5 h-3.5 text-brass animate-spin" />
-              <span>Đang kiểm tra...</span>
+            <div className="flex items-center justify-center py-6 text-xs text-white/80 gap-2">
+              <Loader2 className="w-3.5 h-3.5 text-[#E5C384] animate-spin" />
+              <span>Đang tải...</span>
             </div>
           ) : (
-            <div className="grid grid-cols-4 gap-1.5 max-h-36 overflow-y-auto pr-1">
-              {availableSlots.slice(0, 16).map((slot) => {
-                const isSelected = selectedTime === slot.time;
+            <div className="grid grid-cols-3 gap-1.5 max-h-48 overflow-y-auto pr-1">
+              {availableSlots.map((slot) => {
+                const isSelected = selectedTime === slot.time && slot.status === 'AVAILABLE';
+                let cls = '';
+                if (slot.status === 'AVAILABLE') {
+                  cls = isSelected
+                    ? 'bg-[#C69C53] text-[#140E0A] border-[#F5DFB0] font-bold ring-1 ring-[#F5DFB0]'
+                    : 'bg-white text-[#1A2E25] border-white hover:bg-[#FAF7F2] cursor-pointer';
+                } else if (slot.status === 'PENDING') {
+                  cls = 'bg-amber-400 text-amber-950 border-amber-500 cursor-not-allowed';
+                } else if (slot.status === 'CONFIRMED') {
+                  cls = 'bg-emerald-600 text-white border-emerald-400 cursor-not-allowed';
+                } else {
+                  cls = 'bg-stone-500/70 text-stone-200 border-stone-400/40 cursor-not-allowed opacity-70';
+                }
+
                 return (
                   <button
                     key={slot.time}
                     type="button"
-                    disabled={!slot.available}
+                    disabled={slot.status !== 'AVAILABLE'}
                     onClick={() => setSelectedTime(slot.time)}
-                    className={`py-1.5 text-[11px] rounded-xs border text-center transition-all ${
-                      !slot.available
-                        ? 'bg-charcoal/30 border-stone-dark/30 text-stone-dark line-through cursor-not-allowed opacity-40'
-                        : isSelected
-                        ? 'bg-brass text-white border-brass font-semibold shadow-sm'
-                        : 'bg-charcoal/80 border-stone/30 text-ivory hover:border-brass/70'
-                    }`}
+                    title={slot.reason || `${slot.time}: ${slot.label}`}
+                    className={`py-1.5 px-1 text-[10px] rounded-2xs border text-center transition-all flex flex-col items-center ${cls}`}
                   >
-                    {slot.time}
+                    <span className="font-mono font-bold">{slot.time}</span>
+                    <span className="text-[9px] leading-tight truncate max-w-full">{slot.label}</span>
                   </button>
                 );
               })}
             </div>
           )}
         </div>
-
       </div>
 
       {/* Pricing Estimate */}
@@ -189,11 +236,10 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
         </div>
       </div>
 
-      {/* Action Button */}
       <button
         type="button"
         onClick={handleProceedToBooking}
-        className="w-full flex items-center justify-center gap-2 py-3.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-xl shadow-vermilion/25 transition-all"
+        className="w-full flex items-center justify-center gap-2 py-3.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-xl shadow-vermilion/25 transition-all cursor-pointer"
       >
         <span>Tiếp tục đặt phòng này</span>
         <ArrowRight className="w-4 h-4" />
@@ -201,9 +247,8 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
 
       <div className="flex items-center gap-2 text-[10px] text-stone-light justify-center">
         <ShieldCheck className="w-3.5 h-3.5 text-brass" />
-        <span>Xác nhận tức thì • Hỗ trợ đổi lịch trước 4h</span>
+        <span>Duyệt lịch trực tiếp qua hệ thống quản trị</span>
       </div>
-
     </div>
   );
 }

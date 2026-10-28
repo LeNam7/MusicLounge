@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { Volume2, VolumeX, Menu, X, CalendarCheck, Phone, Shield } from 'lucide-react';
 import { BRAND_CONFIG } from '@/lib/config';
 import { teaAudio } from '@/lib/audio';
@@ -12,7 +11,6 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,101 +38,96 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-[#FAF7F2]/95 backdrop-blur-md border-b border-brass/25 py-3.5 shadow-md shadow-stone/10'
-            : 'bg-[#FAF7F2]/85 backdrop-blur-md border-b border-brass/20 py-4 shadow-xs'
+            ? 'bg-[#FAF7F2]/95 backdrop-blur-md border-b border-brass/25 py-2.5 shadow-md shadow-stone/10'
+            : 'bg-[#FAF7F2]/90 backdrop-blur-md border-b border-brass/20 py-3 shadow-xs'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand Logo & Inscription */}
-          <Link href="/" className="flex items-center gap-3 sm:gap-4 group">
-            <div className="relative w-10 h-13 sm:w-12 sm:h-15 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 flex items-center justify-between gap-4">
+          {/* Brand Logo & Inscription - Never wraps */}
+          <Link href="/" className="flex items-center gap-3 shrink-0 group">
+            <div className="relative w-9 h-12 sm:w-10 sm:h-13 shrink-0 group-hover:scale-105 transition-transform duration-300">
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea Logo"
                 fill
                 priority
-                sizes="(max-width: 640px) 40px, 48px"
-                className="object-contain filter drop-shadow-[0_2px_12px_rgba(141,52,45,0.65)]"
+                sizes="44px"
+                className="object-contain filter drop-shadow-[0_2px_8px_rgba(141,52,45,0.45)]"
               />
             </div>
-            <div className="flex flex-col justify-center">
-              <span className="font-serif text-lg sm:text-2xl tracking-[0.18em] uppercase text-ivory group-hover:text-brass transition-colors font-medium leading-tight">
+            <div className="flex flex-col justify-center whitespace-nowrap">
+              <span className="font-serif text-base sm:text-xl xl:text-[22px] tracking-[0.16em] uppercase text-ivory group-hover:text-brass transition-colors font-medium leading-tight">
                 {BRAND_CONFIG.brandName}
               </span>
-              <span className="text-[10px] sm:text-[11px] tracking-[0.25em] text-brass uppercase font-sans opacity-90 font-medium mt-0.5">
+              <span className="text-[9px] sm:text-[10px] tracking-[0.15em] text-brass uppercase font-sans opacity-90 font-medium mt-0.5">
                 {BRAND_CONFIG.brandSubtitle}
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-7">
+          {/* Desktop Navigation Links - Single line guaranteed */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 2xl:gap-8 shrink-0">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-xs uppercase tracking-[0.15em] text-ivory/80 hover:text-brass transition-colors font-medium py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-brass hover:after:w-full after:transition-all"
+                className="whitespace-nowrap text-[11px] xl:text-xs uppercase tracking-[0.12em] xl:tracking-[0.14em] text-ivory/85 hover:text-brass transition-colors font-medium py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-brass hover:after:w-full after:transition-all"
               >
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          {/* Right Action Buttons */}
-          <div className="hidden sm:flex items-center gap-4">
-            {/* Ambient Audio Toggle */}
+          {/* Right Action Buttons - Single line guaranteed */}
+          <div className="hidden sm:flex items-center gap-3 shrink-0">
+            {/* Ambient Audio Toggle - Icon Only */}
             <button
               onClick={toggleSound}
               type="button"
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs tracking-wider transition-all duration-300 ${
+              aria-label={isPlayingAudio ? 'Tắt nhạc phòng trà' : 'Bật nhạc phòng trà'}
+              className={`w-9 h-9 shrink-0 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer ${
                 isPlayingAudio
-                  ? 'bg-brass/20 border-brass text-brass shadow-sm shadow-brass/30'
-                  : 'bg-walnut/40 border-stone/30 text-stone-light hover:text-ivory hover:border-brass/50'
+                  ? 'bg-brass/20 border-brass text-vermilion shadow-sm shadow-brass/25'
+                  : 'bg-walnut/80 border-stone/35 text-ivory hover:text-brass hover:border-brass/60'
               }`}
-              title={isPlayingAudio ? 'Tắt âm thanh tĩnh tâm' : 'Bật âm thanh tĩnh tâm (tiếng nước chảy & cổ cầm)'}
+              title={isPlayingAudio ? 'Tắt nhạc phòng trà' : 'Bật nhạc phòng trà (Đàn Cổ Tranh & Tiêu Trúc)'}
             >
               {isPlayingAudio ? (
-                <>
-                  <Volume2 className="w-3.5 h-3.5 text-brass animate-pulse" />
-                  <span className="hidden xl:inline text-[11px]">Âm sắc thiền</span>
-                </>
+                <Volume2 className="w-4 h-4 text-vermilion animate-pulse" />
               ) : (
-                <>
-                  <VolumeX className="w-3.5 h-3.5" />
-                  <span className="hidden xl:inline text-[11px]">Âm thanh</span>
-                </>
+                <VolumeX className="w-4 h-4 text-brass" />
               )}
             </button>
-
-            {/* Hotline Link */}
-            <a
-              href={`tel:${BRAND_CONFIG.hotline.replace(/\s+/g, '')}`}
-              className="hidden md:flex items-center gap-1.5 text-xs tracking-wider text-ivory-muted hover:text-brass transition-colors"
-            >
-              <Phone className="w-3 h-3 text-brass" />
-              <span>{BRAND_CONFIG.hotline}</span>
-            </a>
 
             {/* Primary Booking CTA */}
             <Link
               href="/booking"
-              className="relative inline-flex items-center justify-center px-4 py-2 text-xs uppercase tracking-[0.18em] font-medium text-white bg-vermilion hover:bg-vermilion-light transition-all duration-300 rounded-sm shadow-lg shadow-vermilion/20 hover:shadow-vermilion/40 active:translate-y-0.5"
+              className="whitespace-nowrap shrink-0 relative inline-flex items-center justify-center px-4 lg:px-5 py-2.5 text-[11px] lg:text-xs uppercase tracking-[0.16em] font-medium text-white bg-vermilion hover:bg-vermilion-light transition-all duration-300 rounded-xs shadow-md shadow-vermilion/20 hover:shadow-vermilion/40 active:translate-y-0.5"
             >
               <span className="flex items-center gap-1.5">
-                <CalendarCheck className="w-3.5 h-3.5" />
-                Đặt phòng trà
+                <CalendarCheck className="w-3.5 h-3.5 shrink-0" />
+                <span>Đặt phòng trà</span>
               </span>
             </Link>
+
+            {/* Compact Menu Toggle for Tablet (< 1024px) */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-ivory hover:text-brass focus:outline-none"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
 
-          {/* Mobile Menu Toggle Button */}
-          <div className="flex sm:hidden items-center gap-2">
+          {/* Mobile Menu Toggle Button (< 640px) */}
+          <div className="flex sm:hidden items-center gap-2 shrink-0">
             <button
               onClick={toggleSound}
               className="p-2 text-stone-light hover:text-brass"
-              title="Âm thanh"
+              title="Nhạc phòng trà"
             >
-              {isPlayingAudio ? <Volume2 className="w-4 h-4 text-brass" /> : <VolumeX className="w-4 h-4" />}
+              {isPlayingAudio ? <Volume2 className="w-4 h-4 text-vermilion animate-pulse" /> : <VolumeX className="w-4 h-4 text-brass" />}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -147,10 +140,10 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Drawer Menu */}
+      {/* Responsive Drawer Menu (< 1280px) */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-charcoal/95 backdrop-blur-xl pt-24 px-6 flex flex-col justify-between pb-10 sm:hidden">
-          <div className="space-y-6">
+        <div className="fixed inset-0 z-40 bg-charcoal/98 backdrop-blur-xl pt-24 px-6 flex flex-col justify-between pb-10 xl:hidden">
+          <div className="max-w-lg mx-auto w-full space-y-6">
             <div className="border-b border-brass/20 pb-4">
               <span className="text-xs uppercase tracking-[0.2em] text-brass">
                 {BRAND_CONFIG.brandSubtitle}
@@ -165,7 +158,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-serif text-lg text-ivory/90 hover:text-brass transition-colors py-1 border-b border-stone/10"
+                  className="font-serif text-lg text-ivory/90 hover:text-brass transition-colors py-1.5 border-b border-stone/10"
                 >
                   {link.label}
                 </Link>
@@ -181,17 +174,17 @@ export default function Navbar() {
             </nav>
           </div>
 
-          <div className="space-y-4 pt-6 border-t border-brass/20">
+          <div className="max-w-lg mx-auto w-full space-y-4 pt-6 border-t border-brass/20">
             <div className="flex items-center justify-between text-xs text-stone-light">
               <span>Hotline phục vụ:</span>
-              <a href={`tel:${BRAND_CONFIG.hotline.replace(/\s+/g, '')}`} className="text-brass font-medium">
+              <a href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`} className="text-brass font-medium">
                 {BRAND_CONFIG.hotline}
               </a>
             </div>
             <Link
               href="/booking"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-md"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-[0.2em] font-medium rounded-xs shadow-md"
             >
               <CalendarCheck className="w-4 h-4" />
               Đặt phòng trà trực tuyến

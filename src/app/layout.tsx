@@ -1,7 +1,8 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { BRAND_CONFIG } from '@/lib/config';
+import PWARegister from '@/components/PWARegister';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
@@ -17,10 +18,28 @@ const jakarta = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
+export const viewport: Viewport = {
+  themeColor: '#8d342d',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://lungvaitea.vn'),
   title: `${BRAND_CONFIG.brandName} | ${BRAND_CONFIG.brandSubtitle}`,
   description: `${BRAND_CONFIG.brandTagline}. Khám phá không gian phòng trà riêng tư, bộ sưu tập trà Shan Tuyết cổ thụ Lùng Vài, Oolong thượng hạng và đặt phòng trực tuyến.`,
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Lùng Vài Admin',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   keywords: [
     'lùng vài tea',
     'lung vai tea',
@@ -32,7 +51,7 @@ export const metadata: Metadata = {
     'phòng trà riêng tư',
     'thưởng trà đàm đạo',
     'đặt phòng trà',
-    'ấm tử sa'
+    'ấm tử sa',
   ],
   openGraph: {
     title: `${BRAND_CONFIG.brandName} — ${BRAND_CONFIG.brandSubtitle}`,
@@ -44,6 +63,7 @@ export const metadata: Metadata = {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/icon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icon.png', sizes: '512x512', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
@@ -61,6 +81,7 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${cormorant.variable} ${jakarta.variable} scroll-smooth`}>
       <body className="min-h-screen bg-charcoal text-ivory antialiased selection:bg-vermilion selection:text-ivory-light">
+        <PWARegister />
         {children}
       </body>
     </html>

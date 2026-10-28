@@ -47,7 +47,7 @@ export default function FinalBookingInvitation() {
           </Link>
 
           <a
-            href={`tel:${BRAND_CONFIG.hotline.replace(/\s+/g, '')}`}
+            href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 border border-brass/50 hover:border-brass bg-white/90 hover:bg-white backdrop-blur-sm text-ivory hover:text-brass text-xs uppercase tracking-[0.2em] font-medium rounded-sm shadow-md transition-all"
           >
             <PhoneCall className="w-4 h-4 text-brass" />

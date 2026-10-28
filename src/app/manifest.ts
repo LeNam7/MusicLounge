@@ -1,0 +1,35 @@
+import type { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'Lùng Vài Tea — Quản Trị Phòng Trà',
+    short_name: 'Lùng Vài Admin',
+    description: 'Ứng dụng quản trị duyệt lịch đặt phòng và theo dõi khung giờ phòng trà Lùng Vài Tea',
+    start_url: '/admin',
+    display: 'standalone',
+    background_color: '#FAF7F2',
+    theme_color: '#1D4A38',
+    orientation: 'portrait-primary',
+    icons: [
+      {
+        src: '/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+    ],
+    categories: ['business', 'lifestyle'],
+  };
+}

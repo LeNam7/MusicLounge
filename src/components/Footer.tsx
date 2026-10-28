@@ -56,7 +56,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-brass flex-shrink-0" />
-                <a href={`tel:${BRAND_CONFIG.hotline.replace(/\s+/g, '')}`} className="text-ivory-muted hover:text-brass transition-colors">
+                <a href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`} className="text-ivory-muted hover:text-brass transition-colors">
                   {BRAND_CONFIG.hotline}
                 </a>
               </li>

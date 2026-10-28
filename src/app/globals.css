@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../**";
 
 @theme {
   /* Warm Ivory Silk & Zen Rice Paper Backgrounds */
@@ -16,15 +17,15 @@
   --color-ivory-light: #120E0B;
   --color-ivory-muted: #574E43;
 
-  /* Imperial Vermilion Cinnabar Red Accents */
-  --color-vermilion: #9E2D23;
-  --color-vermilion-light: #BA372C;
-  --color-vermilion-dark: #7B1F17;
+  /* Noble Shan Tuyết Tea Green Accents (Dịu mát, quý phái, thay thế màu đỏ) */
+  --color-vermilion: #1D4A38;
+  --color-vermilion-light: #28604A;
+  --color-vermilion-dark: #143527;
 
-  /* Refined Antique Brass & Gold */
-  --color-brass: #96753C;
-  --color-brass-light: #B89556;
-  --color-brass-dark: #745828;
+  /* Refined Antique Brass & Warm Champagne Gold */
+  --color-brass: #9E7D42;
+  --color-brass-light: #BF9C5E;
+  --color-brass-dark: #7A5F30;
 
   /* Natural Tea Stone & Muted Borders */
   --color-stone: #786D5F;
@@ -45,12 +46,12 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  selection-background-color: #9E2D23;
+  selection-background-color: #1D4A38;
   selection-color: #FFFFFF;
 }
 
 ::selection {
-  background-color: #9E2D23;
+  background-color: #1D4A38;
   color: #FFFFFF;
 }
 
