@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "tsx scripts/test-booking.ts",
-    "test:e2e": "tsx scripts/test-e2e.ts"
+    "test:e2e": "tsx scripts/test-e2e.ts",
+    "share": "tsx scripts/share.ts"
   },
   "dependencies": {
     "lucide-react": "^1.61.0",

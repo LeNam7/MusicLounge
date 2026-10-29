@@ -28,6 +28,8 @@ import {
   History,
   Settings,
   LayoutGrid,
+  Smartphone,
+  Download,
 } from 'lucide-react';
 import {
   Booking,
@@ -989,10 +991,19 @@ function AdminDashboardContent() {
             </button>
           </form>
 
-          <div className="text-center pt-2">
-            <Link href="/" className="text-xs text-stone-light hover:text-brass transition-colors">
-              ← Quay lại trang chủ
+          <div className="pt-2 border-t border-stone/20 text-center space-y-3">
+            <Link
+              href="/install"
+              className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-3 bg-tea-green/20 hover:bg-tea-green/30 border border-tea-green/40 text-tea-sage text-xs font-semibold rounded-xs transition-all shadow-sm"
+            >
+              <Smartphone className="w-4 h-4" />
+              Cài đặt App lên màn hình điện thoại
             </Link>
+            <div>
+              <Link href="/" className="text-xs text-stone-light hover:text-brass transition-colors">
+                ← Quay lại trang chủ Lùng Vài Tea
+              </Link>
+            </div>
           </div>
         </div>
       </div>
