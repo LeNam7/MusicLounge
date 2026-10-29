@@ -68,12 +68,12 @@ async function main() {
       console.log('============================================================\n');
       console.log('📲 LINK CÀI ĐẶT APP CHO ĐIỆN THOẠI (1 Chạm là cài):');
       console.log(`   👉 ${installUrl}\n`);
+      console.log('📱 LINK TRUY CẬP TRỰC TIẾP TRANG QUẢN TRỊ (/admin):');
+      console.log(`   👉 ${adminUrl}\n`);
       console.log('🔑 MÃ PIN ĐĂNG NHẬP QUẢN TRỊ:');
       console.log('   👉 serenity2026\n');
       console.log('🌐 LINK WEBSITE CHO KHÁCH ĐẶT LỊCH:');
       console.log(`   👉 ${bookingUrl}\n`);
-      console.log('📱 MÃ QR ĐỂ QUÉT BẰNG CAMERA ĐIỆN THOẠI:');
-      console.log(`   👉 ${qrImageUrl}\n`);
       console.log('============================================================');
       console.log('Mở link trên bằng điện thoại và bấm "Cài đặt App" để thêm ra màn hình chính.');
       console.log('Nhấn Ctrl+C để dừng chia sẻ.\n');

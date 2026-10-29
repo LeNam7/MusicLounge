@@ -13,8 +13,11 @@ import {
   Zap,
   Bell,
   ArrowRight,
-  QrCode,
   Sparkles,
+  Copy,
+  Check,
+  ExternalLink,
+  Link as LinkIcon,
 } from 'lucide-react';
 
 export default function InstallAppPage() {
@@ -24,11 +27,12 @@ export default function InstallAppPage() {
   const [showIosGuide, setShowIosGuide] = useState<boolean>(false);
   const [installSuccess, setInstallSuccess] = useState<boolean>(false);
   const [currentUrl, setCurrentUrl] = useState<string>('');
+  const [copied, setCopied] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    setCurrentUrl(window.location.origin + '/install');
+    setCurrentUrl(`${window.location.origin}/admin`);
 
     // Detect standalone mode (already installed as PWA)
     const standalone =
@@ -69,16 +73,29 @@ export default function InstallAppPage() {
     } else if (isIos) {
       setShowIosGuide(true);
     } else {
-      // Show guide for other browsers / desktop
       setShowIosGuide(true);
     }
   };
 
-  const qrCodeUrl = currentUrl
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(
-        currentUrl
-      )}`
-    : '';
+  const handleCopyLink = async () => {
+    const linkToCopy = currentUrl || 'https://tea.anf-technology.com/admin';
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(linkToCopy);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = linkToCopy;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Fallback
+    }
+  };
 
   return (
     <div className="min-h-screen bg-charcoal text-ivory flex flex-col justify-between p-4 sm:p-8">
@@ -173,45 +190,63 @@ export default function InstallAppPage() {
               {/* Divider */}
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-stone/20" />
-                <span className="text-[11px] text-stone uppercase tracking-widest">HOẶC DÙNG MÃ QR</span>
+                <span className="text-[11px] text-stone uppercase tracking-widest font-medium">
+                  ĐƯỜNG LINK TRUY CẬP VÀ CHIA SẺ
+                </span>
                 <div className="flex-1 h-px bg-stone/20" />
               </div>
 
-              {/* QR Code Section for scanning from phone */}
-              {qrCodeUrl && (
-                <div className="bg-charcoal/80 border border-stone/20 rounded-xs p-5 flex flex-col sm:flex-row items-center gap-5">
-                  <div className="bg-white p-2 rounded-xs shadow-md flex-shrink-0">
-                    <img
-                      src={qrCodeUrl}
-                      alt="Mã QR Cài đặt Lùng Vài Admin"
-                      width={140}
-                      height={140}
-                      className="w-28 h-28 sm:w-32 sm:h-32 object-contain"
-                    />
+              {/* Shareable Link Box */}
+              <div className="bg-charcoal/80 border border-stone/20 rounded-xs p-5 space-y-3.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-brass text-xs font-semibold">
+                    <LinkIcon className="w-4 h-4" />
+                    <span>Đường Link Ứng Dụng Quản Trị</span>
                   </div>
-                  <div className="space-y-2 text-center sm:text-left">
-                    <div className="flex items-center justify-center sm:justify-start gap-1.5 text-brass text-xs font-semibold">
-                      <QrCode className="w-4 h-4" />
-                      Quét Bằng Camera Điện Thoại
-                    </div>
-                    <p className="text-xs text-stone-light leading-relaxed">
-                      Mở ứng dụng <strong>Camera</strong> trên điện thoại và hướng vào mã QR này để mở trang cài đặt app trực tiếp.
-                    </p>
-                    <span className="inline-block text-[10px] text-tea-sage bg-tea-green/10 px-2 py-0.5 rounded-full border border-tea-green/20">
-                      Tự động nhận diện iPhone & Android
+                  {copied && (
+                    <span className="inline-flex items-center gap-1 text-[11px] text-tea-sage bg-tea-green/20 border border-tea-green/40 px-2 py-0.5 rounded-full font-medium">
+                      <Check className="w-3 h-3" />
+                      Đã sao chép link!
                     </span>
-                  </div>
+                  )}
                 </div>
-              )}
 
-              {/* Direct Access Link */}
-              <div className="pt-2 text-center">
-                <Link
-                  href="/admin"
-                  className="text-xs text-stone-light hover:text-brass transition-colors inline-flex items-center gap-1 underline underline-offset-4"
-                >
-                  Hoặc truy cập trực tiếp vào Bảng Quản Trị trên trình duyệt →
-                </Link>
+                <div className="flex flex-col sm:flex-row items-stretch gap-2">
+                  <div className="flex-1 bg-charcoal border border-stone/30 px-3.5 py-2.5 rounded-xs text-xs font-mono text-ivory select-all truncate flex items-center">
+                    {currentUrl || 'https://tea.anf-technology.com/admin'}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyLink}
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-tea-green hover:bg-tea-dark active:scale-[0.98] text-white text-xs font-semibold rounded-xs shadow-md transition-all cursor-pointer whitespace-nowrap"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        <span>Đã chép</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        <span>Sao chép link</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-stone/10 text-xs">
+                  <p className="text-[11px] text-stone-light">
+                    Mã PIN đăng nhập: <strong className="text-brass font-mono">serenity2026</strong>
+                  </p>
+                  <Link
+                    href="/admin"
+                    className="inline-flex items-center gap-1 text-xs text-brass hover:text-ivory underline underline-offset-2 transition-colors"
+                  >
+                    Mở Bảng Quản Trị ngay
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </div>
             </div>
           )}
