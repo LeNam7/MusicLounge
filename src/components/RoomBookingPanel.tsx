@@ -23,7 +23,7 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
   const todayStr = getLocalToday();
 
   const [selectedDate, setSelectedDate] = useState<string>(todayStr);
-  const [durationHours, setDurationHours] = useState<number>(2);
+  const [durationHours, setDurationHours] = useState<number>(1.5);
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [guestCount, setGuestCount] = useState<number>(room.capacityMin);
 
@@ -131,7 +131,7 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
             onChange={(e) => setDurationHours(parseFloat(e.target.value))}
             className="w-full bg-charcoal border border-stone/30 focus:border-brass text-ivory px-3 py-2 rounded-xs text-xs outline-none"
           >
-            <option value={1.5}>1.5 giờ (Nhanh)</option>
+            <option value={1.5}>1.5 giờ (90 phút — Khuyên dùng)</option>
             <option value={2}>2.0 giờ (Chuẩn trà lễ)</option>
             <option value={3}>3.0 giờ (Đàm đạo)</option>
             <option value={4}>4.0 giờ (Trang trọng)</option>

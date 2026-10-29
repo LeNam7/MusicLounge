@@ -70,7 +70,7 @@ export default function BookingWizard({
 
   const todayStr = getLocalToday();
   const [selectedDate, setSelectedDate] = useState<string>(preselectedDate || todayStr);
-  const [durationHours, setDurationHours] = useState<number>(preselectedDuration || 2);
+  const [durationHours, setDurationHours] = useState<number>(preselectedDuration || 1.5);
   const [guestCount, setGuestCount] = useState<number>(preselectedGuests || 2);
   const [selectedStartTime, setSelectedStartTime] = useState<string>(preselectedTime || '');
 
@@ -539,8 +539,8 @@ export default function BookingWizard({
                   }}
                   className="w-full bg-white border border-stone-dark/80 focus:border-brass text-ivory px-4 py-2.5 rounded-sm text-sm outline-none transition-colors shadow-2xs"
                 >
-                  <option value={1.5}>1.5 giờ (Gói nhanh)</option>
-                  <option value={2}>2.0 giờ (Khuyên dùng - Chuẩn trà lễ)</option>
+                  <option value={1.5}>1.5 giờ (90 phút — Khuyên dùng)</option>
+                  <option value={2}>2.0 giờ (Chuẩn trà lễ)</option>
                   <option value={3}>3.0 giờ (Thong thả đàm đạo)</option>
                   <option value={4}>4.0 giờ (Họp mặt trang trọng)</option>
                 </select>

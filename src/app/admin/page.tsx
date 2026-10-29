@@ -106,7 +106,7 @@ function AdminDashboardContent() {
   // Daily Slot Calendar state
   const [calendarDate, setCalendarDate] = useState<string>(getTodayDateString());
   const [calendarRoomId, setCalendarRoomId] = useState<string>('room-1');
-  const [calendarDuration, setCalendarDuration] = useState<number>(2);
+  const [calendarDuration, setCalendarDuration] = useState<number>(1.5);
   const [calendarSlots, setCalendarSlots] = useState<TimeSlot[]>([]);
   const [loadingCalendar, setLoadingCalendar] = useState<boolean>(false);
 
@@ -1781,10 +1781,11 @@ function AdminDashboardContent() {
                     onChange={(e) => setCalendarDuration(Number(e.target.value))}
                     className="bg-charcoal border border-stone/30 focus:border-brass text-xs px-3 py-2 rounded-xs text-ivory outline-none"
                   >
-                    <option value={1}>1 giờ</option>
-                    <option value={2}>2 giờ (Mặc định)</option>
-                    <option value={3}>3 giờ</option>
-                    <option value={4}>4 giờ</option>
+                    <option value={1}>1.0 giờ</option>
+                    <option value={1.5}>1.5 giờ (90p — Khuyên dùng)</option>
+                    <option value={2}>2.0 giờ (Chuẩn trà lễ)</option>
+                    <option value={3}>3.0 giờ</option>
+                    <option value={4}>4.0 giờ</option>
                   </select>
                 </div>
               </div>
