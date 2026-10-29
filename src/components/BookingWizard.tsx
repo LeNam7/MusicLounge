@@ -71,7 +71,7 @@ export default function BookingWizard({
   const todayStr = getLocalToday();
   const [selectedDate, setSelectedDate] = useState<string>(preselectedDate || todayStr);
   const [durationHours, setDurationHours] = useState<number>(preselectedDuration || 1.5);
-  const [guestCount, setGuestCount] = useState<number>(preselectedGuests || 2);
+  const [guestCount, setGuestCount] = useState<number | ''>(preselectedGuests || 2);
   const [selectedStartTime, setSelectedStartTime] = useState<string>(preselectedTime || '');
 
   const [selectedTeaId, setSelectedTeaId] = useState<string>(() => {
@@ -119,16 +119,17 @@ export default function BookingWizard({
       .slice(2, 7)}`;
   }, [selectedRoomId, selectedDate, selectedStartTime, durationHours, customerPhone]);
 
-  // Sync guest count with room capacity
+  // Sync guest count with room capacity only when room changes (avoid interrupting active typing)
   useEffect(() => {
     if (selectedRoom) {
-      if (guestCount < selectedRoom.capacityMin) {
-        setGuestCount(selectedRoom.capacityMin);
-      } else if (guestCount > selectedRoom.capacityMax) {
-        setGuestCount(selectedRoom.capacityMax);
-      }
+      setGuestCount((prev) => {
+        const num = Number(prev) || selectedRoom.capacityMin;
+        if (num < selectedRoom.capacityMin) return selectedRoom.capacityMin;
+        if (num > selectedRoom.capacityMax) return selectedRoom.capacityMax;
+        return num;
+      });
     }
-  }, [selectedRoomId, selectedRoom, guestCount]);
+  }, [selectedRoomId]);
 
   // Fetch available slots from backend (source of truth)
   const fetchSlots = useCallback(
@@ -313,7 +314,7 @@ export default function BookingWizard({
           date: selectedDate,
           startTime: selectedStartTime,
           durationHours,
-          guestCount,
+          guestCount: Number(guestCount) || selectedRoom.capacityMin,
           teaPackageId:
             selectedTeaId && selectedTeaId !== 'counter-service' ? selectedTeaId : undefined,
           specialRequests: specialRequests.trim() || undefined,
@@ -550,18 +551,55 @@ export default function BookingWizard({
                 <label className="block text-xs uppercase tracking-[0.15em] text-ivory-muted font-medium mb-2">
                   3. Số lượng khách ({selectedRoom.capacityMin} - {selectedRoom.capacityMax} người):
                 </label>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = Number(guestCount) || selectedRoom.capacityMin;
+                      if (cur > selectedRoom.capacityMin) {
+                        setGuestCount(cur - 1);
+                      }
+                    }}
+                    disabled={Number(guestCount) <= selectedRoom.capacityMin}
+                    className="w-10 h-10 rounded-sm bg-stone-light/10 hover:bg-stone-light/20 active:bg-stone-light/30 border border-stone-dark/40 text-ivory font-bold text-lg flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-2xs select-none active:scale-95"
+                    title="Giảm 1 khách"
+                  >
+                    −
+                  </button>
                   <input
-                    type="number"
-                    min={selectedRoom.capacityMin}
-                    max={selectedRoom.capacityMax}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={guestCount}
-                    onChange={(e) =>
-                      setGuestCount(parseInt(e.target.value, 10) || selectedRoom.capacityMin)
-                    }
-                    className="w-full bg-white border border-stone-dark/80 focus:border-brass text-ivory px-4 py-2.5 rounded-sm text-sm outline-none transition-colors shadow-2xs"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, '');
+                      setGuestCount(val === '' ? '' : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      const num = Number(guestCount);
+                      if (!num || num < selectedRoom.capacityMin) {
+                        setGuestCount(selectedRoom.capacityMin);
+                      } else if (num > selectedRoom.capacityMax) {
+                        setGuestCount(selectedRoom.capacityMax);
+                      }
+                    }}
+                    className="w-20 text-center bg-white border border-stone-dark/80 focus:border-brass text-ivory py-2 rounded-sm text-base font-semibold outline-none transition-colors shadow-2xs"
                   />
-                  <div className="flex items-center gap-1 text-xs text-stone-light whitespace-nowrap">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = Number(guestCount) || selectedRoom.capacityMin;
+                      if (cur < selectedRoom.capacityMax) {
+                        setGuestCount(cur + 1);
+                      }
+                    }}
+                    disabled={Number(guestCount) >= selectedRoom.capacityMax}
+                    className="w-10 h-10 rounded-sm bg-stone-light/10 hover:bg-stone-light/20 active:bg-stone-light/30 border border-stone-dark/40 text-ivory font-bold text-lg flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-2xs select-none active:scale-95"
+                    title="Tăng 1 khách"
+                  >
+                    +
+                  </button>
+                  <div className="flex items-center gap-1 text-xs text-stone-light ml-1 whitespace-nowrap">
                     <Users className="w-4 h-4 text-brass" />
                     <span>khách</span>
                   </div>

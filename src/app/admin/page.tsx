@@ -99,9 +99,9 @@ function AdminDashboardContent() {
   // Rooms list & editing
   const [rooms, setRooms] = useState<Room[]>([]);
   const [editingRoomId, setEditingRoomId] = useState<string | null>(null);
-  const [editPricePerHour, setEditPricePerHour] = useState<number>(0);
-  const [editPricePackage2h, setEditPricePackage2h] = useState<number>(0);
-  const [editCapacityMax, setEditCapacityMax] = useState<number>(0);
+  const [editPricePerHour, setEditPricePerHour] = useState<number | ''>(0);
+  const [editPricePackage2h, setEditPricePackage2h] = useState<number | ''>(0);
+  const [editCapacityMax, setEditCapacityMax] = useState<number | ''>(0);
 
   // Daily Slot Calendar state
   const [calendarDate, setCalendarDate] = useState<string>(getTodayDateString());
@@ -821,9 +821,9 @@ function AdminDashboardContent() {
         method: 'PATCH',
         headers: authHeaders(),
         body: JSON.stringify({
-          pricePerHour: editPricePerHour,
-          pricePackage2h: editPricePackage2h,
-          capacityMax: editCapacityMax,
+          pricePerHour: Number(editPricePerHour) || room.pricePerHour,
+          pricePackage2h: Number(editPricePackage2h) || room.pricePackage2h,
+          capacityMax: Number(editCapacityMax) || room.capacityMax,
         }),
       });
 
@@ -1977,9 +1977,14 @@ function AdminDashboardContent() {
                         onChange={(e) =>
                           setSettings({
                             ...settings,
-                            defaultDurationHours: Number(e.target.value) || 2,
+                            defaultDurationHours: e.target.value === '' ? ('' as unknown as number) : Number(e.target.value),
                           })
                         }
+                        onBlur={() => {
+                          if (!settings.defaultDurationHours || Number(settings.defaultDurationHours) < 1) {
+                            setSettings({ ...settings, defaultDurationHours: 1.5 });
+                          }
+                        }}
                         className="w-full bg-charcoal border border-stone/30 p-2.5 text-ivory rounded-xs"
                       />
                     </div>
@@ -1996,9 +2001,14 @@ function AdminDashboardContent() {
                         onChange={(e) =>
                           setSettings({
                             ...settings,
-                            holdDurationHours: Number(e.target.value) || 24,
+                            holdDurationHours: e.target.value === '' ? ('' as unknown as number) : Number(e.target.value),
                           })
                         }
+                        onBlur={() => {
+                          if (!settings.holdDurationHours || Number(settings.holdDurationHours) < 1) {
+                            setSettings({ ...settings, holdDurationHours: 24 });
+                          }
+                        }}
                         className="w-full bg-charcoal border border-stone/30 p-2.5 text-ivory rounded-xs"
                       />
                     </div>
@@ -2326,7 +2336,7 @@ function AdminDashboardContent() {
                         <input
                           type="number"
                           value={editPricePerHour}
-                          onChange={(e) => setEditPricePerHour(parseInt(e.target.value) || 0)}
+                          onChange={(e) => setEditPricePerHour(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
                           className="w-full bg-charcoal border border-stone/30 p-2 text-ivory rounded-xs"
                         />
                       </div>
@@ -2337,7 +2347,7 @@ function AdminDashboardContent() {
                         <input
                           type="number"
                           value={editPricePackage2h}
-                          onChange={(e) => setEditPricePackage2h(parseInt(e.target.value) || 0)}
+                          onChange={(e) => setEditPricePackage2h(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
                           className="w-full bg-charcoal border border-stone/30 p-2 text-ivory rounded-xs"
                         />
                       </div>
@@ -2348,7 +2358,7 @@ function AdminDashboardContent() {
                         <input
                           type="number"
                           value={editCapacityMax}
-                          onChange={(e) => setEditCapacityMax(parseInt(e.target.value) || 0)}
+                          onChange={(e) => setEditCapacityMax(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
                           className="w-full bg-charcoal border border-stone/30 p-2 text-ivory rounded-xs"
                         />
                       </div>

@@ -25,7 +25,7 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
   const [selectedDate, setSelectedDate] = useState<string>(todayStr);
   const [durationHours, setDurationHours] = useState<number>(1.5);
   const [selectedTime, setSelectedTime] = useState<string>('');
-  const [guestCount, setGuestCount] = useState<number>(room.capacityMin);
+  const [guestCount, setGuestCount] = useState<number | ''>(room.capacityMin);
 
   const [loadingSlots, setLoadingSlots] = useState<boolean>(false);
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
@@ -142,14 +142,47 @@ export default function RoomBookingPanel({ room }: RoomBookingPanelProps) {
           <label className="block text-xs uppercase tracking-wider text-stone-light mb-1.5 font-medium">
             Số lượng khách ({room.capacityMin} - {room.capacityMax} người)
           </label>
-          <input
-            type="number"
-            min={room.capacityMin}
-            max={room.capacityMax}
-            value={guestCount}
-            onChange={(e) => setGuestCount(parseInt(e.target.value, 10) || room.capacityMin)}
-            className="w-full bg-charcoal border border-stone/30 focus:border-brass text-ivory px-3 py-2 rounded-xs text-xs outline-none"
-          />
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                const cur = Number(guestCount) || room.capacityMin;
+                if (cur > room.capacityMin) setGuestCount(cur - 1);
+              }}
+              disabled={Number(guestCount) <= room.capacityMin}
+              className="w-9 h-9 rounded-xs bg-charcoal border border-stone/40 hover:border-brass text-ivory font-bold text-base flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-95"
+            >
+              −
+            </button>
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={guestCount}
+              onChange={(e) => {
+                const val = e.target.value.replace(/[^0-9]/g, '');
+                setGuestCount(val === '' ? '' : parseInt(val, 10));
+              }}
+              onBlur={() => {
+                const num = Number(guestCount);
+                if (!num || num < room.capacityMin) setGuestCount(room.capacityMin);
+                else if (num > room.capacityMax) setGuestCount(room.capacityMax);
+              }}
+              className="w-16 text-center bg-charcoal border border-stone/30 focus:border-brass text-ivory py-1.5 rounded-xs text-xs font-semibold outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                const cur = Number(guestCount) || room.capacityMin;
+                if (cur < room.capacityMax) setGuestCount(cur + 1);
+              }}
+              disabled={Number(guestCount) >= room.capacityMax}
+              className="w-9 h-9 rounded-xs bg-charcoal border border-stone/40 hover:border-brass text-ivory font-bold text-base flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all active:scale-95"
+            >
+              +
+            </button>
+            <span className="text-xs text-stone-light ml-1">người</span>
+          </div>
         </div>
 
         {/* Quick Time Slot Selector (4 States) */}
