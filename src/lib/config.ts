@@ -27,7 +27,7 @@ export const INITIAL_ROOMS: Room[] = [
     description: 'Không gian trà đạo mộc mạc và tĩnh lặng, lấy cảm hứng từ tiết thấu thanh thoát của rặng trúc phương Đông và sắc nâu trầm của gỗ tự nhiên.',
     fullDescription: 'Phòng trà Trúc Ảnh được bài trí theo phong cách Tống đại tối giản kết hợp thẩm mỹ đương đại. Nổi bật tại trung tâm là chiếc bàn trà gỗ óc chó nguyên khối dài 3.2m cùng tiểu cảnh tùng bách bonsai cổ thụ. Hệ vách song gỗ điêu khắc tinh xảo lọc ánh sáng tự nhiên dịu nhẹ, tạo nên bức rèm thị giác riêng tư hoàn hảo cho những cuộc đàm đạo thân tình hay đàm phán trang trọng.',
     capacityMin: 2,
-    capacityMax: 8,
+    capacityMax: 10,
     pricePerHour: 450000,
     pricePackage2h: 800000,
     areaSqm: 38,

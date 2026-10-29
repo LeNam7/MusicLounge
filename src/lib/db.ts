@@ -327,7 +327,7 @@ function initSchema(db: DatabaseSync) {
     );
   }
 
-  // Seed default rooms if empty
+  // Seed default rooms if empty or sync capacities
   const roomCountStmt = db.prepare('SELECT COUNT(*) as count FROM rooms');
   const roomCount = (roomCountStmt.get() as { count: number }).count;
   if (roomCount === 0) {
@@ -360,6 +360,14 @@ function initSchema(db: DatabaseSync) {
         r.isActive ? 1 : 0,
         r.sortOrder
       );
+    }
+  } else {
+    // Sync capacity bounds from config for existing rooms
+    const updateCapacityStmt = db.prepare(
+      'UPDATE rooms SET capacity_min = ?, capacity_max = ? WHERE id = ?'
+    );
+    for (const r of INITIAL_ROOMS) {
+      updateCapacityStmt.run(r.capacityMin, r.capacityMax, r.id);
     }
   }
 
