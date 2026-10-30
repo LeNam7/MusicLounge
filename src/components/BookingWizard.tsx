@@ -914,18 +914,17 @@ export default function BookingWizard({
 
               <div className="sm:col-span-2">
                 <label className="block text-xs uppercase tracking-[0.15em] text-ivory-muted font-medium mb-2">
-                  Email nhận xác nhận đặt phòng (Gmail / Email) *
+                  Email nhận xác nhận đặt phòng (tuỳ chọn)
                 </label>
                 <input
                   type="email"
-                  required
-                  placeholder="Ví dụ: lenam287202@gmail.com"
+                  placeholder="Ví dụ: khachhang@gmail.com (không bắt buộc)"
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                   className="w-full bg-white border border-stone/30 focus:border-brass text-ivory px-4 py-3 rounded-sm text-sm outline-none transition-colors"
                 />
                 <p className="text-[11px] text-stone-500 mt-1">
-                  Trà quán sẽ gửi thư xác nhận lịch hẹn và thông tin chi tiết qua địa chỉ email này.
+                  Nếu điền email, trà quán sẽ tự động gửi thư xác nhận lịch hẹn và hướng dẫn chi tiết qua Gmail cho Quý khách.
                 </p>
               </div>
 
