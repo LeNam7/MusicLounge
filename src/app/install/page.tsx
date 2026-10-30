@@ -109,7 +109,10 @@ export default function InstallAppPage() {
       <div className="relative z-10 max-w-xl mx-auto w-full pt-4 pb-12">
         {/* Brand Header */}
         <div className="text-center space-y-3 mb-8">
-          <div className="relative w-20 h-24 mx-auto mb-2">
+          <div 
+            className="relative w-20 h-24 mx-auto mb-2"
+            style={{ width: '80px', height: '96px', maxWidth: '80px', maxHeight: '96px' }}
+          >
             <Image
               src="/images/logo-lung-vai-transparent.png"
               alt="Lùng Vài Tea"

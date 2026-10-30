@@ -1,5 +1,7 @@
 import { spawn } from 'node:child_process';
 import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
 
 async function waitForServer(port: number, timeoutMs = 20000): Promise<boolean> {
   const start = Date.now();
@@ -44,10 +46,15 @@ async function main() {
 
   console.log('⚡ Đang kết nối đường hầm bảo mật Cloudflare HTTPS...');
 
-  const untunProcess = spawn('cmd.exe', ['/c', 'pnpm', 'dlx', 'untun', 'tunnel', 'http://localhost:3000'], {
-    stdio: ['ignore', 'pipe', 'pipe'],
-    env: process.env,
-  });
+  const cfExe = path.join(process.cwd(), 'cloudflared.exe');
+  const tunnelProcess = fs.existsSync(cfExe)
+    ? spawn(cfExe, ['tunnel', '--url', 'http://localhost:3000'], {
+        stdio: ['ignore', 'pipe', 'pipe'],
+      })
+    : spawn('cmd.exe', ['/c', 'pnpm', 'dlx', 'untun', 'tunnel', 'http://localhost:3000'], {
+        stdio: ['ignore', 'pipe', 'pipe'],
+        env: process.env,
+      });
 
   let tunnelUrl = '';
 
@@ -80,12 +87,12 @@ async function main() {
     }
   };
 
-  untunProcess.stdout?.on('data', handleData);
-  untunProcess.stderr?.on('data', handleData);
+  tunnelProcess.stdout?.on('data', handleData);
+  tunnelProcess.stderr?.on('data', handleData);
 
   const cleanup = () => {
     console.log('\nĐang đóng các tiến trình...');
-    untunProcess.kill();
+    tunnelProcess.kill();
     if (nextProcess) nextProcess.kill();
     process.exit(0);
   };

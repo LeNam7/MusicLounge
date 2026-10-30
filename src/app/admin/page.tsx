@@ -935,7 +935,10 @@ function AdminDashboardContent() {
       <div className="min-h-screen bg-charcoal flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-walnut/90 border border-brass/40 p-8 rounded-sm shadow-2xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="relative w-18 h-22 sm:w-20 sm:h-25 mx-auto mb-3">
+            <div 
+              className="relative w-18 h-22 sm:w-20 sm:h-25 mx-auto mb-3"
+              style={{ width: '80px', height: '100px', maxWidth: '80px', maxHeight: '100px' }}
+            >
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea"
@@ -1025,7 +1028,10 @@ function AdminDashboardContent() {
       <header className="bg-walnut/90 border-b border-brass/30 py-4 px-6 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3.5">
-            <div className="relative w-10 h-13 flex-shrink-0">
+            <div 
+              className="relative w-10 h-13 flex-shrink-0"
+              style={{ width: '40px', height: '52px', maxWidth: '40px', maxHeight: '52px' }}
+            >
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea"

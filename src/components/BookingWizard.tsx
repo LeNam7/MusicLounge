@@ -1245,7 +1245,10 @@ export default function BookingWizard({
         {/* ================= STEP 4: REQUEST RECEIVED & LIVE STATUS TRACKING ================= */}
         {currentStep === 4 && createdBooking && (
           <div className="space-y-8 animate-fadeIn text-center">
-            <div className="relative w-16 h-22 mx-auto mb-2">
+            <div 
+              className="relative w-16 h-22 mx-auto mb-2"
+              style={{ width: '64px', height: '88px', maxWidth: '64px', maxHeight: '88px' }}
+            >
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea"

@@ -42,7 +42,10 @@ export default function Hero() {
         <div className="relative flex items-center justify-center mb-4 sm:mb-5 group">
           {/* Subtle warm ambient light halo behind the seal */}
           <div className="absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(255,250,240,0.65)_0%,rgba(245,223,176,0.28)_45%,transparent_75%)] blur-md pointer-events-none" />
-          <div className="relative w-16 h-22 sm:w-20 sm:h-28 lg:w-22 lg:h-30 brightness-115 saturate-115 drop-shadow-[0_0_14px_rgba(255,248,235,0.85)] group-hover:scale-105 transition-transform duration-500">
+          <div 
+            className="relative w-16 h-22 sm:w-20 sm:h-28 lg:w-22 lg:h-30 brightness-115 saturate-115 drop-shadow-[0_0_14px_rgba(255,248,235,0.85)] group-hover:scale-105 transition-transform duration-500"
+            style={{ width: '80px', height: '110px', maxWidth: '80px', maxHeight: '110px' }}
+          >
             <Image
               src="/images/logo-lung-vai-transparent.png"
               alt="Lùng Vài Tea Seal"
