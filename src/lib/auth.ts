@@ -1,12 +1,12 @@
 import crypto from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 
-const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || 'serenity2026';
+const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || 'teaanf2026';
 const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || `lvt-secret-${ADMIN_PASSCODE}-2026`;
 export const ADMIN_COOKIE_NAME = 'lvt_admin_session';
 
 export function getAdminPasscode(): string {
-  return process.env.ADMIN_PASSCODE || 'serenity2026';
+  return process.env.ADMIN_PASSCODE || 'teaanf2026';
 }
 
 export function createAdminSessionToken(actor: string = 'admin', ttlHours: number = 24): string {

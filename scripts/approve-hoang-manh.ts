@@ -6,7 +6,7 @@ async function approveHoangManh() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-admin-passcode': 'serenity2026',
+      'x-admin-passcode': 'teaanf2026',
     },
     body: JSON.stringify({
       adminNotes: 'Trân trọng kính mời Quý khách Hoàng Mạnh ghé thưởng trà Lùng Vài đúng giờ.',

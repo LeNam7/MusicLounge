@@ -980,7 +980,7 @@ function AdminDashboardContent() {
               <span className="text-[11px] text-stone block mt-1">
                 {process.env.NODE_ENV !== 'production' ? (
                   <>
-                    Cấu hình qua biến môi trường <code className="text-brass">ADMIN_PASSCODE</code> (Mặc định dev: <code className="text-brass">serenity2026</code>)
+                    Cấu hình qua biến môi trường <code className="text-brass">ADMIN_PASSCODE</code> (Mặc định dev: <code className="text-brass">teaanf2026</code>)
                   </>
                 ) : (
                   <>Vui lòng nhập mã PIN quản trị nội bộ để tiếp tục.</>

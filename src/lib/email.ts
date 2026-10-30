@@ -97,7 +97,7 @@ export async function sendAdminBookingEmail(
   const adminEmail =
     targetEmail || process.env.ADMIN_NOTIFICATION_EMAIL || 'lenam287202@gmail.com';
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const passcode = process.env.ADMIN_PASSCODE || 'serenity2026';
+  const passcode = process.env.ADMIN_PASSCODE || 'teaanf2026';
   const adminDirectUrl = `${appUrl}/admin?bookingId=${encodeURIComponent(
     booking.id
   )}&passcode=${encodeURIComponent(passcode)}`;

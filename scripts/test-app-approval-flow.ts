@@ -40,7 +40,7 @@ async function main() {
   const authRes = await fetch('http://localhost:3000/api/admin/auth', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ passcode: 'serenity2026' }),
+    body: JSON.stringify({ passcode: 'teaanf2026' }),
   });
   const cookie = authRes.headers.get('set-cookie')?.split(';')[0] || '';
   console.log('✓ Quản trị viên đã đăng nhập vào Web App thành công.\n');

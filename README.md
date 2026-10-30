@@ -76,7 +76,7 @@ cp .env.example .env.local
 ```
 Biến môi trường mẫu:
 ```env
-ADMIN_PASSCODE=serenity2026
+ADMIN_PASSCODE=teaanf2026
 PORT=3000
 ```
 
@@ -109,7 +109,7 @@ pnpm start -p 3000
 ## 6. Cổng Quản trị viên (Admin Portal)
 
 - **Đường dẫn:** `/admin`
-- **Mã PIN truy cập mặc định:** `serenity2026`
+- **Mã PIN truy cập mặc định:** `teaanf2026`
 - **Chức năng:**
   - Báo cáo thống kê: Lịch hẹn hôm nay, số đơn chờ duyệt, doanh thu ước tính.
   - Quản lý danh sách đặt phòng với bộ lọc theo ngày, trạng thái (`pending`, `confirmed`, `completed`, `cancelled`) và tìm kiếm từ khoá.

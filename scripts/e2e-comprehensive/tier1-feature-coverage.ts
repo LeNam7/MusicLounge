@@ -162,7 +162,7 @@ export async function runTier1(baseUrl: string): Promise<TierResult> {
     const res = await fetchHttp(`${baseUrl}/api/admin/auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ passcode: 'serenity2026' }),
+      body: JSON.stringify({ passcode: 'teaanf2026' }),
     });
 
     assertEqual(res.status, 200, 'Admin auth HTTP status');

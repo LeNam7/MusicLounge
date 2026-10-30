@@ -89,7 +89,7 @@ export function generateRandomPhone(): string {
 
 export async function resetDatabase(
   baseUrl: string,
-  passcode: string = 'serenity2026'
+  passcode: string = 'teaanf2026'
 ): Promise<boolean> {
   const res = await fetchHttp(`${baseUrl}/api/admin/reset`, {
     method: 'POST',
@@ -102,7 +102,7 @@ export async function resetDatabase(
 
 export async function getAdminSessionCookie(
   baseUrl: string,
-  passcode: string = 'serenity2026'
+  passcode: string = 'teaanf2026'
 ): Promise<string> {
   const res = await fetchHttp(`${baseUrl}/api/admin/auth`, {
     method: 'POST',

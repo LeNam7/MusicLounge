@@ -32,7 +32,7 @@ capture(
 // 2. Mobile pending tab with soothing palette
 capture(
   'Mobile Pending (Chờ duyệt - Soothing)',
-  'http://localhost:3000/admin?passcode=serenity2026&subtab=pending',
+  'http://localhost:3000/admin?passcode=teaanf2026&subtab=pending',
   390,
   1400,
   `${base}\\admin-mobile-cards.png`
@@ -41,7 +41,7 @@ capture(
 // 3. Desktop pending tab with soothing palette
 capture(
   'Desktop Pending (Soothing)',
-  'http://localhost:3000/admin?passcode=serenity2026&subtab=pending',
+  'http://localhost:3000/admin?passcode=teaanf2026&subtab=pending',
   1440,
   1100,
   `${base}\\admin-desktop-tabs.png`

@@ -5,7 +5,7 @@ async function runE2ETests() {
   // 0. Reset demo data before running suite
   const resetRes = await fetch(`${BASE_URL}/api/admin/reset`, {
     method: 'POST',
-    headers: { 'x-admin-passcode': 'serenity2026' },
+    headers: { 'x-admin-passcode': 'teaanf2026' },
   });
   if (!resetRes.ok) throw new Error(`Reset failed with status ${resetRes.status}`);
 
@@ -149,7 +149,7 @@ async function runE2ETests() {
   const authRes = await fetch(`${BASE_URL}/api/admin/auth`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ passcode: 'serenity2026' }),
+    body: JSON.stringify({ passcode: 'teaanf2026' }),
   });
   const setCookieHeader = authRes.headers.get('set-cookie') || '';
   if (!authRes.ok || !setCookieHeader.includes('lvt_admin_session=')) {

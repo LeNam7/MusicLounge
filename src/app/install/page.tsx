@@ -242,7 +242,7 @@ export default function InstallAppPage() {
                   <p className="text-[11px] text-stone-light">
                     {process.env.NODE_ENV !== 'production' ? (
                       <>
-                        Mã PIN đăng nhập (dev): <strong className="text-brass font-mono">serenity2026</strong>
+                        Mã PIN đăng nhập (dev): <strong className="text-brass font-mono">teaanf2026</strong>
                       </>
                     ) : (
                       <>Sử dụng mã PIN quản trị nội bộ của trà quán để đăng nhập</>
