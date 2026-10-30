@@ -13,7 +13,6 @@ import {
   ArrowLeft,
   Copy,
   Printer,
-  QrCode,
   Loader2,
   Check,
   XCircle,
@@ -46,6 +45,8 @@ export default function BookingWizard({
   preselectedGuests,
   initialStep,
 }: BookingWizardProps) {
+  const safeRooms = Array.isArray(initialRooms) ? initialRooms : [];
+
   const [currentStep, setCurrentStep] = useState<number>(() => {
     if (initialStep && initialStep >= 1 && initialStep <= 4) return initialStep;
     if (preselectedRoomSlug && (preselectedDate || preselectedTime)) return 2;
@@ -54,10 +55,10 @@ export default function BookingWizard({
 
   const [selectedRoomId, setSelectedRoomId] = useState<string>(() => {
     if (preselectedRoomSlug) {
-      const match = initialRooms.find((r) => r.slug === preselectedRoomSlug);
+      const match = safeRooms.find((r) => r.slug === preselectedRoomSlug);
       if (match) return match.id;
     }
-    return initialRooms[0]?.id || '';
+    return safeRooms[0]?.id || '';
   });
 
   const getLocalToday = () => {
@@ -75,7 +76,7 @@ export default function BookingWizard({
   const [selectedStartTime, setSelectedStartTime] = useState<string>(preselectedTime || '');
 
   const [selectedTeaId, setSelectedTeaId] = useState<string>(() => {
-    if (preselectedTeaId && initialTeaPackages.some((t) => t.id === preselectedTeaId)) {
+    if (preselectedTeaId && (initialTeaPackages || []).some((t) => t.id === preselectedTeaId)) {
       return preselectedTeaId;
     }
     return 'counter-service'; // Model C: Mặc định Thưởng trà tự do tại quán (0 đ) để đặt lịch siêu tốc
@@ -109,8 +110,14 @@ export default function BookingWizard({
   // Idempotency key per form submission intent
   const idempotencyKeyRef = useRef<string>('');
 
-  const selectedRoom = initialRooms.find((r) => r.id === selectedRoomId) || initialRooms[0];
-  const selectedTea = initialTeaPackages.find((t) => t.id === selectedTeaId);
+  const selectedRoom = safeRooms.find((r) => r.id === selectedRoomId) || safeRooms[0];
+  const selectedTea = (initialTeaPackages || []).find((t) => t.id === selectedTeaId);
+
+  // Keep a ref to the latest selectedStartTime to avoid re-triggering fetchSlots
+  const selectedStartTimeRef = useRef<string>(selectedStartTime);
+  useEffect(() => {
+    selectedStartTimeRef.current = selectedStartTime;
+  }, [selectedStartTime]);
 
   // Reset idempotency key when booking parameters change
   useEffect(() => {
@@ -129,7 +136,7 @@ export default function BookingWizard({
         return num;
       });
     }
-  }, [selectedRoomId]);
+  }, [selectedRoom]);
 
   // Fetch available slots from backend (source of truth)
   const fetchSlots = useCallback(
@@ -156,12 +163,13 @@ export default function BookingWizard({
           setAvailabilityError(null);
 
           // If previously selected slot is no longer AVAILABLE, notify user and clear selection
-          if (selectedStartTime) {
-            const matching = slots.find((s) => s.time === selectedStartTime);
+          const currentSelectedTime = selectedStartTimeRef.current;
+          if (currentSelectedTime) {
+            const matching = slots.find((s) => s.time === currentSelectedTime);
             if (!matching || matching.status !== 'AVAILABLE') {
               setSelectedStartTime('');
               setSlotNotice(
-                `Khung giờ ${selectedStartTime} vừa chuyển sang trạng thái "${
+                `Khung giờ ${currentSelectedTime} vừa chuyển sang trạng thái "${
                   matching?.label || 'Không khả dụng'
                 }". Vui lòng chọn khung giờ khác.`
               );
@@ -184,13 +192,13 @@ export default function BookingWizard({
         }
       }
     },
-    [selectedRoomId, selectedDate, durationHours, selectedStartTime]
+    [selectedRoomId, selectedDate, durationHours]
   );
 
   // Initial load on room/date/duration change
   useEffect(() => {
     void fetchSlots(false);
-  }, [selectedRoomId, selectedDate, durationHours]);
+  }, [fetchSlots]);
 
   // Smart Polling on Step 2 (every 10 seconds when tab is visible)
   useEffect(() => {
@@ -351,6 +359,44 @@ export default function BookingWizard({
     setTimeout(() => setCopiedRef(false), 3000);
   };
 
+  // Defensive guard: graceful empty / offline state when initialRooms is empty
+  if (safeRooms.length === 0) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <div className="p-8 sm:p-12 rounded-sm bg-walnut/90 border border-stone/20 text-center space-y-4 shadow-xl backdrop-blur-md">
+          <div className="w-16 h-16 mx-auto rounded-full bg-vermilion/10 border border-vermilion/30 flex items-center justify-center text-vermilion">
+            <Ban className="w-8 h-8" />
+          </div>
+          <div>
+            <span className="seal-stamp text-xs uppercase tracking-widest font-serif font-bold">
+              THÔNG BÁO HỆ THỐNG
+            </span>
+          </div>
+          <h2 className="font-serif text-2xl sm:text-3xl text-ivory">
+            Không Gian Phòng Trà Đang Cập Nhật
+          </h2>
+          <p className="text-xs sm:text-sm text-stone-light max-w-md mx-auto leading-relaxed">
+            Hiện tại chưa có phòng trà nào sẵn sàng tiếp nhận đặt lịch trực tuyến hoặc hệ thống đang bảo trì dữ liệu. Quý khách vui lòng liên hệ hotline để được phục vụ trực tiếp.
+          </p>
+          <div className="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+            <a
+              href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`}
+              className="px-6 py-2.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-wider font-semibold rounded-xs transition-colors inline-flex items-center justify-center gap-2 shadow"
+            >
+              Hotline: {BRAND_CONFIG.hotline}
+            </a>
+            <Link
+              href="/"
+              className="px-6 py-2.5 border border-stone/30 hover:border-brass text-ivory text-xs uppercase tracking-wider font-semibold rounded-xs transition-colors inline-flex items-center justify-center"
+            >
+              ← Về trang chủ
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Wizard Progress Steps Indicator */}
@@ -409,7 +455,7 @@ export default function BookingWizard({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {initialRooms.map((room) => {
+              {safeRooms.map((room) => {
                 const isSelected = selectedRoomId === room.id;
                 return (
                   <div
@@ -1247,7 +1293,7 @@ export default function BookingWizard({
           <div className="space-y-8 animate-fadeIn text-center">
             <div 
               className="relative w-16 h-22 mx-auto mb-2"
-              style={{ width: '64px', height: '88px', maxWidth: '64px', maxHeight: '88px' }}
+              style={{ position: 'relative', flexShrink: 0, width: '64px', height: '88px', maxWidth: '64px', maxHeight: '88px' }}
             >
               <Image
                 src="/images/logo-lung-vai-transparent.png"

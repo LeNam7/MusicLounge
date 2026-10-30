@@ -69,7 +69,19 @@ export async function PATCH(
     }
 
     const { id } = await params;
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'VALIDATION_ERROR',
+          error: 'Dữ liệu JSON không hợp lệ',
+        },
+        { status: 400 }
+      );
+    }
     const statusRaw = String(body?.status || '').toLowerCase() as BookingStatus;
     const adminNotes = body?.adminNotes ? String(body.adminNotes).trim() : undefined;
 

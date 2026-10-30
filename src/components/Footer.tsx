@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BRAND_CONFIG } from '@/lib/config';
-import { MapPin, Phone, Mail, Clock, Shield, ArrowUpRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Shield } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -16,7 +16,7 @@ export default function Footer() {
             <Link href="/" className="inline-flex items-center gap-3.5 group">
               <div 
                 className="relative w-12 h-15 flex-shrink-0 group-hover:scale-105 transition-transform"
-                style={{ width: '48px', height: '60px', maxWidth: '48px', maxHeight: '60px' }}
+                style={{ position: 'relative', flexShrink: 0, width: '48px', height: '60px', maxWidth: '48px', maxHeight: '60px' }}
               >
                 <Image
                   src="/images/logo-lung-vai-transparent.png"

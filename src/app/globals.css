@@ -32,6 +32,13 @@
   --color-stone-light: #5A5144;
   --color-stone-dark: #D8CEBD;
 
+  /* Tea Atmosphere & Sand Utility Tokens */
+  --color-sand: #F8F5EE;
+  --color-sand-light: #FAF7F2;
+  --color-tea-green: #2E5A44;
+  --color-tea-dark: #1D4A38;
+  --color-tea-sage: #8A9E90;
+
   --font-serif: var(--font-cormorant), "Noto Serif SC", "Songti SC", Georgia, serif;
   --font-sans: var(--font-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }

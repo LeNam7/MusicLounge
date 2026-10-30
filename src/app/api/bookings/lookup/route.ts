@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
       const normInput = cleanInput.startsWith('84') ? `0${cleanInput.slice(2)}` : cleanInput;
       const normDb = cleanDb.startsWith('84') ? `0${cleanDb.slice(2)}` : cleanDb;
 
-      if (normDb !== normInput && !normDb.endsWith(normInput)) {
+      if (!normInput || normDb !== normInput) {
         return NextResponse.json(
           {
             success: false,

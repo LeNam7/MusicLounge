@@ -34,14 +34,27 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
+async function handleUpdateConfig(request: NextRequest) {
   try {
     const auth = verifyAdminRequest(request, { allowQueryPasscode: false });
     if (!auth.authorized) {
       return unauthorizedAdminResponse(auth.error);
     }
 
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'VALIDATION_ERROR',
+          error: 'Dữ liệu JSON không hợp lệ',
+        },
+        { status: 400 }
+      );
+    }
+
     const updated = updateSystemSettings(body);
 
     return NextResponse.json({
@@ -59,4 +72,12 @@ export async function PUT(request: NextRequest) {
       { status: 400 }
     );
   }
+}
+
+export async function PUT(request: NextRequest) {
+  return handleUpdateConfig(request);
+}
+
+export async function PATCH(request: NextRequest) {
+  return handleUpdateConfig(request);
 }

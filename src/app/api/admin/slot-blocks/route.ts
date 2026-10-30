@@ -36,8 +36,20 @@ export async function POST(request: NextRequest) {
       return unauthorizedAdminResponse(auth.error);
     }
 
-    const body = await request.json();
-    const { roomId, date, startTime, endTime, reason } = body;
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'VALIDATION_ERROR',
+          error: 'Dữ liệu JSON không hợp lệ',
+        },
+        { status: 400 }
+      );
+    }
+    const { roomId, date, startTime, endTime, reason } = body || {};
 
     if (!date || !startTime || !endTime) {
       return NextResponse.json(

@@ -9,6 +9,19 @@ export async function POST(request: NextRequest) {
       return unauthorizedAdminResponse(auth.error);
     }
 
+    // Bảo vệ dữ liệu đặt bàn thật: không cho phép xoá/nạp lại dữ liệu mẫu trên production
+    // trừ khi chủ động bật ALLOW_DEMO_RESET=true (chỉ dùng cho môi trường kiểm thử).
+    if (process.env.NODE_ENV === 'production' && process.env.ALLOW_DEMO_RESET !== 'true') {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'FORBIDDEN',
+          error: 'Chức năng nạp lại dữ liệu mẫu đã bị khoá trên môi trường thật để bảo vệ lịch đặt của khách.',
+        },
+        { status: 403 }
+      );
+    }
+
     const result = resetDemoData();
     return NextResponse.json(result);
   } catch (error: unknown) {

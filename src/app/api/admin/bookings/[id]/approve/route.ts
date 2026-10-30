@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { approveBooking, BookingDomainError, getBookingAuditLogs, getNotificationsForBooking } from '@/lib/db';
+import { approveBooking, BookingDomainError, getBookingAuditLogs } from '@/lib/db';
 import { processNotificationsForBooking } from '@/lib/notifications';
 import { unauthorizedAdminResponse, verifyAdminRequest } from '@/lib/auth';
 

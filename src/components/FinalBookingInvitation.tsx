@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CalendarCheck, PhoneCall, Sparkles } from 'lucide-react';
+import { CalendarCheck, PhoneCall } from 'lucide-react';
 import { BRAND_CONFIG } from '@/lib/config';
 
 export default function FinalBookingInvitation() {

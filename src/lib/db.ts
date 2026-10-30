@@ -40,22 +40,25 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-const DEFAULT_DB_PATH = process.env.DATABASE_PATH
-  ? path.resolve(process.cwd(), process.env.DATABASE_PATH)
-  : path.join(DATA_DIR, 'oriental_serenity.db');
+function resolveDbPath(): string {
+  if (process.env.DATABASE_PATH) {
+    return path.resolve(/*turbopackIgnore: true*/ process.cwd(), process.env.DATABASE_PATH);
+  }
+  return path.join(process.cwd(), 'data', process.env.DATABASE_NAME || 'oriental_serenity.db');
+}
 
-let dbInstance: DatabaseSync | null = null;
-let currentDbPath: string = DEFAULT_DB_PATH;
+const globalForDb = globalThis as unknown as {
+  __sqliteDb?: DatabaseSync;
+  __sqliteDbPath?: string;
+};
 
 export function getDb(): DatabaseSync {
-  const targetPath = process.env.DATABASE_PATH
-    ? path.resolve(process.cwd(), process.env.DATABASE_PATH)
-    : DEFAULT_DB_PATH;
+  const targetPath = resolveDbPath();
 
-  if (!dbInstance || currentDbPath !== targetPath) {
-    if (dbInstance) {
+  if (!globalForDb.__sqliteDb || globalForDb.__sqliteDbPath !== targetPath) {
+    if (globalForDb.__sqliteDb) {
       try {
-        dbInstance.close();
+        globalForDb.__sqliteDb.close();
       } catch {
         // Ignore
       }
@@ -64,14 +67,15 @@ export function getDb(): DatabaseSync {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    currentDbPath = targetPath;
-    dbInstance = new DatabaseSync(targetPath);
-    dbInstance.exec('PRAGMA journal_mode = WAL;');
-    dbInstance.exec('PRAGMA busy_timeout = 5000;');
-    dbInstance.exec('PRAGMA foreign_keys = ON;');
-    initSchema(dbInstance);
+    globalForDb.__sqliteDbPath = targetPath;
+    const db = new DatabaseSync(targetPath);
+    db.exec('PRAGMA journal_mode = WAL;');
+    db.exec('PRAGMA busy_timeout = 5000;');
+    db.exec('PRAGMA foreign_keys = ON;');
+    initSchema(db);
+    globalForDb.__sqliteDb = db;
   }
-  return dbInstance;
+  return globalForDb.__sqliteDb;
 }
 
 export function DEFAULT_SYSTEM_SETTINGS(): SystemSettings {
@@ -1088,7 +1092,17 @@ export function updateRoom(id: string, updates: Partial<Room>): Room {
   const current = getRoomById(id);
   if (!current) throw new BookingDomainError('Không tìm thấy phòng trà', 'NOT_FOUND', 404);
 
-  const updated: Room = { ...current, ...updates };
+  const cleanUpdates = Object.fromEntries(
+    Object.entries(updates).filter((entry) => entry[1] !== undefined)
+  );
+  const updated: Room = { ...current, ...cleanUpdates };
+  if (updated.capacityMax < updated.capacityMin) {
+    throw new BookingDomainError(
+      `Sức chứa tối đa (${updated.capacityMax}) không được nhỏ hơn sức chứa tối thiểu (${updated.capacityMin})`,
+      'VALIDATION_ERROR',
+      400
+    );
+  }
   db.prepare(`
     UPDATE rooms SET
       name = ?, chinese_name = ?, tagline = ?, description = ?, full_description = ?,

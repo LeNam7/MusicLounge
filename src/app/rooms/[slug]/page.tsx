@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RoomBookingPanel from '@/components/RoomBookingPanel';
 import { getRoomBySlug, getAllRooms } from '@/lib/db';
-import { ArrowLeft, Users, Clock, Maximize2, ShieldCheck, Check, Sparkles, MapPin } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { Metadata } from 'next';
 import { BRAND_CONFIG } from '@/lib/config';
 

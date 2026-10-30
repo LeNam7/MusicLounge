@@ -42,7 +42,9 @@ export async function GET(
     if (phone && phone.trim()) {
       const cleanInput = phone.replace(/[^0-9]/g, '');
       const cleanDb = booking.customerPhone.replace(/[^0-9]/g, '');
-      if (cleanDb.endsWith(cleanInput) || cleanInput.endsWith(cleanDb)) {
+      const normInput = cleanInput.startsWith('84') ? `0${cleanInput.slice(2)}` : cleanInput;
+      const normDb = cleanDb.startsWith('84') ? `0${cleanDb.slice(2)}` : cleanDb;
+      if (cleanInput.length > 0 && (cleanDb === cleanInput || normDb === normInput)) {
         phoneVerified = true;
       }
     }

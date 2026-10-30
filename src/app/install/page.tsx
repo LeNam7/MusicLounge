@@ -111,7 +111,7 @@ export default function InstallAppPage() {
         <div className="text-center space-y-3 mb-8">
           <div 
             className="relative w-20 h-24 mx-auto mb-2"
-            style={{ width: '80px', height: '96px', maxWidth: '80px', maxHeight: '96px' }}
+            style={{ position: 'relative', flexShrink: 0, width: '80px', height: '96px', maxWidth: '80px', maxHeight: '96px' }}
           >
             <Image
               src="/images/logo-lung-vai-transparent.png"
@@ -240,7 +240,13 @@ export default function InstallAppPage() {
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-stone/10 text-xs">
                   <p className="text-[11px] text-stone-light">
-                    Mã PIN đăng nhập: <strong className="text-brass font-mono">serenity2026</strong>
+                    {process.env.NODE_ENV !== 'production' ? (
+                      <>
+                        Mã PIN đăng nhập (dev): <strong className="text-brass font-mono">serenity2026</strong>
+                      </>
+                    ) : (
+                      <>Sử dụng mã PIN quản trị nội bộ của trà quán để đăng nhập</>
+                    )}
                   </p>
                   <Link
                     href="/admin"

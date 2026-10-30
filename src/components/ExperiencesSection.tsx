@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Coffee, Heart, Briefcase, Feather, Sparkles } from 'lucide-react';
+import { ArrowRight, Coffee, Heart, Briefcase, Feather } from 'lucide-react';
 
 export default function ExperiencesSection() {
   const experiences = [

@@ -49,3 +49,6 @@ data/
 next-env.d.ts
 
 cloudflared.exe
+
+# agent teamwork internal state
+/.agents/

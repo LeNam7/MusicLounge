@@ -379,19 +379,19 @@ function LookupContent() {
           )}
 
           {/* Actions */}
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-2">
             <a
               href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`}
               className="text-xs text-brass hover:text-ivory flex items-center gap-1.5"
             >
-              <Phone className="w-3.5 h-3.5" />
+              <Phone className="w-3.5 h-3.5 flex-shrink-0" />
               <span>Cần hỗ trợ? Gọi hotline: {BRAND_CONFIG.hotline}</span>
             </a>
 
             <button
               type="button"
               onClick={() => window.print()}
-              className="inline-flex items-center gap-1.5 px-4 py-2 border border-stone/30 hover:border-brass text-xs text-ivory rounded-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 border border-stone/30 hover:border-brass text-xs text-ivory rounded-xs transition-colors self-start sm:self-auto"
             >
               <Printer className="w-3.5 h-3.5 text-brass" />
               <span>In phiếu hẹn</span>

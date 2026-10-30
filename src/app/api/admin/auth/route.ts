@@ -10,6 +10,13 @@ import {
 export async function GET(request: NextRequest) {
   const auth = verifyAdminRequest(request, { allowQueryPasscode: false });
   if (!auth.authorized) {
+    // Khách mở /admin lần đầu (chưa có cookie phiên): đây là trạng thái bình thường,
+    // trả 200 để trình duyệt không ghi lỗi đỏ trong console. Cookie sai/hết hạn vẫn trả 401.
+    const hasSessionCookie = Boolean(request.cookies.get(ADMIN_COOKIE_NAME)?.value);
+    const hasPasscodeHeader = Boolean(request.headers.get('x-admin-passcode'));
+    if (!hasSessionCookie && !hasPasscodeHeader) {
+      return NextResponse.json({ success: true, authenticated: false });
+    }
     return NextResponse.json({ success: false, authenticated: false }, { status: 401 });
   }
   return NextResponse.json({
@@ -42,6 +49,7 @@ export async function POST(request: NextRequest) {
 
       response.cookies.set(ADMIN_COOKIE_NAME, token, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
         maxAge: 24 * 3600,

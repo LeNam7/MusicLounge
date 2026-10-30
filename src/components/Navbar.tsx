@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Volume2, VolumeX, Menu, X, CalendarCheck, Phone, Shield } from 'lucide-react';
+import { Volume2, VolumeX, Menu, X, CalendarCheck, Shield } from 'lucide-react';
 import { BRAND_CONFIG } from '@/lib/config';
 import { teaAudio } from '@/lib/audio';
 
@@ -47,7 +47,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-3 shrink-0 group">
             <div 
               className="relative w-9 h-12 sm:w-10 sm:h-13 shrink-0 group-hover:scale-105 transition-transform duration-300"
-              style={{ width: '40px', height: '52px', maxWidth: '40px', maxHeight: '52px' }}
+              style={{ position: 'relative', flexShrink: 0, width: '40px', height: '52px', maxWidth: '40px', maxHeight: '52px' }}
             >
               <Image
                 src="/images/logo-lung-vai-transparent.png"

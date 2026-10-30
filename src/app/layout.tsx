@@ -22,8 +22,8 @@ export const viewport: Viewport = {
   themeColor: '#8d342d',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
   viewportFit: 'cover',
 };
 
@@ -80,8 +80,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi" className={`${cormorant.variable} ${jakarta.variable} scroll-smooth`}>
-      <body className="min-h-screen bg-charcoal text-ivory antialiased selection:bg-vermilion selection:text-ivory-light">
+      <body className="min-h-screen bg-charcoal text-ivory antialiased selection:bg-vermilion selection:text-white">
         <PWARegister />
+        {/*
+          Critical fallback CSS: nếu file CSS chính tải lỗi (mạng chậm / lỗi 500 từ máy chủ),
+          ảnh dạng <Image fill /> vẫn nằm gọn trong khung cha thay vì phủ kín toàn màn hình.
+          Đặt trong @layer base nên luôn có độ ưu tiên thấp hơn utilities của Tailwind.
+        */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html:
+              '@layer base{.relative{position:relative}.overflow-hidden{overflow:hidden}.hidden{display:none}}',
+          }}
+        />
         {children}
       </body>
     </html>

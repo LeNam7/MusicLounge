@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Users, Clock, Sparkles, ArrowRight, ShieldCheck, Check, Calendar } from 'lucide-react';
+import { Users, Clock, ArrowRight, Check, Calendar } from 'lucide-react';
 import { Room } from '@/lib/types';
 
 interface ExploreRoomsProps {

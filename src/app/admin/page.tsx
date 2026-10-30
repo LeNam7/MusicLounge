@@ -21,7 +21,6 @@ import {
   Save,
   Check,
   Bell,
-  ShieldAlert,
   Send,
   Trash2,
   Plus,
@@ -29,7 +28,6 @@ import {
   Settings,
   LayoutGrid,
   Smartphone,
-  Download,
 } from 'lucide-react';
 import {
   Booking,
@@ -299,7 +297,7 @@ function AdminDashboardContent() {
       if (cfgData.success) {
         setSettings(cfgData.data.settings);
         setClosedDatesInput((cfgData.data.settings.closedDates || []).join(', '));
-        setZaloStatus(cfgData.data.zaloConfig);
+        setZaloStatus(cfgData.data.zaloStatus || cfgData.data.zaloConfig || null);
       }
       const blkData = await blkRes.json();
       if (blkData.success) {
@@ -722,8 +720,10 @@ function AdminDashboardContent() {
       });
       const data = await res.json();
       if (data.success) {
+        const expired = data.data.expiredCount ?? data.data.expiredBookingsCount ?? 0;
+        const processed = data.data.sent ?? data.data.retriedNotificationsCount ?? 0;
         showToast(
-          `Đã quét hệ thống: Hết hạn ${data.data.expiredBookingsCount} đơn quá hạn, xử lý ${data.data.retriedNotificationsCount} thông báo.`
+          `Đã quét hệ thống: Hết hạn ${expired} đơn quá hạn, xử lý ${processed} thông báo.`
         );
         loadStats();
         loadBookings();
@@ -862,9 +862,12 @@ function AdminDashboardContent() {
         loadRooms();
         loadStats();
         loadNotifications();
+      } else {
+        showToast(data.error || 'Không thể nạp lại dữ liệu mẫu.');
       }
     } catch (err) {
       console.error(err);
+      showToast('Lỗi kết nối máy chủ, vui lòng thử lại.');
     }
   };
 
@@ -937,7 +940,7 @@ function AdminDashboardContent() {
           <div className="text-center space-y-2">
             <div 
               className="relative w-18 h-22 sm:w-20 sm:h-25 mx-auto mb-3"
-              style={{ width: '80px', height: '100px', maxWidth: '80px', maxHeight: '100px' }}
+              style={{ position: 'relative', flexShrink: 0, width: '80px', height: '100px', maxWidth: '80px', maxHeight: '100px' }}
             >
               <Image
                 src="/images/logo-lung-vai-transparent.png"
@@ -975,7 +978,13 @@ function AdminDashboardContent() {
                 <Lock className="w-4 h-4 text-brass absolute right-3 top-3 pointer-events-none" />
               </div>
               <span className="text-[11px] text-stone block mt-1">
-                Cấu hình qua biến môi trường <code className="text-brass">ADMIN_PASSCODE</code> (Mặc định dev: <code className="text-brass">serenity2026</code>)
+                {process.env.NODE_ENV !== 'production' ? (
+                  <>
+                    Cấu hình qua biến môi trường <code className="text-brass">ADMIN_PASSCODE</code> (Mặc định dev: <code className="text-brass">serenity2026</code>)
+                  </>
+                ) : (
+                  <>Vui lòng nhập mã PIN quản trị nội bộ để tiếp tục.</>
+                )}
               </span>
             </div>
 
@@ -1030,7 +1039,7 @@ function AdminDashboardContent() {
           <div className="flex items-center gap-3.5">
             <div 
               className="relative w-10 h-13 flex-shrink-0"
-              style={{ width: '40px', height: '52px', maxWidth: '40px', maxHeight: '52px' }}
+              style={{ position: 'relative', flexShrink: 0, width: '40px', height: '52px', maxWidth: '40px', maxHeight: '52px' }}
             >
               <Image
                 src="/images/logo-lung-vai-transparent.png"
@@ -1568,7 +1577,7 @@ function AdminDashboardContent() {
                       {/* Ghi chú của khách nếu có */}
                       {b.specialRequests && (
                         <div className="mt-2.5 p-2.5 rounded bg-[#F8F5EE] border border-[#ECE5D8] text-[11px] text-[#5A5144] italic">
-                          "{b.specialRequests}"
+                          &ldquo;{b.specialRequests}&rdquo;
                         </div>
                       )}
 
@@ -1868,7 +1877,7 @@ function AdminDashboardContent() {
                         <span className="font-mono text-sm font-bold">{slot.time}</span>
                         <span className="text-[10px] font-semibold uppercase">{badgeText}</span>
                         {slot.bookingReference && (
-                          <span className="text-[9px] font-mono underline mt-0.5">
+                          <span className="text-[9px] font-mono underline mt-0.5 truncate max-w-full inline-block">
                             {slot.bookingReference}
                           </span>
                         )}
@@ -2033,13 +2042,53 @@ function AdminDashboardContent() {
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="px-5 py-2.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-wider font-semibold rounded-xs flex items-center gap-2 cursor-pointer"
-                  >
-                    <Save className="w-4 h-4" />
-                    <span>Lưu Cấu Hình Hệ Thống</span>
-                  </button>
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <button
+                      type="submit"
+                      className="px-5 py-2.5 bg-vermilion hover:bg-vermilion-light text-white text-xs uppercase tracking-wider font-semibold rounded-xs flex items-center gap-2 cursor-pointer"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>Lưu Cấu Hình Hệ Thống</span>
+                    </button>
+                    {process.env.NODE_ENV !== 'production' && (
+                    <button
+                      type="button"
+                      onClick={handleResetData}
+                      className="px-4 py-2.5 border border-stone/30 hover:border-red-400 text-stone-light hover:text-red-700 text-xs rounded-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span>Nạp lại Dữ liệu Mẫu (Reset Demo)</span>
+                    </button>
+                    )}
+                  </div>
+
+                  {zaloStatus && (
+                    <div className="pt-3 border-t border-stone/20 space-y-2 text-xs">
+                      <span className="text-[11px] uppercase tracking-wider text-stone-light font-semibold block">
+                        Trạng thái Tích hợp Zalo / ZNS
+                      </span>
+                      <div className="flex flex-wrap gap-2 text-[11px]">
+                        <span
+                          className={`px-2 py-0.5 rounded ${
+                            zaloStatus.zaloOaConfigured
+                              ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                              : 'bg-stone/20 text-stone-light'
+                          }`}
+                        >
+                          Zalo OA: {zaloStatus.zaloOaConfigured ? 'Đã cấu hình' : 'Chưa kích hoạt'}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded ${
+                            zaloStatus.znsConfigured
+                              ? 'bg-emerald-100 text-emerald-950 border border-emerald-400'
+                              : 'bg-stone/20 text-stone-light'
+                          }`}
+                        >
+                          ZNS: {zaloStatus.znsConfigured ? 'Sẵn sàng' : 'Chưa cấu hình'}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </form>
               )}
             </div>

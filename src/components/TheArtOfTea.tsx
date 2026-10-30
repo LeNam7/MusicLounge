@@ -13,8 +13,6 @@ import {
   X, 
   Award, 
   Compass, 
-  Clock, 
-  Check,
   CheckCircle2
 } from 'lucide-react';
 import { INITIAL_TEA_PACKAGES } from '@/lib/config';
