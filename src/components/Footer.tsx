@@ -14,7 +14,10 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-4 space-y-5">
             <Link href="/" className="inline-flex items-center gap-3.5 group">
-              <div className="relative w-12 h-15 flex-shrink-0 group-hover:scale-105 transition-transform">
+              <div 
+                className="relative w-12 h-15 flex-shrink-0 group-hover:scale-105 transition-transform"
+                style={{ width: '48px', height: '60px', maxWidth: '48px', maxHeight: '60px' }}
+              >
                 <Image
                   src="/images/logo-lung-vai-transparent.png"
                   alt="Lùng Vài Tea Logo"

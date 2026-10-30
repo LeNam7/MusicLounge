@@ -45,7 +45,10 @@ export default function Navbar() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 flex items-center justify-between gap-4">
           {/* Brand Logo & Inscription - Never wraps */}
           <Link href="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="relative w-9 h-12 sm:w-10 sm:h-13 shrink-0 group-hover:scale-105 transition-transform duration-300">
+            <div 
+              className="relative w-9 h-12 sm:w-10 sm:h-13 shrink-0 group-hover:scale-105 transition-transform duration-300"
+              style={{ width: '40px', height: '52px', maxWidth: '40px', maxHeight: '52px' }}
+            >
               <Image
                 src="/images/logo-lung-vai-transparent.png"
                 alt="Lùng Vài Tea Logo"

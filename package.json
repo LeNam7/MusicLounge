@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "tsx scripts/test-booking.ts",
     "test:e2e": "tsx scripts/test-e2e.ts",
+    "backtest": "tsx scripts/backtest-suite.ts",
     "share": "tsx scripts/share.ts"
   },
   "dependencies": {
