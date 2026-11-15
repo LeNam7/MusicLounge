@@ -978,13 +978,7 @@ function AdminDashboardContent() {
                 <Lock className="w-4 h-4 text-brass absolute right-3 top-3 pointer-events-none" />
               </div>
               <span className="text-[11px] text-stone block mt-1">
-                {process.env.NODE_ENV !== 'production' ? (
-                  <>
-                    Cấu hình qua biến môi trường <code className="text-brass">ADMIN_PASSCODE</code> (Mặc định dev: <code className="text-brass">lungvai@2026</code>)
-                  </>
-                ) : (
-                  <>Vui lòng nhập mã PIN quản trị nội bộ để tiếp tục.</>
-                )}
+                Vui lòng nhập mã PIN quản trị nội bộ để tiếp tục.
               </span>
             </div>
 

@@ -240,13 +240,7 @@ export default function InstallAppPage() {
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-stone/10 text-xs">
                   <p className="text-[11px] text-stone-light">
-                    {process.env.NODE_ENV !== 'production' ? (
-                      <>
-                        Mã PIN đăng nhập (dev): <strong className="text-brass font-mono">lungvai@2026</strong>
-                      </>
-                    ) : (
-                      <>Sử dụng mã PIN quản trị nội bộ của trà quán để đăng nhập</>
-                    )}
+                    Sử dụng mã PIN quản trị nội bộ của trà quán để đăng nhập.
                   </p>
                   <Link
                     href="/admin"
