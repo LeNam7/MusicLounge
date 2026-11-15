@@ -147,25 +147,25 @@ export default function PricingSection() {
                   {OFFICIAL_ROOM_RENTAL_PRICING.map((item) => (
                     <tr 
                       key={item.stt}
-                      className="hover:bg-[#FAF7F2]/60 transition-colors"
+                      className="hover:bg-[#FAF7F2]/80 transition-colors"
                     >
-                      <td className="py-3.5 px-3 sm:px-4 text-center font-serif font-bold text-[#8D342D]">
+                      <td className="py-3.5 px-3 sm:px-4 text-center font-serif font-bold text-sm sm:text-base text-[#8D342D]">
                         {item.stt}
                       </td>
-                      <td className="py-3.5 px-3 sm:px-6 font-medium text-[#1F1914]">
-                        <div className="font-serif text-sm sm:text-base text-[#1F1914]">
+                      <td className="py-3.5 px-3 sm:px-6 text-[#1F1914]">
+                        <div className="font-serif text-sm sm:text-base font-semibold text-[#1F1914] tracking-tight">
                           {item.title}
                         </div>
                         {item.note && (
-                          <div className="text-[11px] text-[#786D5F] font-light mt-0.5 sm:hidden">
+                          <div className="text-xs text-[#605548] font-normal mt-0.5 sm:hidden">
                             {item.note}
                           </div>
                         )}
                       </td>
-                      <td className="py-3.5 px-3 sm:px-6 text-center text-[#574E43] whitespace-nowrap">
+                      <td className="py-3.5 px-3 sm:px-6 text-center text-[#3D352E] font-medium whitespace-nowrap">
                         {item.duration}
                       </td>
-                      <td className="py-3.5 px-3 sm:px-6 text-center text-[#574E43] font-medium">
+                      <td className="py-3.5 px-3 sm:px-6 text-center text-[#3D352E] font-medium">
                         {item.capacity}
                       </td>
                       <td className="py-3.5 px-3 sm:px-6 text-right font-serif font-bold text-base sm:text-lg text-[#8D342D] whitespace-nowrap">
@@ -255,29 +255,29 @@ export default function PricingSection() {
                     {OFFICIAL_TEA_MENU.map((tea) => (
                       <tr 
                         key={tea.stt}
-                        className="hover:bg-[#FAF7F2]/60 transition-colors group"
+                        className="hover:bg-[#FAF7F2]/80 transition-colors group"
                       >
-                        <td className="py-3.5 px-3 sm:px-4 text-center font-serif font-bold text-[#8D342D]">
+                        <td className="py-3.5 px-3 sm:px-4 text-center font-serif font-bold text-sm sm:text-base text-[#8D342D]">
                           {tea.stt}
                         </td>
                         <td className="py-3.5 px-3 sm:px-6">
-                          <div className="font-serif text-sm sm:text-base font-bold text-[#1F1914] group-hover:text-[#8D342D] transition-colors">
+                          <div className="font-serif text-base sm:text-[17px] font-bold text-[#1F1914] group-hover:text-[#8D342D] transition-colors leading-snug tracking-tight">
                             {tea.name}
                           </div>
-                          <div className="text-[11px] sm:text-xs text-[#786D5F] font-serif italic mt-0.5">
+                          <div className="text-xs sm:text-[13px] text-[#554A3E] font-serif italic mt-0.5 leading-snug">
                             ({tea.categoryName})
                           </div>
                         </td>
-                        <td className="py-3.5 px-3 sm:px-4 text-center text-[#574E43] hidden md:table-cell">
+                        <td className="py-3.5 px-3 sm:px-4 text-center text-[#2E2822] font-medium hidden md:table-cell">
                           <span className="inline-flex items-center gap-1 bg-[#FAF7F2] px-2 py-0.5 rounded text-xs border border-[#E4DAC8]">
                             <Coffee className="w-3 h-3 text-[#9E7D42]" />
                             <span>{tea.servingType}</span>
                           </span>
                         </td>
-                        <td className="py-3.5 px-3 sm:px-4 text-center text-[#574E43] whitespace-nowrap">
+                        <td className="py-3.5 px-3 sm:px-4 text-center text-[#2E2822] font-medium whitespace-nowrap">
                           {tea.unit}
                         </td>
-                        <td className="py-3.5 px-3 sm:px-6 text-right font-serif font-bold text-sm sm:text-base text-[#8D342D] whitespace-nowrap">
+                        <td className="py-3.5 px-3 sm:px-6 text-right font-serif font-bold text-base sm:text-[17px] text-[#8D342D] whitespace-nowrap">
                           {tea.price.toLocaleString('vi-VN')}
                           <span className="text-xs font-sans font-normal text-[#786D5F] ml-1">đ</span>
                         </td>

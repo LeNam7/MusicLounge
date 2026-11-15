@@ -39,7 +39,8 @@
   --color-tea-dark: #1D4A38;
   --color-tea-sage: #8A9E90;
 
-  --font-serif: var(--font-cormorant), "Noto Serif SC", "Songti SC", Georgia, serif;
+  --font-serif: var(--font-lora), var(--font-cormorant), "Noto Serif SC", "Songti SC", Georgia, serif;
+  --font-display: var(--font-cormorant), var(--font-lora), "Songti SC", Georgia, serif;
   --font-sans: var(--font-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 

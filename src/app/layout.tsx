@@ -1,8 +1,16 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
+import { Cormorant_Garamond, Lora, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { BRAND_CONFIG } from '@/lib/config';
 import PWARegister from '@/components/PWARegister';
+
+const lora = Lora({
+  variable: '--font-lora',
+  subsets: ['latin', 'vietnamese'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
@@ -78,7 +86,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" className={`${cormorant.variable} ${jakarta.variable} scroll-smooth`}>
+    <html lang="vi" className={`${lora.variable} ${cormorant.variable} ${jakarta.variable} scroll-smooth`}>
       <body className="min-h-screen bg-charcoal text-ivory antialiased selection:bg-vermilion selection:text-white">
         <PWARegister />
         {/*
