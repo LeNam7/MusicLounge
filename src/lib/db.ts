@@ -445,7 +445,7 @@ function initSchema(db: DatabaseSync) {
       1080000,
       324000,
       'confirmed',
-      'Chuẩn bị bộ ấm tử sa đất chu nê, khách dùng đàm đạo kinh doanh.',
+      'Chuẩn bị không gian thanh tịnh, khách dùng đàm đạo kinh doanh.',
       'Đã duyệt lịch và liên hệ xác nhận cọc.',
       'admin',
       nowIso,

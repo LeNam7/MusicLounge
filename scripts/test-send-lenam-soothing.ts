@@ -34,7 +34,7 @@ async function main() {
   // 3. Admin duyệt đơn
   console.log('\n[3] Quản trị viên duyệt đơn...');
   approveBooking(booking.id, {
-    adminNotes: 'Lùng Vài Tea đã chuẩn bị sẵn bàn trà ấm nồng và ấm tử sa Nghi Hưng cung nghinh Quý khách!',
+    adminNotes: 'Lùng Vài Tea đã chuẩn bị sẵn bàn trà ấm nồng và trà nương chu đáo cung nghinh Quý khách!',
     reviewedBy: 'Admin Lùng Vài Tea',
   });
 

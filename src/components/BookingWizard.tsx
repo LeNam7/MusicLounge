@@ -451,7 +451,7 @@ export default function BookingWizard({
                 Lựa chọn không gian phòng trà riêng tư
               </h2>
               <p className="text-xs sm:text-sm text-stone-light mt-1">
-                Mỗi phòng đều có vách ngăn cách âm tuyệt đối, ấm tử sa chuyên dụng và hỗ trợ trà sư.
+                Mỗi phòng đều có vách ngăn cách âm tuyệt đối, bộ trà cụ chuyên dụng và hỗ trợ trà nương.
               </p>
             </div>
 
@@ -935,7 +935,7 @@ export default function BookingWizard({
                 </label>
                 <textarea
                   rows={2}
-                  placeholder="Ví dụ: Yêu cầu chuẩn bị ấm tử sa chu nê, hẹn gặp đối tác trang trọng..."
+                  placeholder="Ví dụ: Hẹn gặp đối tác trang trọng, cần không gian yên tĩnh..."
                   value={specialRequests}
                   onChange={(e) => setSpecialRequests(e.target.value)}
                   className="w-full bg-white border border-stone/30 focus:border-brass text-ivory px-4 py-3 rounded-sm text-sm outline-none transition-colors resize-none"

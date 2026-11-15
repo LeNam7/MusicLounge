@@ -181,7 +181,7 @@ export async function runTier1(baseUrl: string): Promise<TierResult> {
         Cookie: sessionCookie,
       },
       body: JSON.stringify({
-        adminNotes: 'Đã chuẩn bị trà ngon và ấm chu nê',
+        adminNotes: 'Đã chuẩn bị trà ngon và không gian trang trọng',
       }),
     });
 

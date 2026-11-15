@@ -75,7 +75,7 @@ async function runE2ETests() {
       durationHours: 2,
       guestCount: 4,
       teaPackageId: 'tea-lung-vai',
-      specialRequests: 'Khách đối tác quan trọng, chuẩn bị ấm tử sa chu nê',
+      specialRequests: 'Khách đối tác quan trọng, cần không gian yên tĩnh',
       idempotencyKey: 'e2e-idem-1500',
     }),
   });

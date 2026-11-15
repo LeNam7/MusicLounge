@@ -54,7 +54,7 @@ async function main() {
       Cookie: cookie,
     },
     body: JSON.stringify({
-      adminNotes: 'Lùng Vài Tea đã chuẩn bị sẵn bàn trà mộc và ấm tử sa Nghi Hưng cung nghinh Quý khách!',
+      adminNotes: 'Lùng Vài Tea đã chuẩn bị sẵn bàn trà mộc và trà nương chu đáo cung nghinh Quý khách!',
       reviewedBy: 'Quản trị viên Lùng Vài Tea',
     }),
   });

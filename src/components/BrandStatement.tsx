@@ -16,7 +16,7 @@ export default function BrandStatement() {
             <div className="relative aspect-[4/5] rounded-sm overflow-hidden border border-brass/30 shadow-xl shadow-stone/15">
               <Image
                 src="/images/tea-ceremony-closeup.jpg"
-                alt="Nghi thức pha trà Gongfu thủ công với ấm tử sa"
+                alt="Nghi thức pha trà Gongfu thủ công với bộ trà cụ truyền thống"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="object-cover object-center hover:scale-105 transition-transform duration-700"
@@ -33,7 +33,7 @@ export default function BrandStatement() {
                 </span>
               </div>
               <p className="text-xs text-ivory-muted leading-relaxed font-normal">
-                Nước đầu sôi mắt cua, trà hãm trong ấm tử sa nguyên khoáng giữ trọn hương vị đất trời.
+                Nước đầu sôi mắt cua, trà hãm trong bộ trà cụ gốm mộc giữ trọn hương vị đất trời.
               </p>
             </div>
           </div>

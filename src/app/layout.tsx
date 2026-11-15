@@ -51,7 +51,6 @@ export const metadata: Metadata = {
     'phòng trà riêng tư',
     'thưởng trà đàm đạo',
     'đặt phòng trà',
-    'ấm tử sa',
   ],
   openGraph: {
     title: `${BRAND_CONFIG.brandName} — ${BRAND_CONFIG.brandSubtitle}`,

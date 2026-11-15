@@ -44,14 +44,22 @@ export const GRAND_OPENING_CONFIG: GrandOpeningPromo = {
 export const OFFICIAL_ROOM_RENTAL_PRICING: RoomRentalPricing[] = [
   {
     stt: 1,
-    title: 'Thuê phòng trà riêng',
+    title: 'Thuê phòng trà riêng (Nhóm nhỏ)',
     duration: '02 tiếng',
-    capacity: 'Tối đa 06 khách',
-    price: 1080000,
+    capacity: '02 đến 04 khách',
+    price: 540000,
     note: 'Giá thuê phòng đã bao gồm trà nương phục vụ trong suốt thời gian sử dụng.',
   },
   {
     stt: 2,
+    title: 'Thuê phòng trà riêng (Tiêu chuẩn)',
+    duration: '02 tiếng',
+    capacity: 'Tối đa 06 khách',
+    price: 1024000,
+    note: 'Giá thuê phòng đã bao gồm trà nương phục vụ trong suốt thời gian sử dụng.',
+  },
+  {
+    stt: 3,
     title: 'Phụ thu khách phát sinh',
     duration: '02 tiếng',
     capacity: 'Từ khách thứ 7 đến tối đa 10 khách',
@@ -62,9 +70,9 @@ export const OFFICIAL_ROOM_RENTAL_PRICING: RoomRentalPricing[] = [
 
 export const OFFICIAL_PRICING_NOTES: string[] = [
   'Thời gian thuê phòng tiêu chuẩn: 2 tiếng. Phát sinh thêm giờ, phụ thu 270.000 VNĐ/ giờ.',
-  'Mức giá 1.080.000 VNĐ áp dụng cho nhóm tối đa 6 khách.',
+  'Mức giá 540.000 VNĐ áp dụng cho nhóm 2 – 4 khách (đã bao gồm trà nương phục vụ).',
+  'Mức giá 1.024.000 VNĐ áp dụng cho nhóm tối đa 6 khách (đã bao gồm trà nương phục vụ).',
   'Khách phát sinh từ người thứ 7: phụ thu 108.000 VNĐ/ người; số lượng tối đa 10 khách.',
-  'Giá thuê phòng đã bao gồm trà nương phục vụ trong suốt thời gian sử dụng.',
   'Chi phí sử dụng trà được tính riêng theo loại trà khách lựa chọn.',
 ];
 
@@ -95,7 +103,7 @@ export const INITIAL_ROOMS: Room[] = [
     floor: 'Tầng 1 - Khu Đông',
     amenities: [
       'Bàn trà óc chó nguyên khối & khay đá sa thạch',
-      'Bộ ấm chén tử sa Nghi Hưng cao cấp',
+      'Bộ trà cụ gốm mộc nghệ nhân cao cấp',
       'Hệ thống điều hoà lọc không khí 2 chiều ion âm',
       'Không gian cách âm tiêu chuẩn boutique hospitality',
       'Trợ lý trà đạo (Tea Master) hỗ trợ nghi thức pha trà',
@@ -465,7 +473,7 @@ export const GALLERY_ITEMS = [
   {
     id: 'gal-4',
     title: 'Nghi thức pha trà Gongfu thủ công',
-    subtitle: 'Nước sôi đầu nguồn, ấm tử sa nguyên khoáng giữ trọn vị',
+    subtitle: 'Nước sôi đầu nguồn, bộ trà cụ thủ công giữ trọn vị',
     category: 'Trà Cụ & Nghi Thức',
     imageUrl: '/images/tea-ceremony-closeup.jpg',
   },
@@ -514,7 +522,7 @@ export const TESTIMONIALS = [
     author: 'Lê Thuỳ Dung',
     role: 'Nghệ nhân gốm thủ công',
     room: 'Phòng Nguyệt Các',
-    content: 'Vòm cửa nguyệt môn và bộ ấm tử sa tại đây được chăm chút vô cùng tinh tế. Trà sư pha trà với tâm thế rất an, từng ngụm trà như mở ra cả không gian tĩnh lặng.',
+    content: 'Vòm cửa nguyệt môn và bộ trà cụ gốm mộc tại đây được chăm chút vô cùng tinh tế. Trà sư pha trà với tâm thế rất an, từng ngụm trà như mở ra cả không gian tĩnh lặng.',
     date: 'Tháng 9, 2026',
     badge: 'Trải nghiệm trà đạo'
   },

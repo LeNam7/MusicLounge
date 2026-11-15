@@ -54,8 +54,8 @@ export default function TheArtOfTea() {
     },
     {
       step: '03',
-      title: 'Ấm Tử Sa Nghi Hưng & Thể Trà',
-      desc: 'Được dưỡng trong ấm tử sa nguyên khoáng xốp mịn, lưu giữ hương mật ong rừng Tây Bắc và để lại hậu ngọt sâu thẳm, kéo dài mãi nơi vòm họng sau từng ngụm trà.',
+      title: 'Trà Cụ Nghệ Nhân & Thể Trà',
+      desc: 'Được dưỡng trong bộ trà cụ gốm mộc giữ nhiệt tối ưu, lưu giữ hương mật ong rừng Tây Bắc và để lại hậu ngọt sâu thẳm, kéo dài mãi nơi vòm họng sau từng ngụm trà.',
       icon: Flame,
     },
   ];

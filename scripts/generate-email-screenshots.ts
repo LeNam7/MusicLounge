@@ -24,7 +24,7 @@ async function main() {
     teaPackageName: 'Trà Shan Tuyết Cổ Thụ & Điểm Tâm Trà Đạo',
     totalPrice: 1250000,
     depositAmount: 375000,
-    adminNotes: 'Lùng Vài Tea đã chuẩn bị sẵn bàn trà ấm nồng và ấm tử sa Nghi Hưng cung nghinh Quý khách!',
+    adminNotes: 'Lùng Vài Tea đã chuẩn bị sẵn bàn trà ấm nồng và trà nương chu đáo cung nghinh Quý khách!',
     specialRequests: 'Đặt phòng trà tiếp đón tri kỷ',
   };
 
