@@ -12,6 +12,7 @@ import {
   NotificationRecipientType,
   NotificationStatus,
   NotificationType,
+  PushSubscriptionRecord,
   Room,
   SlotBlock,
   SlotStatus,
@@ -319,6 +320,17 @@ function initSchema(db: DatabaseSync) {
     );
     CREATE INDEX IF NOT EXISTS idx_notifications_booking ON notification_logs(booking_id, created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_notifications_status ON notification_logs(status, next_retry_at);
+
+    CREATE TABLE IF NOT EXISTS push_subscriptions (
+      id TEXT PRIMARY KEY,
+      endpoint TEXT UNIQUE NOT NULL,
+      p256dh TEXT NOT NULL,
+      auth TEXT NOT NULL,
+      user_agent TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_push_subs_endpoint ON push_subscriptions(endpoint);
   `);
 
   // Ensure payment_notified_at column exists on bookings
@@ -606,6 +618,82 @@ export function mapNotificationRow(row: Record<string, unknown>): NotificationLo
     createdAt: row.created_at as string,
     updatedAt: row.updated_at as string,
   };
+}
+
+export function mapPushSubscriptionRow(row: Record<string, unknown>): PushSubscriptionRecord {
+  return {
+    id: row.id as string,
+    endpoint: row.endpoint as string,
+    p256dh: row.p256dh as string,
+    auth: row.auth as string,
+    userAgent: (row.user_agent as string) || undefined,
+    createdAt: row.created_at as string,
+    updatedAt: row.updated_at as string,
+  };
+}
+
+export function savePushSubscription(params: {
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  userAgent?: string;
+}): PushSubscriptionRecord {
+  const db = getDb();
+  const existing = db
+    .prepare('SELECT * FROM push_subscriptions WHERE endpoint = ?')
+    .get(params.endpoint) as Record<string, unknown> | undefined;
+
+  const nowIso = new Date().toISOString();
+  if (existing) {
+    db.prepare(`
+      UPDATE push_subscriptions
+      SET p256dh = ?, auth = ?, user_agent = ?, updated_at = ?
+      WHERE endpoint = ?
+    `).run(params.p256dh, params.auth, params.userAgent || null, nowIso, params.endpoint);
+    return mapPushSubscriptionRow({
+      ...existing,
+      p256dh: params.p256dh,
+      auth: params.auth,
+      user_agent: params.userAgent || existing.user_agent,
+      updated_at: nowIso,
+    });
+  }
+
+  const id = `sub-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
+  db.prepare(`
+    INSERT INTO push_subscriptions (id, endpoint, p256dh, auth, user_agent, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).run(id, params.endpoint, params.p256dh, params.auth, params.userAgent || null, nowIso, nowIso);
+
+  return {
+    id,
+    endpoint: params.endpoint,
+    p256dh: params.p256dh,
+    auth: params.auth,
+    userAgent: params.userAgent,
+    createdAt: nowIso,
+    updatedAt: nowIso,
+  };
+}
+
+export function deletePushSubscription(endpoint: string): boolean {
+  const db = getDb();
+  const res = db.prepare('DELETE FROM push_subscriptions WHERE endpoint = ?').run(endpoint);
+  return res.changes > 0;
+}
+
+export function getAllPushSubscriptions(): PushSubscriptionRecord[] {
+  const db = getDb();
+  const rows = db
+    .prepare('SELECT * FROM push_subscriptions ORDER BY created_at DESC')
+    .all() as unknown as Record<string, unknown>[];
+  return rows.map(mapPushSubscriptionRow);
+}
+
+export function getPushSubscriptionCount(): number {
+  const db = getDb();
+  const row = db.prepare('SELECT COUNT(*) as count FROM push_subscriptions').get() as { count: number };
+  return row?.count || 0;
 }
 
 // ============================================================================

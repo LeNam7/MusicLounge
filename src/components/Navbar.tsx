@@ -97,7 +97,7 @@ export default function Navbar() {
             <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
               <div 
                 className="relative w-8 h-11 sm:w-10 sm:h-13 shrink-0 group-hover:scale-105 transition-transform duration-300"
-                style={{ position: 'relative', flexShrink: 0, width: '38px', height: '50px' }}
+                style={{ position: 'relative', flexShrink: 0, width: '40px', maxWidth: '40px', height: '50px' }}
               >
                 <Image
                   src="/images/logo-lung-vai-transparent.png"

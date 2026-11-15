@@ -44,18 +44,18 @@ export const GRAND_OPENING_CONFIG: GrandOpeningPromo = {
 export const OFFICIAL_ROOM_RENTAL_PRICING: RoomRentalPricing[] = [
   {
     stt: 1,
-    title: 'Thuê phòng trà riêng (Nhóm nhỏ)',
+    title: 'Thuê phòng trà riêng',
     duration: '02 tiếng',
-    capacity: '02 đến 04 khách',
+    capacity: '02 - 04 khách',
     price: 540000,
     note: 'Giá thuê phòng đã bao gồm trà nương phục vụ trong suốt thời gian sử dụng.',
   },
   {
     stt: 2,
-    title: 'Thuê phòng trà riêng (Tiêu chuẩn)',
+    title: 'Thuê phòng trà riêng',
     duration: '02 tiếng',
-    capacity: 'Tối đa 06 khách',
-    price: 1024000,
+    capacity: '05 - 06 khách',
+    price: 864000,
     note: 'Giá thuê phòng đã bao gồm trà nương phục vụ trong suốt thời gian sử dụng.',
   },
   {
@@ -70,9 +70,8 @@ export const OFFICIAL_ROOM_RENTAL_PRICING: RoomRentalPricing[] = [
 
 export const OFFICIAL_PRICING_NOTES: string[] = [
   'Thời gian thuê phòng tiêu chuẩn: 2 tiếng. Phát sinh thêm giờ, phụ thu 270.000 VNĐ/ giờ.',
-  'Mức giá 540.000 VNĐ áp dụng cho nhóm 2 – 4 khách (đã bao gồm trà nương phục vụ).',
-  'Mức giá 1.024.000 VNĐ áp dụng cho nhóm tối đa 6 khách (đã bao gồm trà nương phục vụ).',
   'Khách phát sinh từ người thứ 7: phụ thu 108.000 VNĐ/ người; số lượng tối đa 10 khách.',
+  'Giá thuê phòng đã bao gồm trà nương phục vụ trong suốt thời gian sử dụng.',
   'Chi phí sử dụng trà được tính riêng theo loại trà khách lựa chọn.',
 ];
 

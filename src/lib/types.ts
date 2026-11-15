@@ -247,6 +247,16 @@ export interface BookingAuditLog {
   createdAt: string;
 }
 
+export interface PushSubscriptionRecord {
+  id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  userAgent?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type ApiErrorCode =
   | 'VALIDATION_ERROR'
   | 'SLOT_UNAVAILABLE'

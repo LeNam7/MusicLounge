@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import React, { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -144,6 +144,13 @@ function AdminDashboardContent() {
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
   const [isIos, setIsIos] = useState<boolean>(false);
 
+  // Web Push states (iOS 16.4+ Lockscreen & Background Notification)
+  const [pushSupported, setPushSupported] = useState<boolean>(false);
+  const [pushPermission, setPushPermission] = useState<string>('default');
+  const [isPushSubscribed, setIsPushSubscribed] = useState<boolean>(false);
+  const [pushLoading, setPushLoading] = useState<boolean>(false);
+  const [pushTesting, setPushTesting] = useState<boolean>(false);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4500);
@@ -196,6 +203,8 @@ function AdminDashboardContent() {
     return headers;
   }, [passcode]);
 
+  const prevPendingCountRef = useRef<number | null>(null);
+
   // Fetch Dashboard Stats
   const loadStats = useCallback(async () => {
     try {
@@ -205,13 +214,15 @@ function AdminDashboardContent() {
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        setStats((prevStats) => {
-          if (prevStats && data.data.pendingBookings > prevStats.pendingBookings) {
-            playChimeSound();
-            showToast(`🔔 Có yêu cầu đặt phòng mới (${data.data.pendingBookings} đơn chờ duyệt)!`);
-          }
-          return data.data;
-        });
+        if (
+          prevPendingCountRef.current !== null &&
+          data.data.pendingBookings > prevPendingCountRef.current
+        ) {
+          playChimeSound();
+          showToast(`🔔 Có yêu cầu đặt phòng mới (${data.data.pendingBookings} đơn chờ duyệt)!`);
+        }
+        prevPendingCountRef.current = data.data.pendingBookings;
+        setStats(data.data);
         return true;
       }
     } catch (err) {
@@ -378,6 +389,8 @@ function AdminDashboardContent() {
           const authData = await authRes.json();
           if (mounted && authData.success) {
             setIsAuthenticated(true);
+      // Auto-register Web Push notifications on login (User gesture approved by Apple/Browsers)
+      void autoSubscribePush(passcode);
             return;
           }
         }
@@ -385,6 +398,8 @@ function AdminDashboardContent() {
         const data = await res.json();
         if (mounted && data.authenticated) {
           setIsAuthenticated(true);
+      // Auto-register Web Push notifications on login (User gesture approved by Apple/Browsers)
+      void autoSubscribePush(passcode);
         }
       } catch {
         // Not authenticated yet
@@ -452,6 +467,25 @@ function AdminDashboardContent() {
     const ua = window.navigator.userAgent.toLowerCase();
     setIsIos(/iphone|ipad|ipod/.test(ua));
 
+    // Check Web Push support and permission
+    const hasServiceWorker = 'serviceWorker' in window.navigator;
+    const hasPushManager = 'PushManager' in window;
+    const hasNotification = 'Notification' in window;
+    const canPush = hasServiceWorker && hasPushManager && hasNotification;
+    setPushSupported(canPush);
+
+    if (canPush && 'Notification' in window) {
+      setPushPermission(Notification.permission);
+      if (Notification.permission === 'granted') {
+        window.navigator.serviceWorker.ready
+          .then((reg) => reg.pushManager.getSubscription())
+          .then((sub) => {
+            setIsPushSubscribed(Boolean(sub));
+          })
+          .catch(() => {});
+      }
+    }
+
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -492,6 +526,150 @@ function AdminDashboardContent() {
     }
   };
 
+  const urlBase64ToUint8Array = (base64String: string): ArrayBuffer => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const buffer = new ArrayBuffer(rawData.length);
+    const outputArray = new Uint8Array(buffer);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return buffer;
+  };
+
+  const autoSubscribePush = useCallback(
+    async (currentPasscode?: string) => {
+      if (typeof window === 'undefined') return;
+      const canPush = 'serviceWorker' in window.navigator && 'PushManager' in window && 'Notification' in window;
+      if (!canPush) return;
+
+      try {
+        let permission = Notification.permission;
+        if (permission === 'default') {
+          permission = await Notification.requestPermission();
+          setPushPermission(permission);
+        }
+
+        if (permission !== 'granted') return;
+
+        const keyRes = await fetch('/api/admin/push/vapid-public-key');
+        const keyData = await keyRes.json();
+        if (!keyData.success || !keyData.publicKey) return;
+
+        const reg = await window.navigator.serviceWorker.ready;
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(keyData.publicKey),
+          });
+        }
+
+        const codeToUse = currentPasscode || passcode;
+        const res = await fetch('/api/admin/push/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(codeToUse ? { 'x-admin-passcode': codeToUse } : {}),
+          },
+          body: JSON.stringify({
+            subscription: sub.toJSON(),
+            passcode: codeToUse,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          setIsPushSubscribed(true);
+        }
+      } catch (err: unknown) {
+        console.warn('[WebPush] Auto-subscribe error:', err);
+      }
+    },
+    [passcode]
+  );
+
+  // Auto-subscribe Push Notifications silently if granted, or on first interaction if default
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+
+    if (Notification.permission === 'granted') {
+      void autoSubscribePush(passcode);
+    } else if (Notification.permission === 'default') {
+      const handleFirstInteraction = () => {
+        void autoSubscribePush(passcode);
+        window.removeEventListener('click', handleFirstInteraction);
+        window.removeEventListener('touchend', handleFirstInteraction);
+      };
+      window.addEventListener('click', handleFirstInteraction, { once: true });
+      window.addEventListener('touchend', handleFirstInteraction, { once: true });
+      return () => {
+        window.removeEventListener('click', handleFirstInteraction);
+        window.removeEventListener('touchend', handleFirstInteraction);
+      };
+    }
+  }, [isAuthenticated, passcode, autoSubscribePush]);
+
+  const handleEnablePushNotifications = async () => {
+    if (typeof window === 'undefined') return;
+    if (!('Notification' in window)) {
+      alert('Trình duyệt hoặc phiên bản iOS này chưa hỗ trợ Web Push. Cần iOS 16.4 trở lên và đã thêm vào Màn hình chính.');
+      return;
+    }
+
+    setPushLoading(true);
+    try {
+      const permission = await Notification.requestPermission();
+      setPushPermission(permission);
+      if (permission === 'granted') {
+        await autoSubscribePush(passcode);
+        showToast('🔔 Đã kích hoạt chuông báo trên iPhone thành công!');
+        playChimeSound();
+      } else {
+        showToast('⚠️ Bạn chưa cấp quyền thông báo. Vui lòng vào Cài đặt iPhone > Thông báo > Lùng Vài Admin để cho phép.');
+      }
+    } catch (err: unknown) {
+      showToast((err as { message?: string })?.message || 'Lỗi cấp quyền thông báo.');
+    } finally {
+      setPushLoading(false);
+    }
+  };
+
+  const handleTestPushNotification = async () => {
+    setPushTesting(true);
+    try {
+      let subJson;
+      if ('serviceWorker' in window.navigator) {
+        const reg = await window.navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        if (sub) subJson = sub.toJSON();
+      }
+
+      const res = await fetch('/api/admin/push/test', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({
+          subscription: subJson,
+          passcode,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        showToast('🔔 ' + (data.message || 'Đã gửi chuông thử nghiệm!'));
+        playChimeSound();
+      } else {
+        showToast('⚠️ ' + (data.error || 'Lỗi gửi chuông thử nghiệm.'));
+      }
+    } catch (err: unknown) {
+      showToast('⚠️ ' + ((err as { message?: string })?.message || 'Lỗi gửi chuông thử nghiệm.'));
+    } finally {
+      setPushTesting(false);
+    }
+  };
+
   // Login Handler
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -509,6 +687,8 @@ function AdminDashboardContent() {
       }
 
       setIsAuthenticated(true);
+      // Auto-register Web Push notifications on login (User gesture approved by Apple/Browsers)
+      void autoSubscribePush(passcode);
     } catch (err: unknown) {
       setAuthError(err instanceof Error ? err.message : 'Lỗi xác thực.');
     }
@@ -1032,8 +1212,8 @@ function AdminDashboardContent() {
     <div className="min-h-screen bg-charcoal text-ivory pb-20">
       {/* Toast notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-brass text-white px-4 py-3 rounded-sm shadow-2xl text-xs font-semibold flex items-center gap-2">
-          <Check className="w-4 h-4" />
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 sm:top-auto sm:bottom-6 sm:right-6 sm:left-auto sm:translate-x-0 z-50 bg-[#1D4A38] text-white border border-brass/60 px-5 py-3 rounded shadow-2xl text-xs font-semibold flex items-center gap-2.5 max-w-[90vw] whitespace-nowrap animate-fadeIn">
+          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -1065,6 +1245,19 @@ function AdminDashboardContent() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            {pushSupported && isPushSubscribed && (
+              <button
+                onClick={handleTestPushNotification}
+                disabled={pushTesting}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-[#1D4A38]/80 hover:bg-[#1D4A38] text-emerald-300 border border-emerald-500/30 text-[11px] font-medium rounded-xs transition-all cursor-pointer"
+                title="Chuông báo đẩy ngầm đang bật. Nhấn để thử chuông."
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className="hidden sm:inline">{pushTesting ? 'Đang gửi...' : '🔔 Chuông: Bật'}</span>
+                <span className="sm:hidden">{pushTesting ? '...' : '🔔 Bật'}</span>
+              </button>
+            )}
+
             {!isStandalone && (
               <button
                 onClick={handleInstallPwa}
@@ -1126,7 +1319,33 @@ function AdminDashboardContent() {
         </div>
       )}
 
+
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+        {/* Web Push Activation Banner */}
+        {pushSupported && pushPermission !== 'granted' && (
+          <div className="p-4 bg-[#1D4A38] border border-brass/50 rounded-sm shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-ivory animate-fadeIn">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl animate-bounce">🔔</span>
+              <div>
+                <h4 className="text-sm font-serif font-bold text-[#F7E7CE]">
+                  Kích Hoạt Chuông Báo Đơn Mới Trên Điện Thoại
+                </h4>
+                <p className="text-xs text-stone-light mt-0.5">
+                  Bấm &ldquo;Bật Chuông Ngay&rdquo; và chọn &ldquo;Cho phép&rdquo; để iPhone tự động sáng màn hình và reo chuông khi có khách đặt bàn.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleEnablePushNotifications}
+              disabled={pushLoading}
+              className="px-4 py-2.5 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white font-bold text-xs uppercase tracking-wider rounded shadow-md cursor-pointer whitespace-nowrap self-start sm:self-auto transition-all"
+            >
+              {pushLoading ? 'Đang kích hoạt...' : 'Bật Chuông Ngay'}
+            </button>
+          </div>
+        )}
+
         {/* KPI Stats Cards (Section 10.1) */}
         {stats && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -2858,6 +3077,9 @@ function AdminDashboardContent() {
                   </li>
                   <li>
                     Nhấn nút <strong className="text-emerald-400">&ldquo;Thêm&rdquo; (Add)</strong> ở góc trên bên phải màn hình.
+                  </li>
+                  <li>
+                    Mở icon <strong className="text-brass">Lùng Vài Admin</strong> ngoài màn hình chính, nhấn <strong className="text-emerald-400">&ldquo;Bật Chuông Ngay&rdquo;</strong> và chọn <strong className="text-emerald-400">&ldquo;Cho phép&rdquo;</strong> để nhận chuông kể cả khi khóa máy.
                   </li>
                 </ol>
                 <div className="pt-2 border-t border-stone/20 text-[11px] text-stone-light">

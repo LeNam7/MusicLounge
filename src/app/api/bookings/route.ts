@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { BookingDomainError, createBooking } from '@/lib/db';
 import { processNotificationsForBooking } from '@/lib/notifications';
 import { checkRateLimit } from '@/lib/auth';
+import { sendAdminWebPush } from '@/lib/push';
 
 export async function POST(request: NextRequest) {
   try {
@@ -65,6 +66,16 @@ export async function POST(request: NextRequest) {
     // Trigger notification outbox processor asynchronously outside the DB transaction
     void processNotificationsForBooking(booking.id).catch((err) => {
       console.error('[NotificationOutbox] Async delivery error:', err);
+    });
+
+    // Send immediate Web Push notification to all Admin mobile devices (even when app is closed / phone locked)
+    void sendAdminWebPush({
+      title: '🔔 Đơn Đặt Phòng Mới — Lùng Vài Tea',
+      body: `Khách ${booking.customerName} (${booking.customerPhone}) vừa đặt ${booking.roomName || 'phòng'} lúc ${booking.startTime} ngày ${booking.date}.`,
+      url: `/admin?bookingId=${booking.id}`,
+      tag: `booking-${booking.id}`,
+    }).catch((err) => {
+      console.error('[WebPush] Error pushing new booking notification to admin devices:', err);
     });
 
     return NextResponse.json(

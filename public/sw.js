@@ -1,5 +1,5 @@
 // Lùng Vài Tea Admin PWA Service Worker
-const CACHE_NAME = 'lvt-admin-v1';
+const CACHE_NAME = 'lvt-admin-v2';
 const STATIC_ASSETS = [
   '/admin',
   '/manifest.json',
@@ -63,12 +63,13 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Web Push Notification Listener
+// Web Push Notification Listener (Supports iOS 16.4+ Lockscreen & Android/Desktop)
 self.addEventListener('push', (event) => {
   let data = {
-    title: 'Lùng Vài Tea — Đơn Đặt Phòng Mới',
+    title: '🔔 Lùng Vài Tea — Đơn Đặt Phòng Mới',
     body: 'Có một khách hàng vừa gửi yêu cầu đặt lịch phòng trà. Chạm để mở và phê duyệt.',
     url: '/admin',
+    tag: 'booking-alert',
   };
 
   if (event.data) {
@@ -84,14 +85,13 @@ self.addEventListener('push', (event) => {
     body: data.body,
     icon: '/icon-192x192.png',
     badge: '/icon-32x32.png',
-    vibrate: [200, 100, 200, 100, 300],
+    tag: data.tag || 'booking-alert',
+    renotify: true,
+    requireInteraction: true,
     data: {
       url: data.url || '/admin',
+      dateOfArrival: Date.now(),
     },
-    actions: [
-      { action: 'open', title: 'Mở duyệt lịch' },
-      { action: 'close', title: 'Đóng' }
-    ]
   };
 
   event.waitUntil(self.registration.showNotification(data.title, options));
@@ -101,14 +101,15 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
-  if (event.action === 'close') return;
-
   const targetUrl = event.notification.data?.url || '/admin';
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
       for (const client of windowClients) {
         if (client.url.includes('/admin') && 'focus' in client) {
+          if ('navigate' in client && targetUrl) {
+            client.navigate(targetUrl);
+          }
           return client.focus();
         }
       }
