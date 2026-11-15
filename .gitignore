@@ -52,3 +52,7 @@ cloudflared.exe
 
 # agent teamwork internal state
 /.agents/
+
+# Video production documentary assets
+PhimTaiLieu_TonGiao/
+

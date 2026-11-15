@@ -78,7 +78,7 @@ async function main() {
       console.log('📱 LINK TRUY CẬP TRỰC TIẾP TRANG QUẢN TRỊ (/admin):');
       console.log(`   👉 ${adminUrl}\n`);
       console.log('🔑 MÃ PIN ĐĂNG NHẬP QUẢN TRỊ:');
-      console.log('   👉 teaanf2026\n');
+      console.log('   👉 lungvai@2026\n');
       console.log('🌐 LINK WEBSITE CHO KHÁCH ĐẶT LỊCH:');
       console.log(`   👉 ${bookingUrl}\n`);
       console.log('============================================================');

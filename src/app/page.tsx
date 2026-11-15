@@ -9,6 +9,7 @@ import VisualGallery from '@/components/VisualGallery';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import FinalBookingInvitation from '@/components/FinalBookingInvitation';
 import Footer from '@/components/Footer';
+import CurtainIntro from '@/components/CurtainIntro';
 import { getAllRooms } from '@/lib/db';
 
 
@@ -18,6 +19,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-charcoal text-ivory">
+      {/* Hiệu ứng kéo rèm mở màn đón khách */}
+      <CurtainIntro />
+
       {/* Fixed Navigation Bar */}
       <Navbar />
 
