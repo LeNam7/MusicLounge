@@ -1,6 +1,7 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import path from 'path';
 import { Booking } from './types';
+import { getAdminPasscode } from './auth';
 
 let cachedTransporter: Transporter | null = null;
 let etherealAccount: { user: string; pass: string } | null = null;
@@ -97,7 +98,7 @@ export async function sendAdminBookingEmail(
   const adminEmail =
     targetEmail || process.env.ADMIN_NOTIFICATION_EMAIL || 'lenam287202@gmail.com';
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const passcode = process.env.ADMIN_PASSCODE || 'lungvai@2026';
+  const passcode = getAdminPasscode();
   const adminDirectUrl = `${appUrl}/admin?bookingId=${encodeURIComponent(
     booking.id
   )}&passcode=${encodeURIComponent(passcode)}`;

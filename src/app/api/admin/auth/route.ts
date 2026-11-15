@@ -4,6 +4,7 @@ import {
   checkRateLimit,
   createAdminSessionToken,
   getAdminPasscode,
+  isValidAdminPasscode,
   verifyAdminRequest,
 } from '@/lib/auth';
 
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
     const actor = String(body?.actor || 'admin').trim() || 'admin';
 
     // If correct passcode, grant session immediately
-    if (passcode && passcode === getAdminPasscode()) {
+    if (passcode && isValidAdminPasscode(passcode)) {
       const token = createAdminSessionToken(actor, 24);
       const response = NextResponse.json({
         success: true,

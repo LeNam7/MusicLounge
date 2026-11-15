@@ -6,7 +6,42 @@ const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || `lvt-secret-${ADMIN_P
 export const ADMIN_COOKIE_NAME = 'lvt_admin_session';
 
 export function getAdminPasscode(): string {
-  return process.env.ADMIN_PASSCODE || 'lungvai@2026';
+  const envPasscode = process.env.ADMIN_PASSCODE?.trim();
+  // Override legacy or template passcodes so they never take effect
+  if (!envPasscode || envPasscode === 'serenity2026' || envPasscode === 'teaanf2026') {
+    return 'lungvai@2026';
+  }
+  return envPasscode;
+}
+
+export function isValidAdminPasscode(candidate: string | null | undefined): boolean {
+  if (!candidate) return false;
+  const clean = candidate.trim();
+  const lower = clean.toLowerCase();
+  const expected = getAdminPasscode();
+
+  // 1. Direct match with expected passcode
+  if (clean === expected) return true;
+
+  // 2. Case-insensitive match with expected
+  if (lower === expected.toLowerCase()) return true;
+
+  // 3. User typing variants for lungvai@2026 (case-insensitive, optional @, or Vietnamese IME accents)
+  if (expected === 'lungvai@2026') {
+    const validVariants = new Set([
+      'lungvai@2026',
+      'lungvai2026',
+      'lùngvài@2026',
+      'lùngvài2026',
+      'lùngvai@2026',
+      'lùngvai2026',
+      'lungvài@2026',
+      'lungvài2026',
+    ]);
+    if (validVariants.has(lower)) return true;
+  }
+
+  return false;
 }
 
 export function createAdminSessionToken(actor: string = 'admin', ttlHours: number = 24): string {
@@ -58,12 +93,11 @@ export function verifyAdminRequest(
   const headerPasscode = request.headers.get('x-admin-passcode');
   const authHeader = request.headers.get('authorization');
   const bearerPasscode = authHeader?.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
-  const expectedPasscode = getAdminPasscode();
 
-  if (headerPasscode && headerPasscode === expectedPasscode) {
+  if (headerPasscode && isValidAdminPasscode(headerPasscode)) {
     return { authorized: true, actor: request.headers.get('x-admin-actor') || 'admin' };
   }
-  if (bearerPasscode && bearerPasscode === expectedPasscode) {
+  if (bearerPasscode && isValidAdminPasscode(bearerPasscode)) {
     return { authorized: true, actor: 'admin' };
   }
 
@@ -71,7 +105,7 @@ export function verifyAdminRequest(
   const isGet = request.method === 'GET';
   if (isGet && options?.allowQueryPasscode !== false) {
     const queryPasscode = request.nextUrl.searchParams.get('passcode');
-    if (queryPasscode && queryPasscode === expectedPasscode) {
+    if (queryPasscode && isValidAdminPasscode(queryPasscode)) {
       return { authorized: true, actor: 'admin' };
     }
   }
