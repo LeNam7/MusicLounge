@@ -113,3 +113,21 @@ body {
   border: 1px solid rgba(150, 117, 60, 0.25);
   box-shadow: 0 8px 30px rgba(40, 34, 29, 0.05);
 }
+
+/* Floating Levitation Effect for 3D Elements */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 3.6s ease-in-out infinite;
+}
+
+.animate-float-gentle:hover {
+  animation-play-state: paused;
+}

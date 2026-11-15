@@ -50,18 +50,38 @@ export default function Footer() {
           {/* Contact & Hours */}
           <div className="lg:col-span-3 space-y-4">
             <span className="text-xs uppercase tracking-[0.2em] text-ivory font-medium block">
-              LIÊN HỆ & ĐỊA ĐIỂM
+              LIÊN HỆ & CƠ SỞ
             </span>
             <ul className="space-y-3 text-xs">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-brass mt-0.5 flex-shrink-0" />
-                <span className="text-ivory-muted">{BRAND_CONFIG.address}</span>
+                <div>
+                  <strong className="text-ivory block font-medium">Cơ sở Cầu Giấy:</strong>
+                  <span className="text-ivory-muted">{BRAND_CONFIG.cauGiayAddress || BRAND_CONFIG.address}</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-brass mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-ivory block font-medium">Trụ sở chính:</strong>
+                  <span className="text-ivory-muted text-[11px]">{BRAND_CONFIG.headquarters}</span>
+                </div>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-brass flex-shrink-0" />
-                <a href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`} className="text-ivory-muted hover:text-brass transition-colors">
-                  {BRAND_CONFIG.hotline}
-                </a>
+                <div className="flex items-center gap-2">
+                  <a href={`tel:${BRAND_CONFIG.hotline.replace(/[^+\d]/g, '')}`} className="text-ivory-muted hover:text-brass transition-colors font-medium">
+                    {BRAND_CONFIG.hotline}
+                  </a>
+                  {BRAND_CONFIG.secondaryHotline && (
+                    <>
+                      <span className="text-stone-dark">•</span>
+                      <a href={`tel:${BRAND_CONFIG.secondaryHotline.replace(/[^+\d]/g, '')}`} className="text-ivory-muted hover:text-brass transition-colors">
+                        {BRAND_CONFIG.secondaryHotline}
+                      </a>
+                    </>
+                  )}
+                </div>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-brass flex-shrink-0" />
@@ -85,6 +105,16 @@ export default function Footer() {
               ĐIỀU HƯỚNG
             </span>
             <ul className="space-y-2.5 text-xs">
+              <li>
+                <Link href="/#grand-opening" className="text-[#8D342D] hover:text-[#B83D33] font-bold transition-colors">
+                  ★ Tuần lễ Khai trương (-20%)
+                </Link>
+              </li>
+              <li>
+                <Link href="/#pricing" className="text-brass hover:text-ivory transition-colors font-medium">
+                  Bảng giá dịch vụ & Danh trà
+                </Link>
+              </li>
               <li>
                 <Link href="/#rooms" className="hover:text-brass transition-colors">
                   Các phòng trà riêng

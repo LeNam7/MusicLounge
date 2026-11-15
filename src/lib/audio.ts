@@ -301,12 +301,32 @@ class TeaAtmosphereAudio {
     this.stepTimer = setTimeout(() => this.scheduleNextStep(), step.duration);
   }
 
+  private stateChangeListeners: Array<(isPlaying: boolean) => void> = [];
+
+  public onStateChange(listener: (isPlaying: boolean) => void): () => void {
+    this.stateChangeListeners.push(listener);
+    return () => {
+      this.stateChangeListeners = this.stateChangeListeners.filter((l) => l !== listener);
+    };
+  }
+
+  private notifyStateChange() {
+    this.stateChangeListeners.forEach((fn) => {
+      try {
+        fn(this.isRunning);
+      } catch {
+        // Ignore listener error
+      }
+    });
+  }
+
   public play() {
     this.initContext();
     if (!this.ctx) return;
 
     if (this.isRunning) return;
     this.isRunning = true;
+    this.notifyStateChange();
 
     const startPlayback = () => {
       if (!this.isRunning || !this.ctx) return;
@@ -326,6 +346,7 @@ class TeaAtmosphereAudio {
 
   public stop() {
     this.isRunning = false;
+    this.notifyStateChange();
 
     if (this.stepTimer) {
       clearTimeout(this.stepTimer);

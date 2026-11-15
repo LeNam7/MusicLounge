@@ -97,8 +97,13 @@ export interface BrandConfig {
   brandTagline: string;
   brandSubtagline: string;
   address: string;
+  cauGiayAddress?: string;
+  headquarters?: string;
+  factory?: string;
   hotline: string;
+  secondaryHotline?: string;
   email: string;
+  website?: string;
   openTime: string;
   closeTime: string;
   slotIntervalMinutes: number;
@@ -106,6 +111,44 @@ export interface BrandConfig {
   depositPercentage: number;
   holdDurationHours?: number;
   defaultDurationHours?: number;
+}
+
+export interface OfficialTeaMenuItem {
+  stt: number;
+  id: string;
+  name: string;
+  categoryName: string;
+  servingType: string;
+  unit: string;
+  price: number;
+  category: 'luc-tra' | 'bach-tra' | 'hong-tra' | 'banh-tra' | 'combo';
+  description?: string;
+  tasteNotes?: string;
+  aroma?: string;
+  liquorColor?: string;
+  temperature?: string;
+  steepingCount?: string;
+  imageUrl?: string;
+}
+
+export interface RoomRentalPricing {
+  stt: number;
+  title: string;
+  duration: string;
+  capacity: string;
+  price: number;
+  note?: string;
+}
+
+export interface GrandOpeningPromo {
+  title: string;
+  dateRange: string;
+  discountPercentage: number;
+  discountTargets: string[];
+  locationName: string;
+  locationAddress: string;
+  voucherOffer: string;
+  voucherDiscountPercentage: number;
 }
 
 export interface BankConfig {

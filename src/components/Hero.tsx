@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { CalendarCheck, Compass } from 'lucide-react';
 import { BRAND_CONFIG } from '@/lib/config';
-
 export default function Hero() {
   const scrollToRooms = (e: React.MouseEvent) => {
     e.preventDefault();

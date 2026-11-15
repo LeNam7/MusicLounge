@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { teaAudio } from '@/lib/audio';
 
 interface CurtainIntroProps {
   /**
@@ -28,6 +29,11 @@ export default function CurtainIntro({ oncePerSession = false }: CurtainIntroPro
 
     // Giai đoạn 1: Giữ rèm đóng trong 850ms để người thưởng ngoạn chiêm ngưỡng triện ấn
     const timerOpening = setTimeout(() => {
+      try {
+        teaAudio.play();
+      } catch {
+        // Autoplay policy
+      }
       setStage('opening');
       if (oncePerSession && typeof window !== 'undefined') {
         sessionStorage.setItem('lungvai_curtain_seen', 'true');
@@ -46,6 +52,11 @@ export default function CurtainIntro({ oncePerSession = false }: CurtainIntroPro
   }, [oncePerSession]);
 
   const handleSkip = () => {
+    try {
+      teaAudio.play();
+    } catch {
+      // Ignore
+    }
     setStage('opening');
     setTimeout(() => {
       setStage('finished');
