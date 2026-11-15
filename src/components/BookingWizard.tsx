@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Booking, Room, TeaPackage, TimeSlot } from '@/lib/types';
 import { BRAND_CONFIG } from '@/lib/config';
+import PaymentQRCode from './PaymentQRCode';
 
 interface BookingWizardProps {
   initialRooms: Room[];
@@ -408,7 +409,7 @@ export default function BookingWizard({
             { step: 1, label: 'Chọn phòng' },
             { step: 2, label: 'Ngày & Giờ' },
             { step: 3, label: 'Thông tin & Đặt chỗ' },
-            { step: 4, label: 'Trạng thái' },
+            { step: 4, label: 'Thanh toán & Trạng thái' },
           ].map((item) => (
             <div key={item.step} className="relative z-10 flex flex-col items-center">
               <button
@@ -1313,8 +1314,20 @@ export default function BookingWizard({
                   Đã tiếp nhận yêu cầu đặt lịch của quý khách
                 </h2>
                 <div className="p-4 bg-amber-50/90 border border-amber-400 rounded-sm text-xs sm:text-sm text-amber-950 font-medium leading-relaxed shadow-xs">
-                  Yêu cầu đặt lịch của bạn đã được tiếp nhận. Vui lòng chờ phòng trà xác nhận. Lịch chỉ được xác nhận sau khi quản trị viên duyệt thành công.
+                  Yêu cầu đặt lịch của bạn đã được tiếp nhận. Quý khách vui lòng chuyển khoản đặt cọc 30% qua mã QR bên dưới để phòng trà giữ chỗ và phê duyệt lịch hẹn sớm nhất.
                 </div>
+              </div>
+            )}
+
+            {/* Payment QR Section (VietQR MBBank) */}
+            {(createdBooking.status === 'pending' || createdBooking.status === 'confirmed') && (
+              <div className="max-w-3xl mx-auto text-left">
+                <PaymentQRCode
+                  bookingReference={createdBooking.bookingReference}
+                  totalPrice={createdBooking.totalPrice}
+                  depositAmount={createdBooking.depositAmount}
+                  customerName={createdBooking.customerName}
+                />
               </div>
             )}
 
@@ -1427,6 +1440,12 @@ export default function BookingWizard({
                 <span className="text-stone-light">Tổng chi phí dự kiến:</span>
                 <span className="text-brass font-medium">
                   {createdBooking.totalPrice.toLocaleString('vi-VN')} đ
+                </span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-stone/15">
+                <span className="text-stone-light">Tiền cọc giữ chỗ ({BRAND_CONFIG.depositPercentage}%):</span>
+                <span className="text-amber-700 font-semibold">
+                  {createdBooking.depositAmount.toLocaleString('vi-VN')} đ
                 </span>
               </div>
               {createdBooking.expiresAt && createdBooking.status === 'pending' && (

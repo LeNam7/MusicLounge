@@ -108,6 +108,16 @@ export interface BrandConfig {
   defaultDurationHours?: number;
 }
 
+export interface BankConfig {
+  bankName: string;
+  bankShortName: string;
+  bankCode: string;
+  bankBin: string;
+  accountNumber: string;
+  accountHolder: string;
+  qrStaticImage: string;
+}
+
 export interface TimeSlot {
   time: string;
   endTime: string;

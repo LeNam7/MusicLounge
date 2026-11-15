@@ -218,6 +218,20 @@ export async function sendAdminBookingEmail(
                 </tr>
               </table>
 
+              <!-- Bank Transfer Details Card -->
+              <div style="background-color: #FAF8F5; border: 1px dashed #D4BA7A; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px; text-align: left; font-size: 13px;">
+                <div style="font-family: Georgia, serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8E703C; font-weight: bold; margin-bottom: 8px;">
+                  THÔNG TIN CHUYỂN KHOẢN ĐẶT CỌC / THANH TOÁN
+                </div>
+                <div style="line-height: 1.7; color: #4F5E55;">
+                  <div>• <strong>Ngân hàng:</strong> Ngân hàng TMCP Quân Đội (MBBank)</div>
+                  <div>• <strong>Số tài khoản:</strong> <span style="font-family: monospace; font-weight: bold; color: #1A3B2B; font-size: 14px;">8201102698888</span></div>
+                  <div>• <strong>Chủ tài khoản:</strong> CONG TY CO PHAN TRA LUNG VAI</div>
+                  <div>• <strong>Số tiền cọc (30%):</strong> <strong style="color: #8E703C;">${booking.depositAmount.toLocaleString('vi-VN')} đ</strong></div>
+                  <div>• <strong>Nội dung chuyển khoản:</strong> <span style="font-family: monospace; font-weight: bold; color: #1A3B2B;">${booking.bookingReference}</span></div>
+                </div>
+              </div>
+
               <!-- Administrative Action Controls: Màu xanh trà quý phái, không dùng đỏ -->
               <div style="text-align: center; margin: 30px 0 10px 0;">
                 <a href="${adminDirectUrl}" style="display: block; background-color: #1A3B2B; color: #FFFFFF; text-decoration: none; padding: 15px 25px; border-radius: 3px; font-family: Georgia, serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; border: 1px solid #C5A869; box-shadow: 0 4px 14px rgba(26, 59, 43, 0.22); margin-bottom: 14px;">
@@ -437,6 +451,20 @@ export async function sendCustomerBookingConfirmationEmail(
                   </td>
                 </tr>
               </table>
+
+              <!-- Bank Transfer Details Card -->
+              <div style="background-color: #FAF8F5; border: 1px dashed #D4BA7A; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px; text-align: left; font-size: 13px;">
+                <div style="font-family: Georgia, serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8E703C; font-weight: bold; margin-bottom: 8px;">
+                  THÔNG TIN CHUYỂN KHOẢN ĐẶT CỌC / THANH TOÁN
+                </div>
+                <div style="line-height: 1.7; color: #4F5E55;">
+                  <div>• <strong>Ngân hàng:</strong> Ngân hàng TMCP Quân Đội (MBBank)</div>
+                  <div>• <strong>Số tài khoản:</strong> <span style="font-family: monospace; font-weight: bold; color: #1A3B2B; font-size: 14px;">8201102698888</span></div>
+                  <div>• <strong>Chủ tài khoản:</strong> CONG TY CO PHAN TRA LUNG VAI</div>
+                  <div>• <strong>Số tiền cọc (30%):</strong> <strong style="color: #8E703C;">${booking.depositAmount.toLocaleString('vi-VN')} đ</strong></div>
+                  <div>• <strong>Nội dung chuyển khoản:</strong> <span style="font-family: monospace; font-weight: bold; color: #1A3B2B;">${booking.bookingReference}</span></div>
+                </div>
+              </div>
 
               <!-- Action Button: Màu xanh trà quý phái, không dùng đỏ -->
               <div style="text-align: center; margin: 28px 0 16px 0;">

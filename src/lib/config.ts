@@ -1,4 +1,4 @@
-import { BrandConfig, Room, TeaPackage } from './types';
+import { BankConfig, BrandConfig, Room, TeaPackage } from './types';
 
 export const BRAND_CONFIG: BrandConfig = {
   brandName: 'LÙNG VÀI TEA',
@@ -15,6 +15,16 @@ export const BRAND_CONFIG: BrandConfig = {
   depositPercentage: 30, // 30% cọc giữ chỗ
   holdDurationHours: 24, // Giữ chỗ mặc định 24 giờ chờ duyệt
   defaultDurationHours: 2,
+};
+
+export const BANK_CONFIG: BankConfig = {
+  bankName: 'Ngân hàng TMCP Quân đội (MBBank)',
+  bankShortName: 'MBBank',
+  bankCode: 'MB',
+  bankBin: '970422',
+  accountNumber: '8201102698888',
+  accountHolder: 'CONG TY CO PHAN TRA LUNG VAI',
+  qrStaticImage: '/images/qr-payment.png',
 };
 
 export const INITIAL_ROOMS: Room[] = [

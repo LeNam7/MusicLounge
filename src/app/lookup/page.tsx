@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Booking } from '@/lib/types';
 import { BRAND_CONFIG } from '@/lib/config';
+import PaymentQRCode from '@/components/PaymentQRCode';
 
 function LookupContent() {
   const searchParams = useSearchParams();
@@ -369,6 +370,18 @@ function LookupContent() {
               </span>
             </div>
           </div>
+
+          {/* Payment QR Section */}
+          {(booking.status === 'pending' || booking.status === 'confirmed') && (
+            <div className="py-2">
+              <PaymentQRCode
+                bookingReference={booking.bookingReference}
+                totalPrice={booking.totalPrice}
+                depositAmount={booking.depositAmount}
+                customerName={booking.customerName}
+              />
+            </div>
+          )}
 
           {/* Admin Note if present */}
           {booking.adminNotes && (
