@@ -871,7 +871,10 @@ function AdminDashboardContent() {
     }
   };
 
-  const renderStatusBadge = (status: string) => {
+  const renderStatusBadge = (item: { status: string; paymentNotifiedAt?: string } | string) => {
+    const status = typeof item === 'string' ? item : item?.status;
+    const paymentNotifiedAt = typeof item === 'object' ? item?.paymentNotifiedAt : undefined;
+
     switch (status) {
       case 'confirmed':
         return (
@@ -881,10 +884,18 @@ function AdminDashboardContent() {
           </span>
         );
       case 'pending':
+        if (paymentNotifiedAt) {
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-bold bg-[#E8F4F8] text-[#165B7E] border border-[#9AC8DE] shadow-xs">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#1B749B]" />
+              Đã chuyển khoản chờ duyệt
+            </span>
+          );
+        }
         return (
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-semibold bg-[#FAF4E8] text-[#8C6D34] border border-[#E5D7BD]">
             <Clock className="w-3.5 h-3.5 text-[#9E7D42] animate-pulse" />
-            PENDING (Chờ duyệt)
+            Đang thanh toán
           </span>
         );
       case 'rejected':
@@ -1501,7 +1512,7 @@ function AdminDashboardContent() {
                         <span className="font-mono font-bold text-xs text-[#9E7D42] tracking-wider">
                           #{b.bookingReference}
                         </span>
-                        <div>{renderStatusBadge(b.status)}</div>
+                        <div>{renderStatusBadge(b)}</div>
                       </div>
 
                       {/* Thông tin Khách hàng */}
@@ -1693,7 +1704,7 @@ function AdminDashboardContent() {
                             </span>
                           </td>
                           <td className="py-3.5 px-4">{b.guestCount} khách</td>
-                          <td className="py-3.5 px-4">{renderStatusBadge(b.status)}</td>
+                          <td className="py-3.5 px-4">{renderStatusBadge(b)}</td>
                           <td className="py-3.5 px-4 text-xs">
                             <div className="text-stone-700 font-medium text-[11px]">
                               Tạo: {new Date(b.createdAt).toLocaleString('vi-VN')}
@@ -2486,7 +2497,7 @@ function AdminDashboardContent() {
                   <span className="font-mono text-xl text-brass font-bold">
                     {selectedBooking.bookingReference}
                   </span>
-                  {renderStatusBadge(selectedBooking.status)}
+                  {renderStatusBadge(selectedBooking)}
                 </div>
               </div>
               <button
@@ -2619,6 +2630,24 @@ function AdminDashboardContent() {
                     Quyết định Phê duyệt Yêu cầu (Đang ở trạng thái PENDING)
                   </span>
                 </div>
+
+                {selectedBooking.paymentNotifiedAt ? (
+                  <div className="p-3 bg-sky-50 border border-sky-300 rounded text-xs text-sky-950 flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-sky-700 flex-shrink-0" />
+                    <span>
+                      <strong>Khách đã bấm &ldquo;Tôi đã chuyển khoản&rdquo;:</strong> Vào lúc{' '}
+                      {new Date(selectedBooking.paymentNotifiedAt).toLocaleTimeString('vi-VN')} ngày{' '}
+                      {new Date(selectedBooking.paymentNotifiedAt).toLocaleDateString('vi-VN')}. Vui lòng kiểm tra biến động số dư và bấm Duyệt đơn.
+                    </span>
+                  </div>
+                ) : (
+                  <div className="p-3 bg-amber-50 border border-amber-300 rounded text-xs text-amber-950 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-amber-700 flex-shrink-0" />
+                    <span>
+                      <strong>Khách đang trong bước thanh toán:</strong> Khách đang mở mã QR và chưa bấm xác nhận chuyển khoản.
+                    </span>
+                  </div>
+                )}
 
                 {/* Primary Action: Approve */}
                 <button

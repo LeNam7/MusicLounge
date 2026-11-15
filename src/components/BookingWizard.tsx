@@ -1306,15 +1306,24 @@ export default function BookingWizard({
 
             {createdBooking.status === 'pending' && (
               <div className="space-y-3 max-w-2xl mx-auto">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-400">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-                  ĐANG CHỜ QUẢN TRỊ VIÊN DUYỆT (PENDING)
-                </span>
+                {createdBooking.paymentNotifiedAt ? (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-900 border border-sky-400">
+                    <span className="w-2 h-2 rounded-full bg-sky-500 animate-ping" />
+                    ĐÃ CHUYỂN KHOẢN (CHỜ DUYỆT)
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-400">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                    ĐANG THANH TOÁN (CHỜ CỌC)
+                  </span>
+                )}
                 <h2 className="font-serif text-2xl sm:text-4xl text-ivory font-normal">
                   Đã tiếp nhận yêu cầu đặt lịch của quý khách
                 </h2>
                 <div className="p-4 bg-amber-50/90 border border-amber-400 rounded-sm text-xs sm:text-sm text-amber-950 font-medium leading-relaxed shadow-xs">
-                  Yêu cầu đặt lịch của bạn đã được tiếp nhận. Quý khách vui lòng chuyển khoản đặt cọc 30% qua mã QR bên dưới để phòng trà giữ chỗ và phê duyệt lịch hẹn sớm nhất.
+                  {createdBooking.paymentNotifiedAt
+                    ? 'Bạn đã gửi thông báo chuyển khoản cọc. Trà sư đang đối soát biến động số dư và sẽ duyệt xác nhận lịch hẹn ngay.'
+                    : 'Yêu cầu đặt lịch của bạn đã được tiếp nhận. Quý khách vui lòng chuyển khoản đặt cọc 30% qua mã QR bên dưới và bấm "Tôi đã chuyển khoản" để phòng trà giữ chỗ sớm nhất.'}
                 </div>
               </div>
             )}
@@ -1327,6 +1336,13 @@ export default function BookingWizard({
                   totalPrice={createdBooking.totalPrice}
                   depositAmount={createdBooking.depositAmount}
                   customerName={createdBooking.customerName}
+                  customerPhone={createdBooking.customerPhone}
+                  initialPaymentNotifiedAt={createdBooking.paymentNotifiedAt}
+                  onPaymentNotified={() => {
+                    setCreatedBooking((prev) =>
+                      prev ? { ...prev, paymentNotifiedAt: new Date().toISOString() } : prev
+                    );
+                  }}
                 />
               </div>
             )}

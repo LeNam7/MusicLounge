@@ -67,6 +67,7 @@ export interface Booking {
   expiresAt?: string;
   expiredAt?: string;
   cancelledAt?: string;
+  paymentNotifiedAt?: string;
   idempotencyKey?: string;
   createdAt: string;
   updatedAt: string;

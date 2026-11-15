@@ -379,6 +379,13 @@ function LookupContent() {
                 totalPrice={booking.totalPrice}
                 depositAmount={booking.depositAmount}
                 customerName={booking.customerName}
+                customerPhone={booking.customerPhone}
+                initialPaymentNotifiedAt={booking.paymentNotifiedAt}
+                onPaymentNotified={() => {
+                  setBooking((prev) =>
+                    prev ? { ...prev, paymentNotifiedAt: new Date().toISOString() } : prev
+                  );
+                }}
               />
             </div>
           )}

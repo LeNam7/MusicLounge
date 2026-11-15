@@ -67,6 +67,7 @@ export async function GET(
         rejectionReason: booking.rejectionReason,
         cancellationReason: booking.cancellationReason,
         expiresAt: booking.expiresAt,
+        paymentNotifiedAt: booking.paymentNotifiedAt,
         reviewedAt: booking.reviewedAt,
         updatedAt: booking.updatedAt,
       },

@@ -20,7 +20,10 @@ interface PaymentQRCodeProps {
   totalPrice: number;
   depositAmount: number;
   customerName?: string;
+  customerPhone?: string;
+  initialPaymentNotifiedAt?: string;
   className?: string;
+  onPaymentNotified?: () => void;
 }
 
 export default function PaymentQRCode({
@@ -28,15 +31,39 @@ export default function PaymentQRCode({
   totalPrice,
   depositAmount,
   customerName,
+  customerPhone,
+  initialPaymentNotifiedAt,
   className = '',
+  onPaymentNotified,
 }: PaymentQRCodeProps) {
   // Option: 'deposit' (30%) or 'full' (100%)
   const [paymentOption, setPaymentOption] = useState<'deposit' | 'full'>('deposit');
   // QR Mode: 'dynamic' (auto amount & memo) or 'static' (original image)
   const [qrMode, setQrMode] = useState<'dynamic' | 'static'>('dynamic');
   const [copiedField, setCopiedField] = useState<string | null>(null);
-  const [hasNotifiedPaid, setHasNotifiedPaid] = useState<boolean>(false);
+  const [hasNotifiedPaid, setHasNotifiedPaid] = useState<boolean>(
+    Boolean(initialPaymentNotifiedAt)
+  );
+  const [isNotifying, setIsNotifying] = useState<boolean>(false);
   const [qrImgError, setQrImgError] = useState<boolean>(false);
+
+  const handleNotifyPaid = async () => {
+    if (isNotifying || hasNotifiedPaid) return;
+    setIsNotifying(true);
+    try {
+      await fetch(`/api/bookings/${encodeURIComponent(bookingReference)}/notify-paid`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: customerPhone }),
+      });
+      setHasNotifiedPaid(true);
+      if (onPaymentNotified) onPaymentNotified();
+    } catch {
+      setHasNotifiedPaid(true);
+    } finally {
+      setIsNotifying(false);
+    }
+  };
 
   const activeAmount = paymentOption === 'deposit' ? depositAmount : totalPrice;
 
@@ -331,11 +358,12 @@ export default function PaymentQRCode({
             {!hasNotifiedPaid ? (
               <button
                 type="button"
-                onClick={() => setHasNotifiedPaid(true)}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-tea-green hover:bg-tea-dark text-white text-xs uppercase tracking-wider font-semibold rounded-xs shadow-md transition-all cursor-pointer hover:scale-[1.02]"
+                disabled={isNotifying}
+                onClick={handleNotifyPaid}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-tea-green hover:bg-tea-dark text-white text-xs uppercase tracking-wider font-semibold rounded-xs shadow-md transition-all cursor-pointer hover:scale-[1.02] disabled:opacity-60"
               >
                 <Check className="w-4 h-4" />
-                <span>Tôi đã chuyển khoản</span>
+                <span>{isNotifying ? 'Đang gửi xác nhận...' : 'Tôi đã chuyển khoản'}</span>
               </button>
             ) : (
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-500 text-emerald-900 text-xs font-medium rounded-xs animate-fadeIn">

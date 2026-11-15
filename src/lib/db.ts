@@ -321,6 +321,13 @@ function initSchema(db: DatabaseSync) {
     CREATE INDEX IF NOT EXISTS idx_notifications_status ON notification_logs(status, next_retry_at);
   `);
 
+  // Ensure payment_notified_at column exists on bookings
+  try {
+    db.exec('ALTER TABLE bookings ADD COLUMN payment_notified_at TEXT;');
+  } catch {
+    // Column already exists
+  }
+
   // Initialize default system settings if missing
   const settingsRow = db.prepare("SELECT value_json FROM system_settings WHERE key = 'booking_config'").get() as
     | { value_json: string }
@@ -554,6 +561,7 @@ function mapBookingRow(row: Record<string, unknown>): Booking {
     expiresAt: (row.expires_at as string) || undefined,
     expiredAt: (row.expired_at as string) || undefined,
     cancelledAt: (row.cancelled_at as string) || undefined,
+    paymentNotifiedAt: (row.payment_notified_at as string) || undefined,
     idempotencyKey: (row.idempotency_key as string) || undefined,
     createdAt: row.created_at as string,
     updatedAt: row.updated_at as string,
@@ -1632,6 +1640,64 @@ export function createBooking(data: {
     const created = getBookingById(id);
     if (!created) throw new BookingDomainError('Không thể tạo đơn đặt phòng.', 'DATABASE_ERROR', 500);
     return created;
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+}
+
+/**
+ * Customer confirms they have transferred payment/deposit via QR
+ */
+export function notifyBookingPayment(reference: string, customerPhone?: string): Booking {
+  const db = getDb();
+  const nowIso = new Date().toISOString();
+
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    const row = db
+      .prepare('SELECT * FROM bookings WHERE booking_reference = ?')
+      .get(reference.toUpperCase().trim()) as Record<string, unknown> | undefined;
+
+    if (!row) {
+      throw new BookingDomainError('Không tìm thấy đơn đặt phòng.', 'NOT_FOUND', 404);
+    }
+
+    const booking = mapBookingRow(row);
+
+    if (customerPhone && customerPhone.trim()) {
+      const cleanInput = customerPhone.replace(/[^0-9]/g, '');
+      const cleanDb = booking.customerPhone.replace(/[^0-9]/g, '');
+      const normInput = cleanInput.startsWith('84') ? `0${cleanInput.slice(2)}` : cleanInput;
+      const normDb = cleanDb.startsWith('84') ? `0${cleanDb.slice(2)}` : cleanDb;
+      if (cleanInput.length > 0 && normDb !== normInput) {
+        throw new BookingDomainError('Số điện thoại không khớp với thông tin đơn.', 'FORBIDDEN', 403);
+      }
+    }
+
+    if (booking.status !== 'pending') {
+      db.exec('COMMIT');
+      return booking;
+    }
+
+    db.prepare(`
+      UPDATE bookings
+      SET payment_notified_at = ?, updated_at = ?
+      WHERE id = ?
+    `).run(nowIso, nowIso, booking.id);
+
+    insertAuditLogTx(db, {
+      bookingId: booking.id,
+      bookingReference: booking.bookingReference,
+      action: 'PAYMENT_CONFIRMED' as unknown as BookingAuditLog['action'],
+      fromStatus: 'pending',
+      toStatus: 'pending',
+      actor: 'customer',
+      reason: 'Khách hàng bấm xác nhận: Tôi đã chuyển khoản',
+    });
+
+    db.exec('COMMIT');
+    return getBookingById(booking.id)!;
   } catch (err) {
     db.exec('ROLLBACK');
     throw err;
